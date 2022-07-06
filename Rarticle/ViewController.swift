@@ -48,6 +48,7 @@ class ViewController: UIViewController {
                 // Check this without internet!
                 print("Something went wrong")
                 print(error)
+                print(error)
             }
         }
     }
