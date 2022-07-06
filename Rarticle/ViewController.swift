@@ -43,6 +43,7 @@ class ViewController: UIViewController {
                 self.tableView.reloadData()
                 print(articles)
                 print("Data is done")
+                print("Data is done")
             }
             catch let error {
                 // Check this without internet!
