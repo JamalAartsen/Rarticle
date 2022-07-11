@@ -20,10 +20,10 @@ class NewsCatcherApi {
         
         let (data, response) = try await session.data(for: request)
         
-        guard(response as? HTTPURLResponse)?.statusCode == 200 else {
-            // Status code 429 is 'Too many Requests'
-            fatalError("Error while fetching data \(response.description)")
-        }
+//        guard(response as? HTTPURLResponse)?.statusCode == 200 else {
+//            // Status code 429 is 'Too many Requests'
+//            fatalError("Error while fetching data \(response.description)")
+//        }
         
         let articles = try JSONDecoder().decode(Response.self, from: data)
         print(articles.status)

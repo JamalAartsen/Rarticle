@@ -38,7 +38,6 @@ class ViewController: UIViewController {
         
         let lightGray = UIColor(hex: 0xF1F1F1)
         view.backgroundColor = lightGray
-        title = "Rarticle Articles"
         
         articlesTableView.delegate = self
         articlesTableView.dataSource = self
@@ -112,6 +111,16 @@ extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("You tapped on index: \(indexPath.row)")
         articlesTableView.deselectRow(at: indexPath, animated: true)
+        
+        let detailsViewController = DetailsViewController()
+        let article = articles[indexPath.row]
+        
+        detailsViewController.titleArticle = article.title
+        detailsViewController.summaryArticle = article.summary
+        detailsViewController.imageArticle = article.media
+        detailsViewController.linkArticle = article.link
+        
+        navigationController?.pushViewController(detailsViewController, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

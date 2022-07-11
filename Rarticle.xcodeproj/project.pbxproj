@@ -24,6 +24,7 @@
 		C6F9E747287C702F006826CD /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F9E746287C702F006826CD /* UIImageView+Extensions.swift */; };
 		C6F9E749287C7088006826CD /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F9E748287C7088006826CD /* UIColor+Extensions.swift */; };
 		C6F9E74B287C70B2006826CD /* CGColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F9E74A287C70B2006826CD /* CGColor+Extensions.swift */; };
+		C6F9E74E287CA5EC006826CD /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F9E74D287CA5EC006826CD /* DetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		C6F9E746287C702F006826CD /* UIImageView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extensions.swift"; sourceTree = "<group>"; };
 		C6F9E748287C7088006826CD /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		C6F9E74A287C70B2006826CD /* CGColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGColor+Extensions.swift"; sourceTree = "<group>"; };
+		C6F9E74D287CA5EC006826CD /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		D8B0FF811D3FD8075B436BE9 /* Pods-Rarticle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rarticle.debug.xcconfig"; path = "Target Support Files/Pods-Rarticle/Pods-Rarticle.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -138,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				C63148BC2872D54700F7B393 /* ViewController.swift */,
+				C6F9E74D287CA5EC006826CD /* DetailsViewController.swift */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -287,6 +290,7 @@
 				C63148FE287455F900F7B393 /* ArticleCell.swift in Sources */,
 				C63148BB2872D54700F7B393 /* SceneDelegate.swift in Sources */,
 				C63148D12872D88400F7B393 /* Response.swift in Sources */,
+				C6F9E74E287CA5EC006826CD /* DetailsViewController.swift in Sources */,
 				C6F9E74B287C70B2006826CD /* CGColor+Extensions.swift in Sources */,
 				C691BC09287C3E5D002FDBA1 /* Constants.swift in Sources */,
 			);
