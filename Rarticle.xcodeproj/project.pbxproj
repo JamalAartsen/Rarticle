@@ -21,6 +21,9 @@
 		C691BC09287C3E5D002FDBA1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C691BC08287C3E5D002FDBA1 /* Constants.swift */; };
 		C6F9E743287C5FA3006826CD /* AppDelegate+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F9E742287C5FA3006826CD /* AppDelegate+Injection.swift */; };
 		C6F9E745287C5FEF006826CD /* APIServices+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F9E744287C5FEF006826CD /* APIServices+Injection.swift */; };
+		C6F9E747287C702F006826CD /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F9E746287C702F006826CD /* UIImageView+Extensions.swift */; };
+		C6F9E749287C7088006826CD /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F9E748287C7088006826CD /* UIColor+Extensions.swift */; };
+		C6F9E74B287C70B2006826CD /* CGColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F9E74A287C70B2006826CD /* CGColor+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +44,9 @@
 		C691BC08287C3E5D002FDBA1 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = /Users/jamalaartsen/Desktop/IOSApplications/Rarticle/Rarticle/Constants.swift; sourceTree = "<absolute>"; };
 		C6F9E742287C5FA3006826CD /* AppDelegate+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Injection.swift"; sourceTree = "<group>"; };
 		C6F9E744287C5FEF006826CD /* APIServices+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIServices+Injection.swift"; sourceTree = "<group>"; };
+		C6F9E746287C702F006826CD /* UIImageView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extensions.swift"; sourceTree = "<group>"; };
+		C6F9E748287C7088006826CD /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		C6F9E74A287C70B2006826CD /* CGColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGColor+Extensions.swift"; sourceTree = "<group>"; };
 		D8B0FF811D3FD8075B436BE9 /* Pods-Rarticle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rarticle.debug.xcconfig"; path = "Target Support Files/Pods-Rarticle/Pods-Rarticle.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -139,9 +145,20 @@
 		C691BBE52875C357002FDBA1 /* view */ = {
 			isa = PBXGroup;
 			children = (
+				C6F9E74C287C70C6006826CD /* Extensions */,
 				C63148FD287455F900F7B393 /* ArticleCell.swift */,
 			);
 			path = view;
+			sourceTree = "<group>";
+		};
+		C6F9E74C287C70C6006826CD /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C6F9E746287C702F006826CD /* UIImageView+Extensions.swift */,
+				C6F9E748287C7088006826CD /* UIColor+Extensions.swift */,
+				C6F9E74A287C70B2006826CD /* CGColor+Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -261,13 +278,16 @@
 			files = (
 				C6F9E743287C5FA3006826CD /* AppDelegate+Injection.swift in Sources */,
 				C63148CE2872D60C00F7B393 /* NewsCatcherApi.swift in Sources */,
+				C6F9E747287C702F006826CD /* UIImageView+Extensions.swift in Sources */,
 				C6F9E745287C5FEF006826CD /* APIServices+Injection.swift in Sources */,
 				C63148BD2872D54700F7B393 /* ViewController.swift in Sources */,
 				C63148D32872D91100F7B393 /* Article.swift in Sources */,
 				C63148B92872D54700F7B393 /* AppDelegate.swift in Sources */,
+				C6F9E749287C7088006826CD /* UIColor+Extensions.swift in Sources */,
 				C63148FE287455F900F7B393 /* ArticleCell.swift in Sources */,
 				C63148BB2872D54700F7B393 /* SceneDelegate.swift in Sources */,
 				C63148D12872D88400F7B393 /* Response.swift in Sources */,
+				C6F9E74B287C70B2006826CD /* CGColor+Extensions.swift in Sources */,
 				C691BC09287C3E5D002FDBA1 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

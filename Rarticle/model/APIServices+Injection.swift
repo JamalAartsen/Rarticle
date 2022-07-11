@@ -10,6 +10,5 @@ import Resolver
 extension Resolver {
     public static func registerAPIServices() {
         register { NewsCatcherApi() }
-        
     }
 }

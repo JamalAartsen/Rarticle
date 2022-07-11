@@ -11,11 +11,20 @@ import Resolver
 
 class ViewController: UIViewController {
     
-    let articlesTableView: UITableView = {
+    private let articlesTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(ArticleCell.self, forCellReuseIdentifier: Constants.ArticleCellIndentifier)
         return tableView
     }()
+    
+    private let alert = UIAlertController(title: "Alert", message: "Message", preferredStyle: .alert)
+    
+    private let titlePage: UILabel = {
+        let titlePage = UILabel()
+        titlePage.text = "Rarticle"
+        titlePage.font = .systemFont(ofSize: 30, weight: .bold)
+        return titlePage
+    } ()
     
     var articles: [Article] = []
     @Injected var newsCatcherAPI: NewsCatcherApi
@@ -24,9 +33,11 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         //Sub views
+        view.addSubview(titlePage)
         view.addSubview(articlesTableView)
-        articlesTableView.allowsSelection = true
         
+        let lightGray = UIColor(hex: 0xF1F1F1)
+        view.backgroundColor = lightGray
         title = "Rarticle Articles"
         
         articlesTableView.delegate = self
@@ -44,10 +55,15 @@ class ViewController: UIViewController {
     private func setupLayout() {
         articlesTableView.easy.layout([
             // Is now under statusbar
-            Top(0),
+            Top(8).to(titlePage),
             Bottom(0),
-            Right(0),
-            Left(0)
+            Right(16),
+            Left(16)
+        ])
+        
+        titlePage.easy.layout([
+            Top(50),
+            Left(16)
         ])
     }
     
@@ -65,8 +81,29 @@ class ViewController: UIViewController {
             }
             catch let error {
                 print(error.localizedDescription)
+                showAlertDialog(error: error.localizedDescription)
             }
         }
+    }
+    
+    private func showAlertDialog(error: String) {
+        alert.message = error
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {
+            action in
+            switch action.style {
+            case .default:
+                print("default")
+                
+            case .cancel:
+                print("cancel")
+                
+            case .destructive:
+                print("destructive")
+            @unknown default:
+                print("Unknown")
+            }
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -107,23 +144,6 @@ extension ViewController: UITableViewDataSource {
             return articleCell
         } else {
             return ArticleCell()
-        }
-    }
-}
-
-extension UIImageView {
-    // Can use the library Nuke for this
-    func loadFrom(urlAdress: String) {
-        guard let url = URL(string: urlAdress) else {
-            return
-        }
-        
-        DispatchQueue.main.async { [weak self] in
-            if let imageData = try? Data(contentsOf: url) {
-                if let loadedImage = UIImage(data: imageData) {
-                    self?.image = loadedImage
-                }
-            }
         }
     }
 }
