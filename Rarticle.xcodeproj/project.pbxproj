@@ -19,6 +19,8 @@
 		C63148D32872D91100F7B393 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63148D22872D91100F7B393 /* Article.swift */; };
 		C63148FE287455F900F7B393 /* ArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63148FD287455F900F7B393 /* ArticleCell.swift */; };
 		C691BC09287C3E5D002FDBA1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C691BC08287C3E5D002FDBA1 /* Constants.swift */; };
+		C6F9E743287C5FA3006826CD /* AppDelegate+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F9E742287C5FA3006826CD /* AppDelegate+Injection.swift */; };
+		C6F9E745287C5FEF006826CD /* APIServices+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F9E744287C5FEF006826CD /* APIServices+Injection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +39,8 @@
 		C63148D22872D91100F7B393 /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
 		C63148FD287455F900F7B393 /* ArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCell.swift; sourceTree = "<group>"; };
 		C691BC08287C3E5D002FDBA1 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = /Users/jamalaartsen/Desktop/IOSApplications/Rarticle/Rarticle/Constants.swift; sourceTree = "<absolute>"; };
+		C6F9E742287C5FA3006826CD /* AppDelegate+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Injection.swift"; sourceTree = "<group>"; };
+		C6F9E744287C5FEF006826CD /* APIServices+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIServices+Injection.swift"; sourceTree = "<group>"; };
 		D8B0FF811D3FD8075B436BE9 /* Pods-Rarticle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rarticle.debug.xcconfig"; path = "Target Support Files/Pods-Rarticle/Pods-Rarticle.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -100,6 +104,7 @@
 				C63148C12872D54900F7B393 /* Assets.xcassets */,
 				C63148C32872D54900F7B393 /* LaunchScreen.storyboard */,
 				C63148C62872D54900F7B393 /* Info.plist */,
+				C6F9E742287C5FA3006826CD /* AppDelegate+Injection.swift */,
 			);
 			path = Rarticle;
 			sourceTree = "<group>";
@@ -109,6 +114,7 @@
 			children = (
 				C63148CF2872D86B00F7B393 /* models */,
 				C63148CD2872D60C00F7B393 /* NewsCatcherApi.swift */,
+				C6F9E744287C5FEF006826CD /* APIServices+Injection.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -253,7 +259,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6F9E743287C5FA3006826CD /* AppDelegate+Injection.swift in Sources */,
 				C63148CE2872D60C00F7B393 /* NewsCatcherApi.swift in Sources */,
+				C6F9E745287C5FEF006826CD /* APIServices+Injection.swift in Sources */,
 				C63148BD2872D54700F7B393 /* ViewController.swift in Sources */,
 				C63148D32872D91100F7B393 /* Article.swift in Sources */,
 				C63148B92872D54700F7B393 /* AppDelegate.swift in Sources */,

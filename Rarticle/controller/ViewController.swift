@@ -7,6 +7,7 @@
 
 import UIKit
 import EasyPeasy
+import Resolver
 
 class ViewController: UIViewController {
     
@@ -17,8 +18,7 @@ class ViewController: UIViewController {
     }()
     
     var articles: [Article] = []
-    
-    let newsAPI = NewsCatcherApi()
+    @Injected var newsCatcherAPI: NewsCatcherApi
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +53,6 @@ class ViewController: UIViewController {
     
     private func tableViewSpinner() {
         let spinner = UIActivityIndicatorView(style: .large)
-
         spinner.startAnimating()
         articlesTableView.backgroundView = spinner
     }
@@ -61,7 +60,7 @@ class ViewController: UIViewController {
     private func getAllNewsArticles() {
         Task {
             do {
-                articles = try await newsAPI.getAllNewsArticles().articles
+                articles = try await newsCatcherAPI.getAllNewsArticles().articles
                 self.articlesTableView.reloadData()
             }
             catch let error {

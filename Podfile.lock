@@ -1,16 +1,20 @@
 PODS:
   - EasyPeasy (1.10.0)
+  - Resolver (1.5.0)
 
 DEPENDENCIES:
   - EasyPeasy
+  - Resolver
 
 SPEC REPOS:
   trunk:
     - EasyPeasy
+    - Resolver
 
 SPEC CHECKSUMS:
   EasyPeasy: b9b1bae024d21a7dfa9bad26d6826d88348cc6f1
+  Resolver: 68984624572763018fd8ec7b8e3e8df0e3b6bba5
 
-PODFILE CHECKSUM: 15ec50d839a71d57b4d38fb24ecc85869e1df326
+PODFILE CHECKSUM: f7d41335e10fb7a022d8e076cf7c931520432c5c
 
 COCOAPODS: 1.11.3
