@@ -42,7 +42,7 @@ class DetailsViewController: UIViewController {
     
     private func setupLayout() {
         titleLabel.easy.layout([
-            Top(10),
+            Top(75),
             Left(10),
             Right(10)
         ])

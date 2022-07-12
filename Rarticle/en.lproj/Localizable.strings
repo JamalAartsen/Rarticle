@@ -1,0 +1,12 @@
+/* 
+  Localizable.strings
+  Rarticle
+
+  Created by Jamal Aartsen on 12/07/2022.
+ 
+  
+*/
+
+"appTitle" = "Rarticle";
+"alertDialogTitle" = "Alert";
+"alertActionTitle" = "OK";

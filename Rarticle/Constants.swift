@@ -8,5 +8,5 @@
 import Foundation
 
 struct Constants {
-    static let ArticleCellIndentifier = "articleCell"
+    static let articleCellIndentifier = "articleCell"
 }

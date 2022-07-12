@@ -7,7 +7,7 @@
 
 import Foundation
 
-class NewsCatcherApi {
+class NewsCatcherApi: INewsAPI {
     var session = URLSession.shared
     var request = URLRequest(url: URL(string: "https://newscatcher.p.rapidapi.com/v1/search_free?q=Lord%20of%20the%20rings&lang=en&media=True")!)
     let headers = [

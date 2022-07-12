@@ -13,21 +13,21 @@ class ViewController: UIViewController {
     
     private let articlesTableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(ArticleCell.self, forCellReuseIdentifier: Constants.ArticleCellIndentifier)
+        tableView.register(ArticleCell.self, forCellReuseIdentifier: Constants.articleCellIndentifier)
         return tableView
     }()
     
-    private let alert = UIAlertController(title: "Alert", message: "Message", preferredStyle: .alert)
+    private let alert = UIAlertController(title: LocalizedStrings.alertDialogTitle, message: nil, preferredStyle: .alert)
     
     private let titlePage: UILabel = {
         let titlePage = UILabel()
-        titlePage.text = "Rarticle"
+        titlePage.text = LocalizedStrings.appTitle
         titlePage.font = .systemFont(ofSize: 30, weight: .bold)
         return titlePage
     } ()
     
     var articles: [Article] = []
-    @Injected var newsCatcherAPI: NewsCatcherApi
+    @Injected var newsRepository: NewsRepository
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,7 +75,7 @@ class ViewController: UIViewController {
     private func getAllNewsArticles() {
         Task {
             do {
-                articles = try await newsCatcherAPI.getAllNewsArticles().articles
+                articles = try await newsRepository.getAllNewsArticles().articles
                 self.articlesTableView.reloadData()
             }
             catch let error {
@@ -87,7 +87,7 @@ class ViewController: UIViewController {
     
     private func showAlertDialog(error: String) {
         alert.message = error
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {
+        alert.addAction(UIAlertAction(title: LocalizedStrings.alertActionTitle, style: .default, handler: {
             action in
             switch action.style {
             case .default:
@@ -146,10 +146,9 @@ extension ViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let articleCell = tableView.dequeueReusableCell(withIdentifier: Constants.ArticleCellIndentifier, for: indexPath) as? ArticleCell {
+        if let articleCell = tableView.dequeueReusableCell(withIdentifier: Constants.articleCellIndentifier, for: indexPath) as? ArticleCell {
             let article = articles[indexPath.row]
             articleCell.UpdateCellView(article: article)
-            articleCell.accessoryType = .disclosureIndicator
             return articleCell
         } else {
             return ArticleCell()
