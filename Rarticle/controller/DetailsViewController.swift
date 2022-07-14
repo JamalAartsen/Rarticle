@@ -17,53 +17,12 @@ class DetailsViewController: UIViewController {
     let imageArticle: String
     let linkArticle: String
     
-    private let scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        
-        return scrollView
-    }()
-    
-    private let contentView: UIView = {
-        let view = UIView()
-        
-        return view
-    }()
-    
-    // MARK: Factory METHODS
-    private let titleLabel: UILabel = {
-        let titleLabel = UILabel()
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.numberOfLines = 0
-        titleLabel.textColor = .black
-        titleLabel.font = .systemFont(ofSize: 17, weight: .bold)
-        return titleLabel
-    }()
-    
-    private let summaryLabel: UILabel = {
-        let summaryLabel = UILabel()
-        summaryLabel.translatesAutoresizingMaskIntoConstraints = false
-        summaryLabel.numberOfLines = 0
-        summaryLabel.textColor = .black
-        summaryLabel.font = .systemFont(ofSize: 12, weight: .regular)
-        return summaryLabel
-    }()
-    
-    private let image: UIImageView = {
-        let imageArticle = UIImageView()
-        
-        imageArticle.translatesAutoresizingMaskIntoConstraints = false
-        
-        return imageArticle
-    }()
-    
-    private let buttonLink: UIButton = {
-        let btn = UIButton()
-        btn.backgroundColor = .gray
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("Test BTN", for: .normal)
-        
-        return btn
-    }()
+    private lazy var scrollView: UIScrollView = makeScrollView()
+    private lazy var contentView: UIView = makeContentViewScrollView()
+    private lazy var titleLabel: UILabel = makeTitleLabel()
+    private lazy var summaryLabel: UILabel = makeSummaryLabel()
+    private lazy var image: UIImageView = makeImage()
+    private lazy var buttonLink: UIButton = makeButtonLink()
     
     internal init(titleArticle: String, summaryArticle: String, imageArticle: String, linkArticle: String) {
         self.titleArticle = titleArticle
@@ -78,29 +37,8 @@ class DetailsViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        view.backgroundColor = .white
-        navigationItem.title = LocalizedStrings.detailsViewControllerNavigationTitle
-        
-        scrollView.backgroundColor = .white
-        view.addSubview(scrollView)
-        
-        titleLabel.text = titleArticle
-        summaryLabel.text = summaryArticle + summaryArticle + summaryArticle + summaryArticle
-        image.loadFrom(urlAdress: imageArticle)
-        //image.image = UIImage(named: "placeholder")
-        
-        scrollView.addSubview(contentView)
-        
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(buttonLink)
-        contentView.addSubview(image)
-        contentView.addSubview(summaryLabel)
-        
-        // Kan niet click op de views in de contentview
-        buttonLink.addTarget(self, action: #selector(self.didTapOnLinkBtn), for: .touchUpInside)
-        
-        
         setupLayout()
+        buttonLink.addTarget(self, action: #selector(self.didTapOnLinkBtn), for: .touchUpInside)
         
         print("Title: \(titleArticle)")
         print("Summary: \(summaryArticle)")
@@ -110,12 +48,27 @@ class DetailsViewController: UIViewController {
     
     @objc func didTapOnLinkBtn() {
         UIApplication.shared.open(URL(string: linkArticle)!)
-        print("BUTTON")
     }
     
     private func setupLayout() {
+        view.backgroundColor = .white
+        navigationItem.title = LocalizedStrings.detailsViewControllerNavigationTitle
         
-        // topMargin = safearea Top(0).to(view, .topMargin),
+        scrollView.backgroundColor = .white
+        view.addSubview(scrollView)
+        
+        titleLabel.text = titleArticle
+        summaryLabel.text = summaryArticle + summaryArticle + summaryArticle + summaryArticle
+        //image.loadFrom(urlAdress: imageArticle)
+        image.image = UIImage(named: "placeholder")
+        
+        scrollView.addSubview(contentView)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(buttonLink)
+        contentView.addSubview(image)
+        contentView.addSubview(summaryLabel)
+        
+        // topMargin = safearea = Top(0).to(view, .topMargin),
         scrollView.easy.layout([
             Top(0),
             Bottom(0),
@@ -130,18 +83,13 @@ class DetailsViewController: UIViewController {
         ])
         
         titleLabel.easy.layout([
-            Top(0),
+            Top(16),
             Right(16),
             Left(16),
         ])
         
-        buttonLink.easy.layout([
-            Top(10).to(titleLabel),
-            Left(10)
-        ])
-        
         image.easy.layout([
-            Top(16).to(buttonLink),
+            Top(16).to(titleLabel),
             Left(16),
             Right(16),
             Height(200)
@@ -150,9 +98,59 @@ class DetailsViewController: UIViewController {
         summaryLabel.easy.layout([
             Top(16).to(image),
             Left(16),
+            Right(16)
+        ])
+        
+        buttonLink.easy.layout([
+            Top(10).to(summaryLabel),
+            Left(16),
             Right(16),
             Bottom(16)
         ])
+    }
+}
+
+private extension DetailsViewController {
+    
+    func makeScrollView() -> UIScrollView {
+        let scrollView = UIScrollView()
         
+        return scrollView
+    }
+    
+    func makeContentViewScrollView() -> UIView {
+        let view = UIView()
+        
+        return view
+    }
+    
+    func makeTitleLabel() -> UILabel {
+        let titleLabel = UILabel()
+        titleLabel.numberOfLines = 0
+        titleLabel.textColor = .black
+        titleLabel.font = .systemFont(ofSize: 22, weight: .bold)
+        return titleLabel
+    }
+    
+    func makeSummaryLabel() -> UILabel {
+        let summaryLabel = UILabel()
+        summaryLabel.numberOfLines = 0
+        summaryLabel.textColor = .black
+        summaryLabel.font = .systemFont(ofSize: 14, weight: .regular)
+        return summaryLabel
+    }
+    
+    func makeImage() -> UIImageView {
+        let imageArticle = UIImageView()
+        
+        return imageArticle
+    }
+    
+    func makeButtonLink() -> UIButton {
+        let btn = UIButton()
+        btn.backgroundColor = .systemBlue
+        btn.layer.cornerRadius = 5
+        btn.setTitle(LocalizedStrings.openArticle, for: .normal)
+        return btn
     }
 }

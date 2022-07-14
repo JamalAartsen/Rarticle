@@ -12,4 +12,6 @@ struct LocalizedStrings {
     static let alertDialogTitle = NSLocalizedString("alertDialogTitle", comment: "Alert")
     static let alertActionTitle = NSLocalizedString("alertActionTitle", comment: "OK")
     static let detailsViewControllerNavigationTitle = NSLocalizedString("detailsViewControllerNavigationTitle", comment: "New Details")
+    static let openArticle = NSLocalizedString("openArticle", comment: "Open Article")
+    static let retry = NSLocalizedString("retry", comment: "Retry")
 }

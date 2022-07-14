@@ -11,3 +11,5 @@
 "alertDialogTitle" = "Alert";
 "alertActionTitle" = "OK";
 "detailsViewControllerNavigationTitle" = "News Details";
+"openArticle" = "Open Article";
+"retry" = "Retry";

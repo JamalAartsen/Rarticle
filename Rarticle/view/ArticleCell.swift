@@ -10,31 +10,9 @@ import EasyPeasy
 
 class ArticleCell: UITableViewCell {
     
-    private let titleLabel: UILabel = {
-        let titleLabel = UILabel()
-        titleLabel.textColor = .black
-        titleLabel.font = .systemFont(ofSize: 17, weight: .bold)
-        return titleLabel
-    }()
-    
-    private let summaryLabel: UILabel = {
-        let summaryLabel = UILabel()
-        summaryLabel.textColor = .black
-        summaryLabel.font = .systemFont(ofSize: 12, weight: .regular)
-        return summaryLabel
-    }()
-    
-    private let articleImage: UIImageView = {
-        let articleImage = UIImageView()
-        articleImage.image = UIImage(named: "placeholder")
-        return articleImage
-    } ()
-    
-    func updateCellView(article: Article) {
-        titleLabel.text = article.title
-        summaryLabel.text = article.summary
-        articleImage.loadFrom(urlAdress: article.media)
-    }
+    private lazy var titleLabel: UILabel = makeTitleLabel()
+    private lazy var summaryLabel: UILabel = makeTitleLabel()
+    private lazy var articleImage: UIImageView = makeArticleImage()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -43,6 +21,12 @@ class ArticleCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func updateCellView(article: Article) {
+        titleLabel.text = article.title
+        summaryLabel.text = article.summary
+        articleImage.loadFrom(urlAdress: article.media)
     }
     
     private func setup() {
@@ -68,5 +52,27 @@ class ArticleCell: UITableViewCell {
             Top(10),
             Bottom(10)
         ])
+    }
+}
+
+private extension ArticleCell {
+    func makeTitleLabel() -> UILabel {
+        let titleLabel = UILabel()
+        titleLabel.textColor = .black
+        titleLabel.font = .systemFont(ofSize: 17, weight: .bold)
+        return titleLabel
+    }
+    
+    func makeSummaryLabel() -> UILabel {
+        let summaryLabel = UILabel()
+        summaryLabel.textColor = .black
+        summaryLabel.font = .systemFont(ofSize: 12, weight: .regular)
+        return summaryLabel
+    }
+    
+    func makeArticleImage() -> UIImageView {
+        let articleImage = UIImageView()
+        articleImage.image = UIImage(named: "placeholder")
+        return articleImage
     }
 }

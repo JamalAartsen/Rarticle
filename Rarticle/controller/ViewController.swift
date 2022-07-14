@@ -12,26 +12,10 @@ import Resolver
 // TODO: DARK/LIGHT MODE
 class ViewController: UIViewController {
     
-    private let fakeData = {[
-        Article(summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas volutpat justo nec justo feugiat feugiat. Vivamus in pulvinar metus. Suspendisse quis fermentum magna. ", title: "Hallo", link: "", media: ""),
-        Article(summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas volutpat justo nec justo feugiat feugiat. Vivamus in pulvinar metus. Suspendisse quis fermentum magna. ", title: "Hallo", link: "", media: ""),
-        Article(summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas volutpat justo nec justo feugiat feugiat. Vivamus in pulvinar metus. Suspendisse quis fermentum magna. ", title: "Hallo", link: "", media: "")
-    ]}
-    
-    private let articlesTableView: UITableView = {
-        let tableView = UITableView()
-        tableView.register(ArticleCell.self, forCellReuseIdentifier: Constants.articleCellIndentifier)
-        return tableView
-    }()
-    
-    private let alert = UIAlertController(title: LocalizedStrings.alertDialogTitle, message: nil, preferredStyle: .alert)
-    
-    private let titlePage: UILabel = {
-        let titlePage = UILabel()
-        titlePage.text = LocalizedStrings.appTitle
-        titlePage.font = .systemFont(ofSize: 30, weight: .bold)
-        return titlePage
-    } ()
+    private lazy var articlesTableView: UITableView = makeTableView()
+    private lazy var alert = makeAlertDialog()
+    private lazy var titlePage: UILabel = makeTitleLabel()
+    private lazy var retryButton: UIButton = makeRetryButton()
     
     var articles: [Article] = [] {
         didSet {
@@ -56,6 +40,8 @@ class ViewController: UIViewController {
         
         navigationController?.view.backgroundColor = .orange
         
+        retryButton.addTarget(self, action: #selector(self.retryReloadTableView), for: .touchUpInside)
+        
         tableViewSpinner()
         setupLayout()
         getAllNewsArticles()
@@ -77,6 +63,8 @@ class ViewController: UIViewController {
             Top(50),
             Left(16)
         ])
+        
+        retryButton.easy.layout(Width(100))
     }
     
     private func tableViewSpinner() {
@@ -85,15 +73,26 @@ class ViewController: UIViewController {
         articlesTableView.backgroundView = spinner
     }
     
+    @objc private func retryReloadTableView() {
+        print("Retry")
+        articlesTableView.reloadData()
+        tableViewSpinner()
+        getAllNewsArticles()
+    }
+    
     private func getAllNewsArticles() {
         Task {
             do {
                 articles = try await newsRepository.getAllNewsArticles().articles
+                //articles = DummyData.fakeData()
+                articlesTableView.backgroundView = nil
             }
             catch let error {
                 print(error.localizedDescription)
+                print(error)
                 showAlertDialog(error: error.localizedDescription)
-                articles = fakeData()
+                articlesTableView.backgroundView = retryButton
+                articlesTableView.backgroundView?.easy.layout(Center())
             }
         }
     }
@@ -157,13 +156,30 @@ extension ViewController: UITableViewDataSource {
     }
 }
 
-// In de map extensions
-extension Array {
-    subscript(safe index: Int) -> Element? {
-        if (index < 0 || index >= count) {
-            return nil
-        } else {
-            return self[index]
-        }
+private extension ViewController {
+    func makeTableView() -> UITableView {
+        let tableView = UITableView()
+        tableView.register(ArticleCell.self, forCellReuseIdentifier: Constants.articleCellIndentifier)
+        return tableView
+    }
+    
+    func makeTitleLabel() -> UILabel {
+        let titlePage = UILabel()
+        titlePage.text = LocalizedStrings.appTitle
+        titlePage.font = .systemFont(ofSize: 30, weight: .bold)
+        return titlePage
+    }
+    
+    func makeAlertDialog() -> UIAlertController {
+        let alertController = UIAlertController(title: LocalizedStrings.alertDialogTitle, message: nil, preferredStyle: .alert)
+        return alertController
+    }
+    
+    func makeRetryButton() -> UIButton {
+        let retryBtn = UIButton()
+        retryBtn.backgroundColor = .systemBlue
+        retryBtn.layer.cornerRadius = 5
+        retryBtn.setTitle(LocalizedStrings.retry, for: .normal)
+        return retryBtn
     }
 }
