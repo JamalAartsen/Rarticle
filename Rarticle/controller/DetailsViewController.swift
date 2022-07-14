@@ -39,14 +39,35 @@ class DetailsViewController: UIViewController {
     override func viewDidLoad() {
         setupLayout()
         buttonLink.addTarget(self, action: #selector(self.didTapOnLinkBtn), for: .touchUpInside)
-        
-        print("Title: \(titleArticle)")
-        print("Summary: \(summaryArticle)")
-        print("Media: \(imageArticle)")
-        print("Link: \(linkArticle)")
+        animations()
     }
     
-    @objc func didTapOnLinkBtn() {
+    private func animations() {
+        titleLabel.alpha = 0
+        image.alpha = 0
+        summaryLabel.alpha = 0
+        buttonLink.alpha = 0
+        
+        // Vragen wat de layer.position precies is.
+        titleLabel.layer.position = CGPoint(x: 100, y: 0)
+        image.layer.position = CGPoint(x: 100, y: 0)
+        summaryLabel.layer.position = CGPoint(x: 100, y: 0)
+        buttonLink.layer.position = CGPoint(x: 100, y: 0)
+        
+        UIView.animate(withDuration: 0.5) {
+            self.titleLabel.alpha = 1.0
+            self.image.alpha = 1.0
+            self.summaryLabel.alpha = 1.0
+            self.buttonLink.alpha = 1.0
+            
+//            self.titleLabel.layer.position = CGPoint(x: 0, y: 0)
+//            self.image.layer.position = CGPoint(x: 0, y: 0)
+//            self.summaryLabel.layer.position = CGPoint(x: 0, y: 0)
+//            self.buttonLink.layer.position = CGPoint(x: 0, y: 0)
+        }
+    }
+    
+    @objc private func didTapOnLinkBtn() {
         UIApplication.shared.open(URL(string: linkArticle)!)
     }
     

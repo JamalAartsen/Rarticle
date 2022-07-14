@@ -11,7 +11,7 @@ import EasyPeasy
 class ArticleCell: UITableViewCell {
     
     private lazy var titleLabel: UILabel = makeTitleLabel()
-    private lazy var summaryLabel: UILabel = makeTitleLabel()
+    private lazy var summaryLabel: UILabel = makeSummaryLabel()
     private lazy var articleImage: UIImageView = makeArticleImage()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

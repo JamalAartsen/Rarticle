@@ -13,7 +13,7 @@ import Resolver
 class ViewController: UIViewController {
     
     private lazy var articlesTableView: UITableView = makeTableView()
-    private lazy var alert = makeAlertDialog()
+    private var alert: UIAlertController = UIAlertController()
     private lazy var titlePage: UILabel = makeTitleLabel()
     private lazy var retryButton: UIButton = makeRetryButton()
     
@@ -26,21 +26,18 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //Sub views
+     
         view.addSubview(titlePage)
         view.addSubview(articlesTableView)
         
-        // TODO: Constants class for colors
-        let lightGray = UIColor(hex: 0xF1F1F1)
+        let lightGray = UIColor(hex: Colors.lightGray)
         view.backgroundColor = lightGray
         
         articlesTableView.delegate = self
         articlesTableView.dataSource = self
         
-        navigationController?.view.backgroundColor = .orange
-        
         retryButton.addTarget(self, action: #selector(self.retryReloadTableView), for: .touchUpInside)
+        animations()
         
         tableViewSpinner()
         setupLayout()
@@ -67,6 +64,15 @@ class ViewController: UIViewController {
         retryButton.easy.layout(Width(100))
     }
     
+    private func animations() {
+        titlePage.alpha = 0
+        articlesTableView.alpha = 0
+        UIView.animate(withDuration: 0.5) {
+            self.titlePage.alpha = 1.0
+            self.articlesTableView.alpha = 1.0
+        }
+    }
+    
     private func tableViewSpinner() {
         let spinner = UIActivityIndicatorView(style: .large)
         spinner.startAnimating()
@@ -74,7 +80,6 @@ class ViewController: UIViewController {
     }
     
     @objc private func retryReloadTableView() {
-        print("Retry")
         articlesTableView.reloadData()
         tableViewSpinner()
         getAllNewsArticles()
@@ -83,8 +88,8 @@ class ViewController: UIViewController {
     private func getAllNewsArticles() {
         Task {
             do {
-                articles = try await newsRepository.getAllNewsArticles().articles
-                //articles = DummyData.fakeData()
+                //articles = try await newsRepository.getAllNewsArticles().articles
+                articles = DummyData.fakeData()
                 articlesTableView.backgroundView = nil
             }
             catch let error {
@@ -98,6 +103,7 @@ class ViewController: UIViewController {
     }
     
     private func showAlertDialog(error: String) {
+        alert = makeAlertDialog()
         alert.message = error
         alert.addAction(UIAlertAction(title: LocalizedStrings.alertActionTitle, style: .default))
         present(alert, animated: true, completion: nil)
@@ -107,7 +113,6 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("You tapped on index: \(indexPath.row)")
         articlesTableView.deselectRow(at: indexPath, animated: true)
         
         let article = articles[indexPath.row]
@@ -154,6 +159,14 @@ extension ViewController: UITableViewDataSource {
             return ArticleCell()
         }
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.alpha = 0
+        
+        UIView.animate(withDuration: 0.5, delay: 0.05 * Double(indexPath.row)) {
+            cell.alpha = 1
+        }
+    }
 }
 
 private extension ViewController {
@@ -171,7 +184,7 @@ private extension ViewController {
     }
     
     func makeAlertDialog() -> UIAlertController {
-        let alertController = UIAlertController(title: LocalizedStrings.alertDialogTitle, message: nil, preferredStyle: .alert)
+        let alertController = UIAlertController(title: LocalizedStrings.alertDialogTitle, message: nil, preferredStyle: .actionSheet)
         return alertController
     }
     
