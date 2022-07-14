@@ -9,7 +9,14 @@ import UIKit
 import EasyPeasy
 import Resolver
 
+// TODO: DARK/LIGHT MODE
 class ViewController: UIViewController {
+    
+    private let fakeData = {[
+        Article(summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas volutpat justo nec justo feugiat feugiat. Vivamus in pulvinar metus. Suspendisse quis fermentum magna. ", title: "Hallo", link: "", media: ""),
+        Article(summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas volutpat justo nec justo feugiat feugiat. Vivamus in pulvinar metus. Suspendisse quis fermentum magna. ", title: "Hallo", link: "", media: ""),
+        Article(summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas volutpat justo nec justo feugiat feugiat. Vivamus in pulvinar metus. Suspendisse quis fermentum magna. ", title: "Hallo", link: "", media: "")
+    ]}
     
     private let articlesTableView: UITableView = {
         let tableView = UITableView()
@@ -26,7 +33,11 @@ class ViewController: UIViewController {
         return titlePage
     } ()
     
-    var articles: [Article] = []
+    var articles: [Article] = [] {
+        didSet {
+            articlesTableView.reloadData()
+        }
+    }
     @Injected var newsRepository: NewsRepository
     
     override func viewDidLoad() {
@@ -36,11 +47,14 @@ class ViewController: UIViewController {
         view.addSubview(titlePage)
         view.addSubview(articlesTableView)
         
+        // TODO: Constants class for colors
         let lightGray = UIColor(hex: 0xF1F1F1)
         view.backgroundColor = lightGray
         
         articlesTableView.delegate = self
         articlesTableView.dataSource = self
+        
+        navigationController?.view.backgroundColor = .orange
         
         tableViewSpinner()
         setupLayout()
@@ -53,7 +67,6 @@ class ViewController: UIViewController {
     
     private func setupLayout() {
         articlesTableView.easy.layout([
-            // Is now under statusbar
             Top(8).to(titlePage),
             Bottom(0),
             Right(16),
@@ -76,33 +89,19 @@ class ViewController: UIViewController {
         Task {
             do {
                 articles = try await newsRepository.getAllNewsArticles().articles
-                self.articlesTableView.reloadData()
             }
             catch let error {
                 print(error.localizedDescription)
                 showAlertDialog(error: error.localizedDescription)
+                articles = fakeData()
             }
         }
     }
     
     private func showAlertDialog(error: String) {
         alert.message = error
-        alert.addAction(UIAlertAction(title: LocalizedStrings.alertActionTitle, style: .default, handler: {
-            action in
-            switch action.style {
-            case .default:
-                print("default")
-                
-            case .cancel:
-                print("cancel")
-                
-            case .destructive:
-                print("destructive")
-            @unknown default:
-                print("Unknown")
-            }
-        }))
-        self.present(alert, animated: true, completion: nil)
+        alert.addAction(UIAlertAction(title: LocalizedStrings.alertActionTitle, style: .default))
+        present(alert, animated: true, completion: nil)
     }
 }
 
@@ -112,31 +111,31 @@ extension ViewController: UITableViewDelegate {
         print("You tapped on index: \(indexPath.row)")
         articlesTableView.deselectRow(at: indexPath, animated: true)
         
-        let detailsViewController = DetailsViewController()
         let article = articles[indexPath.row]
-        
-        detailsViewController.titleArticle = article.title
-        detailsViewController.summaryArticle = article.summary
-        detailsViewController.imageArticle = article.media
-        detailsViewController.linkArticle = article.link
-        
-        navigationController?.pushViewController(detailsViewController, animated: true)
+    
+        navigationController?.pushViewController(DetailsViewController(
+            titleArticle: article.title,
+            summaryArticle: article.summary,
+            imageArticle: article.media,
+            linkArticle: article.link
+        ), animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        // TODO: Automatic cell sizing tableview -> extra opdracht -> Constraints moeten wel goed zijn
         return 75
     }
     
     func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         if let articleCell = articlesTableView.cellForRow(at: indexPath) {
             articleCell.backgroundColor = .gray
-          }
+        }
     }
     
     func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
         if let articleCell = articlesTableView.cellForRow(at: indexPath) {
             articleCell.backgroundColor = .white
-          }
+        }
     }
 }
 
@@ -147,11 +146,24 @@ extension ViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let articleCell = tableView.dequeueReusableCell(withIdentifier: Constants.articleCellIndentifier, for: indexPath) as? ArticleCell {
-            let article = articles[indexPath.row]
-            articleCell.UpdateCellView(article: article)
+            if let article = articles[safe: indexPath.row] {
+                articleCell.updateCellView(article: article)
+            }
+            articleCell.accessoryType = .disclosureIndicator
             return articleCell
         } else {
             return ArticleCell()
+        }
+    }
+}
+
+// In de map extensions
+extension Array {
+    subscript(safe index: Int) -> Element? {
+        if (index < 0 || index >= count) {
+            return nil
+        } else {
+            return self[index]
         }
     }
 }

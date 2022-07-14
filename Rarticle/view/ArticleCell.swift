@@ -30,7 +30,7 @@ class ArticleCell: UITableViewCell {
         return articleImage
     } ()
     
-    func UpdateCellView(article: Article) {
+    func updateCellView(article: Article) {
         titleLabel.text = article.title
         summaryLabel.text = article.summary
         articleImage.loadFrom(urlAdress: article.media)
@@ -38,17 +38,18 @@ class ArticleCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(summaryLabel)
-        contentView.addSubview(articleImage)
+        setup()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    private func setup() {
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(summaryLabel)
+        contentView.addSubview(articleImage)
+        
         titleLabel.easy.layout([
             Top(10),
             Left(10),
