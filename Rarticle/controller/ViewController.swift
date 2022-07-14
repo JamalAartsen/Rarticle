@@ -8,6 +8,7 @@
 import UIKit
 import EasyPeasy
 import Resolver
+import SwiftUI
 
 // TODO: DARK/LIGHT MODE
 class ViewController: UIViewController {
@@ -22,6 +23,7 @@ class ViewController: UIViewController {
             articlesTableView.reloadData()
         }
     }
+    
     @Injected var newsRepository: NewsRepository
     
     override func viewDidLoad() {
@@ -30,8 +32,7 @@ class ViewController: UIViewController {
         view.addSubview(titlePage)
         view.addSubview(articlesTableView)
         
-        let lightGray = UIColor(hex: Colors.lightGray)
-        view.backgroundColor = lightGray
+        view.backgroundColor = Colors.backgroundArticlesScreenColor
         
         articlesTableView.delegate = self
         articlesTableView.dataSource = self
@@ -47,7 +48,7 @@ class ViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
     }
-    
+        
     private func setupLayout() {
         articlesTableView.easy.layout([
             Top(8).to(titlePage),
@@ -88,6 +89,7 @@ class ViewController: UIViewController {
     private func getAllNewsArticles() {
         Task {
             do {
+                // TODO: Check if data is empty (only when hardcoded data)
                 //articles = try await newsRepository.getAllNewsArticles().articles
                 articles = DummyData.fakeData()
                 articlesTableView.backgroundView = nil
@@ -138,7 +140,7 @@ extension ViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
         if let articleCell = articlesTableView.cellForRow(at: indexPath) {
-            articleCell.backgroundColor = .white
+            articleCell.backgroundColor = Colors.cellColor
         }
     }
 }
@@ -153,6 +155,7 @@ extension ViewController: UITableViewDataSource {
             if let article = articles[safe: indexPath.row] {
                 articleCell.updateCellView(article: article)
             }
+            articleCell.backgroundColor = Colors.cellColor
             articleCell.accessoryType = .disclosureIndicator
             return articleCell
         } else {
@@ -172,6 +175,7 @@ extension ViewController: UITableViewDataSource {
 private extension ViewController {
     func makeTableView() -> UITableView {
         let tableView = UITableView()
+        tableView.layer.cornerRadius = 10
         tableView.register(ArticleCell.self, forCellReuseIdentifier: Constants.articleCellIndentifier)
         return tableView
     }

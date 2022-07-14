@@ -58,14 +58,14 @@ class ArticleCell: UITableViewCell {
 private extension ArticleCell {
     func makeTitleLabel() -> UILabel {
         let titleLabel = UILabel()
-        titleLabel.textColor = .black
+        titleLabel.textColor = Colors.blackWhiteTextColor
         titleLabel.font = .systemFont(ofSize: 17, weight: .bold)
         return titleLabel
     }
     
     func makeSummaryLabel() -> UILabel {
         let summaryLabel = UILabel()
-        summaryLabel.textColor = .black
+        summaryLabel.textColor = Colors.blackWhiteTextColor
         summaryLabel.font = .systemFont(ofSize: 12, weight: .regular)
         return summaryLabel
     }

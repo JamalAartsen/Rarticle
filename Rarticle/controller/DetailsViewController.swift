@@ -75,7 +75,7 @@ class DetailsViewController: UIViewController {
         view.backgroundColor = .white
         navigationItem.title = LocalizedStrings.detailsViewControllerNavigationTitle
         
-        scrollView.backgroundColor = .white
+        scrollView.backgroundColor = Colors.backgroundDetailsScreenColor
         view.addSubview(scrollView)
         
         titleLabel.text = titleArticle
@@ -148,7 +148,7 @@ private extension DetailsViewController {
     func makeTitleLabel() -> UILabel {
         let titleLabel = UILabel()
         titleLabel.numberOfLines = 0
-        titleLabel.textColor = .black
+        titleLabel.textColor = Colors.blackWhiteTextColor
         titleLabel.font = .systemFont(ofSize: 22, weight: .bold)
         return titleLabel
     }
@@ -156,7 +156,7 @@ private extension DetailsViewController {
     func makeSummaryLabel() -> UILabel {
         let summaryLabel = UILabel()
         summaryLabel.numberOfLines = 0
-        summaryLabel.textColor = .black
+        summaryLabel.textColor = Colors.blackWhiteTextColor
         summaryLabel.font = .systemFont(ofSize: 14, weight: .regular)
         return summaryLabel
     }
@@ -169,7 +169,7 @@ private extension DetailsViewController {
     
     func makeButtonLink() -> UIButton {
         let btn = UIButton()
-        btn.backgroundColor = .systemBlue
+        btn.backgroundColor = Colors.buttonBackgroundcolor
         btn.layer.cornerRadius = 5
         btn.setTitle(LocalizedStrings.openArticle, for: .normal)
         return btn
