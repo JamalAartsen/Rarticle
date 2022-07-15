@@ -48,7 +48,7 @@ class ArticleCell: UITableViewCell {
         
         articleImage.easy.layout([
             Width(100),
-            Height(50),
+            //Height(50),
             Right(10),
             Top(10),
             Bottom(10)

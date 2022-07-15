@@ -56,10 +56,12 @@ class ViewController: UIViewController {
         
         view.backgroundColor = Colors.backgroundArticlesScreenColor
         
-        articlesTableView.estimatedRowHeight = 75
-        articlesTableView.rowHeight = UITableView.automaticDimension
+//        articlesTableView.estimatedRowHeight = 75
+//        articlesTableView.rowHeight = UITableView.automaticDimension
         
         navigationController?.navigationBar.tintColor = Colors.navigationBarColor
+        
+        navigationItem.leftBarButtonItem = makeCustomUIBarButtonItem(iconName: "FilterIcon")
         searchBar.sizeToFit()
         showSearchBarButton(shouldShow: true)
         
@@ -136,6 +138,11 @@ class ViewController: UIViewController {
         searchBar.showsCancelButton = shouldShow
         navigationItem.titleView = shouldShow ? searchBar : nil
     }
+    
+    // TODO: 
+    @objc func handleFilterIcon() {
+        print("Clicked on filter icon")
+    }
 }
 
 extension ViewController: UITableViewDelegate {
@@ -163,6 +170,10 @@ extension ViewController: UITableViewDelegate {
         if let articleCell = articlesTableView.cellForRow(at: indexPath) {
             articleCell.backgroundColor = Colors.cellColor
         }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 75
     }
 }
 
@@ -248,5 +259,18 @@ private extension ViewController {
         let searchBar = UISearchBar()
         
         return searchBar
+    }
+    
+    // TODO: Moet misschien veranderd worden
+    func makeCustomUIBarButtonItem(iconName: String) -> UIBarButtonItem {
+        let filterButton = UIButton(type: .custom)
+        filterButton.setImage(UIImage(named: iconName), for: .normal)
+        filterButton.easy.layout([
+            Height(24),
+            Width(24)
+        ])
+        
+        filterButton.addTarget(self, action: #selector(handleFilterIcon), for: .touchUpInside)
+        return UIBarButtonItem(customView: filterButton)
     }
 }
