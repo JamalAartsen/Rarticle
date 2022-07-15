@@ -15,4 +15,5 @@ struct Colors {
     static let blackWhiteTextColor = UIColor(named: "BlackWhiteTextColor")
     static let backgroundDetailsScreenColor = UIColor(named: "BackgroundDetailsScreenColor")
     static let buttonBackgroundcolor = UIColor(named: "ButtonBackgroundColor")
+    static let navigationBarColor = UIColor(named: "NavigationBarColor")
 }

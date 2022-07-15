@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 import EasyPeasy
 
-// TODO: Animatie hier toevoegen
 class DetailsViewController: UIViewController {
     
     let titleArticle: String
@@ -79,9 +78,8 @@ class DetailsViewController: UIViewController {
         view.addSubview(scrollView)
         
         titleLabel.text = titleArticle
-        summaryLabel.text = summaryArticle + summaryArticle + summaryArticle + summaryArticle
-        //image.loadFrom(urlAdress: imageArticle)
-        image.image = UIImage(named: "placeholder")
+        summaryLabel.text = summaryArticle
+        image.loadFrom(urlAdress: imageArticle)
         
         scrollView.addSubview(contentView)
         contentView.addSubview(titleLabel)

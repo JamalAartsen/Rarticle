@@ -10,32 +10,32 @@ import EasyPeasy
 import Resolver
 import SwiftUI
 
-// TODO: DARK/LIGHT MODE
 class ViewController: UIViewController {
     
     private lazy var articlesTableView: UITableView = makeTableView()
     private var alert: UIAlertController = UIAlertController()
     private lazy var titlePage: UILabel = makeTitleLabel()
     private lazy var retryButton: UIButton = makeRetryButton()
+    private lazy var searchBar: UISearchBar = makeSearchBar()
     
     var articles: [Article] = [] {
         didSet {
             articlesTableView.reloadData()
         }
     }
+    // Only for search for title
+    //var articles: [Article] = DummyData.fakeData()
+    //var filteredArticles: [Article]!
     
     @Injected var newsRepository: NewsRepository
     
     override func viewDidLoad() {
         super.viewDidLoad()
-     
-        view.addSubview(titlePage)
-        view.addSubview(articlesTableView)
-        
-        view.backgroundColor = Colors.backgroundArticlesScreenColor
+        //filteredArticles = articles
         
         articlesTableView.delegate = self
         articlesTableView.dataSource = self
+        searchBar.delegate = self
         
         retryButton.addTarget(self, action: #selector(self.retryReloadTableView), for: .touchUpInside)
         animations()
@@ -44,12 +44,25 @@ class ViewController: UIViewController {
         setupLayout()
         getAllNewsArticles()
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+
+    @objc private func handleShowSearchBar() {
+        search(shouldShow: true)
+        searchBar.becomeFirstResponder()
     }
         
     private func setupLayout() {
+        view.addSubview(titlePage)
+        view.addSubview(articlesTableView)
+        
+        view.backgroundColor = Colors.backgroundArticlesScreenColor
+        
+        articlesTableView.estimatedRowHeight = 75
+        articlesTableView.rowHeight = UITableView.automaticDimension
+        
+        navigationController?.navigationBar.tintColor = Colors.navigationBarColor
+        searchBar.sizeToFit()
+        showSearchBarButton(shouldShow: true)
+        
         articlesTableView.easy.layout([
             Top(8).to(titlePage),
             Bottom(0),
@@ -58,7 +71,7 @@ class ViewController: UIViewController {
         ])
         
         titlePage.easy.layout([
-            Top(50),
+            Top().to(view, .topMargin),
             Left(16)
         ])
         
@@ -89,7 +102,6 @@ class ViewController: UIViewController {
     private func getAllNewsArticles() {
         Task {
             do {
-                // TODO: Check if data is empty (only when hardcoded data)
                 //articles = try await newsRepository.getAllNewsArticles().articles
                 articles = DummyData.fakeData()
                 articlesTableView.backgroundView = nil
@@ -110,6 +122,20 @@ class ViewController: UIViewController {
         alert.addAction(UIAlertAction(title: LocalizedStrings.alertActionTitle, style: .default))
         present(alert, animated: true, completion: nil)
     }
+    
+    func showSearchBarButton(shouldShow: Bool) {
+        if shouldShow {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleShowSearchBar))
+        } else {
+            navigationItem.rightBarButtonItem = nil
+        }
+    }
+    
+    func search(shouldShow: Bool) {
+        showSearchBarButton(shouldShow: !shouldShow)
+        searchBar.showsCancelButton = shouldShow
+        navigationItem.titleView = shouldShow ? searchBar : nil
+    }
 }
 
 extension ViewController: UITableViewDelegate {
@@ -126,12 +152,7 @@ extension ViewController: UITableViewDelegate {
             linkArticle: article.link
         ), animated: true)
     }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        // TODO: Automatic cell sizing tableview -> extra opdracht -> Constraints moeten wel goed zijn
-        return 75
-    }
-    
+        
     func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         if let articleCell = articlesTableView.cellForRow(at: indexPath) {
             articleCell.backgroundColor = .gray
@@ -172,6 +193,29 @@ extension ViewController: UITableViewDataSource {
     }
 }
 
+extension ViewController: UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        search(shouldShow: false)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print("\(searchText)")
+//        filteredArticles = []
+//
+//        if searchText == "" {
+//            filteredArticles = articles
+//        } else {
+//            for article in articles {
+//                if article.title.lowercased().contains(searchText.lowercased()) {
+//                    filteredArticles.append(article)
+//                }
+//            }
+//        }
+//        articlesTableView.reloadData()
+    }
+    
+}
+
 private extension ViewController {
     func makeTableView() -> UITableView {
         let tableView = UITableView()
@@ -198,5 +242,11 @@ private extension ViewController {
         retryBtn.layer.cornerRadius = 5
         retryBtn.setTitle(LocalizedStrings.retry, for: .normal)
         return retryBtn
+    }
+    
+    func makeSearchBar() -> UISearchBar {
+        let searchBar = UISearchBar()
+        
+        return searchBar
     }
 }
