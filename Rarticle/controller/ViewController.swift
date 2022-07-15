@@ -8,7 +8,7 @@
 import UIKit
 import EasyPeasy
 import Resolver
-import SwiftUI
+import DropDown
 
 class ViewController: UIViewController {
     
@@ -17,6 +17,9 @@ class ViewController: UIViewController {
     private lazy var titlePage: UILabel = makeTitleLabel()
     private lazy var retryButton: UIButton = makeRetryButton()
     private lazy var searchBar: UISearchBar = makeSearchBar()
+    private lazy var filterIcon: UIBarButtonItem = makeCustomUIBarButtonItem(iconName: Constants.iconNameID)
+    
+    let dropDown = DropDown()
     
     var articles: [Article] = [] {
         didSet {
@@ -39,6 +42,7 @@ class ViewController: UIViewController {
         
         retryButton.addTarget(self, action: #selector(self.retryReloadTableView), for: .touchUpInside)
         animations()
+        handleDropDownSelection()
         
         tableViewSpinner()
         setupLayout()
@@ -61,9 +65,12 @@ class ViewController: UIViewController {
         
         navigationController?.navigationBar.tintColor = Colors.navigationBarColor
         
-        navigationItem.leftBarButtonItem = makeCustomUIBarButtonItem(iconName: "FilterIcon")
+        navigationItem.leftBarButtonItem = filterIcon
         searchBar.sizeToFit()
         showSearchBarButton(shouldShow: true)
+        
+        dropDown.anchorView = filterIcon
+        dropDown.dataSource = [LocalizedStrings.filterTitleByAZ, LocalizedStrings.filterTitleByZA]
         
         articlesTableView.easy.layout([
             Top(8).to(titlePage),
@@ -141,7 +148,21 @@ class ViewController: UIViewController {
     
     // TODO: 
     @objc func handleFilterIcon() {
-        print("Clicked on filter icon")
+        dropDown.show()
+    }
+    
+    private func handleDropDownSelection() {
+        dropDown.selectionAction = { (index: Int, item: String) in
+            self.articles = self.articles.sortingByTitle(index: index)
+//            switch index {
+//            case 0:
+//                self.articles = self.articles.sorting(by: Array<Article>.SortingType.TITLE)
+//            case 1:
+//                self.articles.sorting(by: Array<Article>.SortingType.DATE)
+//            default:
+//                print("")
+//            }
+        }
     }
 }
 

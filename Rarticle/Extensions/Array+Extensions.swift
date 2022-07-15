@@ -16,3 +16,39 @@ extension Array {
         }
     }
 }
+
+extension Array where Element == Article {
+    func sortingByTitle(index: Int) -> Self {
+        switch index {
+        case 0:
+            // A-Z
+            return sorted(by: { $0.title < $1.title })
+        case 1:
+            // Z-A
+            return sorted(by: { $0.title > $1.title })
+        default:
+            // A-Z
+            return sorted(by: { $0.title < $1.title })
+        }
+    }
+    
+    func sorting(by sortingType: SortingType) -> Self {
+        switch sortingType {
+        case .TITLE:
+            print("title")
+            return sorted(by: { $0.title < $1.title })
+        case .DATE:
+            print("date")
+            return self
+        case .POPULARITY:
+            print("popularity")
+            return self
+        }
+    }
+    
+    enum SortingType {
+        case TITLE
+        case DATE
+        case POPULARITY
+    }
+}

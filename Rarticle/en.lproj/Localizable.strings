@@ -13,3 +13,5 @@
 "detailsViewControllerNavigationTitle" = "News Details";
 "openArticle" = "Open Article";
 "retry" = "Retry";
+"filterTitleAZ" = "Filter title by A-Z";
+"filterTitleZA" = "Filter title by Z-A";

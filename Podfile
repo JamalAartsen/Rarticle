@@ -8,5 +8,6 @@ target 'Rarticle' do
   # Pods for Rarticle
 	pod 'EasyPeasy'
 	pod 'Resolver'
+	pod 'DropDown'
 
 end

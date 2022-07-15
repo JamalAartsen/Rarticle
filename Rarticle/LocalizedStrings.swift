@@ -14,4 +14,6 @@ struct LocalizedStrings {
     static let detailsViewControllerNavigationTitle = NSLocalizedString("detailsViewControllerNavigationTitle", comment: "New Details")
     static let openArticle = NSLocalizedString("openArticle", comment: "Open Article")
     static let retry = NSLocalizedString("retry", comment: "Retry")
+    static let filterTitleByAZ = NSLocalizedString("filterTitleAZ", comment: "Filter title by A-Z")
+    static let filterTitleByZA = NSLocalizedString("filterTitleZA", comment: "Filter title by Z-A")
 }
