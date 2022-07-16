@@ -18,7 +18,7 @@ class ViewController: UIViewController {
     private lazy var titlePage: UILabel = makeTitleLabel()
     private lazy var retryButton: UIButton = makeRetryButton()
     private lazy var searchBar: UISearchBar = makeSearchBar()
-    private lazy var filterIcon: UIBarButtonItem = makeCustomUIBarButtonItem(iconName: Constants.iconNameID)
+    private lazy var filterIcon: UIBarButtonItem = makeCustomUIBarButtonItem(iconID: Constants.filterIconID)
     
     let dropDown = DropDown()
     
@@ -98,6 +98,7 @@ class ViewController: UIViewController {
     }
     
     private func tableViewSpinner() {
+        // TODO: Bovenaan zetten. Word nu elke keer opnieuw gemaakt
         let spinner = UIActivityIndicatorView(style: .large)
         spinner.startAnimating()
         articlesTableView.backgroundView = spinner
@@ -135,6 +136,7 @@ class ViewController: UIViewController {
     
     func showSearchBarButton(shouldShow: Bool) {
         if shouldShow {
+            // TODO: Misschien beter om dit boven aan te zetten
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleShowSearchBar))
         } else {
             navigationItem.rightBarButtonItem = nil
@@ -284,9 +286,9 @@ private extension ViewController {
     }
     
     // TODO: Moet misschien veranderd worden
-    func makeCustomUIBarButtonItem(iconName: String) -> UIBarButtonItem {
+    func makeCustomUIBarButtonItem(iconID: String) -> UIBarButtonItem {
         let filterButton = UIButton(type: .custom)
-        filterButton.setImage(UIImage(named: iconName), for: .normal)
+        filterButton.setImage(UIImage(named: iconID), for: .normal)
         filterButton.easy.layout([
             Height(24),
             Width(24)

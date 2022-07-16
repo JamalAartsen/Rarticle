@@ -22,6 +22,7 @@ class DetailsViewController: UIViewController {
     private lazy var summaryLabel: UILabel = makeSummaryLabel()
     private lazy var image: UIImageView = makeImage()
     private lazy var buttonLink: UIButton = makeButtonLink()
+    private lazy var shareIcon: UIBarButtonItem = makeShareIcon(iconID: Constants.shareIconID)
     
     internal init(titleArticle: String, summaryArticle: String, imageArticle: String, linkArticle: String) {
         self.titleArticle = titleArticle
@@ -48,22 +49,11 @@ class DetailsViewController: UIViewController {
         summaryLabel.alpha = 0
         buttonLink.alpha = 0
         
-        // Vragen wat de layer.position precies is.
-        titleLabel.layer.position = CGPoint(x: 100, y: 0)
-        image.layer.position = CGPoint(x: 100, y: 0)
-        summaryLabel.layer.position = CGPoint(x: 100, y: 0)
-        buttonLink.layer.position = CGPoint(x: 100, y: 0)
-        
         UIView.animate(withDuration: 0.5) {
             self.titleLabel.alpha = 1.0
             self.image.alpha = 1.0
             self.summaryLabel.alpha = 1.0
             self.buttonLink.alpha = 1.0
-            
-//            self.titleLabel.layer.position = CGPoint(x: 0, y: 0)
-//            self.image.layer.position = CGPoint(x: 0, y: 0)
-//            self.summaryLabel.layer.position = CGPoint(x: 0, y: 0)
-//            self.buttonLink.layer.position = CGPoint(x: 0, y: 0)
         }
     }
     
@@ -130,13 +120,25 @@ class DetailsViewController: UIViewController {
     
     private func setUpNavigationController() {
         let backButtonImage = UIImage(named: Constants.backButtonID)
+        let backItem = UIBarButtonItem()
+        let navigationBar = navigationController?.navigationBar
         
         navigationItem.title = LocalizedStrings.detailsViewControllerNavigationTitle
-        navigationController?.navigationBar.backIndicatorImage = backButtonImage
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
-        let backItem = UIBarButtonItem()
+        navigationItem.rightBarButtonItem = shareIcon
+        
+        navigationBar?.backIndicatorImage = backButtonImage
+        navigationBar?.backIndicatorTransitionMaskImage = backButtonImage
+        
         backItem.title = LocalizedStrings.articles
-        navigationController?.navigationBar.topItem?.backBarButtonItem = backItem
+        navigationBar?.topItem?.backBarButtonItem = backItem
+    }
+    
+    // TODO: Gives errors: https://stackoverflow.com/questions/71946700/uiactivityviewcontroller-and-presentviewcontroller-generating-numerous-errors
+    @objc private func handleShareIcon() {
+        let url = URL(string: linkArticle)
+        let text = "Look at article!"
+        let activity = UIActivityViewController(activityItems: [url, text], applicationActivities: nil)
+        present(activity, animated: true)
     }
 }
 
@@ -182,5 +184,18 @@ private extension DetailsViewController {
         btn.layer.cornerRadius = 5
         btn.setTitle(LocalizedStrings.openArticle, for: .normal)
         return btn
+    }
+    
+    // TODO: Vragen of dit kan
+    func makeShareIcon(iconID: String) -> UIBarButtonItem {
+        let shareButton = UIButton(type: .custom)
+        shareButton.setImage(UIImage(named: iconID), for: .normal)
+        shareButton.easy.layout([
+            Height(24),
+            Width(24)
+        ])
+        
+        shareButton.addTarget(self, action: #selector(handleShareIcon), for: .touchUpInside)
+        return UIBarButtonItem(customView: shareButton)
     }
 }

@@ -9,6 +9,7 @@ import Foundation
 
 struct Constants {
     static let articleCellIndentifier = "articleCell"
-    static let iconNameID = "FilterIcon"
+    static let filterIconID = "FilterIcon"
     static let backButtonID = "BackButton"
+    static let shareIconID = "ShareIcon"
 }
