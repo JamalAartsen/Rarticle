@@ -10,4 +10,5 @@ import Foundation
 struct Constants {
     static let articleCellIndentifier = "articleCell"
     static let iconNameID = "FilterIcon"
+    static let backButtonID = "BackButton"
 }

@@ -10,6 +10,7 @@ import EasyPeasy
 import Resolver
 import DropDown
 
+// Moet veel veranderd worden als er een nieuwe API gebruikt gaat worden. MVC pattern is waarschijnlijk niet de juiste pattern. 
 class ViewController: UIViewController {
     
     private lazy var articlesTableView: UITableView = makeTableView()

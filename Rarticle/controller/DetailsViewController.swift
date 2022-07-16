@@ -37,6 +37,7 @@ class DetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         setupLayout()
+        setUpNavigationController()
         buttonLink.addTarget(self, action: #selector(self.didTapOnLinkBtn), for: .touchUpInside)
         animations()
     }
@@ -72,7 +73,6 @@ class DetailsViewController: UIViewController {
     
     private func setupLayout() {
         view.backgroundColor = .white
-        navigationItem.title = LocalizedStrings.detailsViewControllerNavigationTitle
         
         scrollView.backgroundColor = Colors.backgroundDetailsScreenColor
         view.addSubview(scrollView)
@@ -126,6 +126,17 @@ class DetailsViewController: UIViewController {
             Right(16),
             Bottom(16)
         ])
+    }
+    
+    private func setUpNavigationController() {
+        let backButtonImage = UIImage(named: Constants.backButtonID)
+        
+        navigationItem.title = LocalizedStrings.detailsViewControllerNavigationTitle
+        navigationController?.navigationBar.backIndicatorImage = backButtonImage
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
+        let backItem = UIBarButtonItem()
+        backItem.title = LocalizedStrings.articles
+        navigationController?.navigationBar.topItem?.backBarButtonItem = backItem
     }
 }
 
