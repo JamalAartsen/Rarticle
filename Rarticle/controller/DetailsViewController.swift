@@ -132,12 +132,12 @@ class DetailsViewController: UIViewController {
         backItem.title = LocalizedStrings.articles
         navigationBar?.topItem?.backBarButtonItem = backItem
     }
-    
+        
     // TODO: Gives errors: https://stackoverflow.com/questions/71946700/uiactivityviewcontroller-and-presentviewcontroller-generating-numerous-errors
     @objc private func handleShareIcon() {
-        let url = URL(string: linkArticle)
-        let text = "Look at article!"
-        let activity = UIActivityViewController(activityItems: [url, text], applicationActivities: nil)
+        let urlArticle = URL(string: linkArticle)
+        let text = LocalizedStrings.shareArticleText
+        let activity = UIActivityViewController(activityItems: [urlArticle!, text], applicationActivities: nil)
         present(activity, animated: true)
     }
 }

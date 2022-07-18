@@ -21,6 +21,7 @@ class ViewController: UIViewController {
     private lazy var filterIcon: UIBarButtonItem = makeCustomUIBarButtonItem(iconID: Constants.filterIconID)
     
     let dropDown = DropDown()
+    let refreshControl = UIRefreshControl()
     
     var articles: [Article] = [] {
         didSet {
@@ -47,7 +48,19 @@ class ViewController: UIViewController {
         
         tableViewSpinner()
         setupLayout()
+        setupPullToRefreshTableview()
         getAllNewsArticles()
+    }
+    
+    private func setupPullToRefreshTableview() {
+        refreshControl.attributedTitle = NSAttributedString(string: "Loading articles")
+        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        articlesTableView.addSubview(refreshControl)
+    }
+    
+    // TODO: 
+    @objc func refresh(_ sender: AnyObject) {
+        print("Refresh data")
     }
 
     @objc private func handleShowSearchBar() {
@@ -149,7 +162,6 @@ class ViewController: UIViewController {
         navigationItem.titleView = shouldShow ? searchBar : nil
     }
     
-    // TODO: 
     @objc func handleFilterIcon() {
         dropDown.show()
     }
