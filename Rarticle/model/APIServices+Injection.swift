@@ -9,7 +9,7 @@ import Resolver
 
 extension Resolver {
     public static func registerAPIServices() {
-        register { NewsCatcherApi() as INewsAPI }
         register { NewsRepository() }
+        register { NewsApi() as INewsAPI }
     }
 }

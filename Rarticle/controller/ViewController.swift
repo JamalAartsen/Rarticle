@@ -126,8 +126,8 @@ class ViewController: UIViewController {
     private func getAllNewsArticles() {
         Task {
             do {
-                //articles = try await newsRepository.getAllNewsArticles().articles
-                articles = DummyData.fakeData()
+                articles = try await newsRepository.getAllNewsArticles().articles
+                //articles = DummyData.fakeData()
                 articlesTableView.backgroundView = nil
             }
             catch let error {
@@ -190,9 +190,9 @@ extension ViewController: UITableViewDelegate {
     
         navigationController?.pushViewController(DetailsViewController(
             titleArticle: article.title,
-            summaryArticle: article.summary,
-            imageArticle: article.media,
-            linkArticle: article.link
+            summaryArticle: article.description,
+            imageArticle: article.urlToImage,
+            linkArticle: article.url
         ), animated: true)
     }
         
@@ -206,10 +206,6 @@ extension ViewController: UITableViewDelegate {
         if let articleCell = articlesTableView.cellForRow(at: indexPath) {
             articleCell.backgroundColor = Colors.cellColor
         }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75
     }
 }
 
@@ -237,6 +233,10 @@ extension ViewController: UITableViewDataSource {
         UIView.animate(withDuration: 0.5, delay: 0.05 * Double(indexPath.row)) {
             cell.alpha = 1
         }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 75
     }
 }
 

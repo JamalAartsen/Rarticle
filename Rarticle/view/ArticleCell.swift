@@ -25,8 +25,8 @@ class ArticleCell: UITableViewCell {
     
     func updateCellView(article: Article) {
         titleLabel.text = article.title
-        summaryLabel.text = article.summary
-        articleImage.loadFrom(urlAdress: article.media)
+        summaryLabel.text = article.description
+        articleImage.loadFrom(urlAdress: article.urlToImage)
     }
     
     private func setup() {

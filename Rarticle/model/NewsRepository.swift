@@ -11,7 +11,6 @@ import Resolver
 class NewsRepository {
     @Injected var iNewsAPI: INewsAPI
     
-    // Return type need to be changed
     func getAllNewsArticles() async throws -> Response {
         return try await iNewsAPI.getAllNewsArticles()
     }
