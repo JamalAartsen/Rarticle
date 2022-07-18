@@ -13,9 +13,10 @@ class NewsApi: INewsAPI {
     private let apiKey = "5d18b3403d1e40b6a3c89cc4e368abed"
     // TODO: Needs to be dynamic
     private let aboutParameter = "bitcoin"
+    private let totalArticles = 2
     
     func getAllNewsArticles() async throws -> Response {
-        let (data, _) = try await session.data(from: URL(string: "\(baseUrl + NewsAPIEndpoints.everythingEndpoint)apikey=\(apiKey)&q=\(aboutParameter)")!)
+        let (data, _) = try await session.data(from: URL(string: "\(baseUrl + NewsAPIEndpoints.everythingEndpoint)apikey=\(apiKey)&q=\(aboutParameter)&pageSize=\(totalArticles)")!)
         let articles = try JSONDecoder().decode(Response.self, from: data)
         
         return articles

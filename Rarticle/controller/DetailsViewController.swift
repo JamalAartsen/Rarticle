@@ -12,23 +12,29 @@ import EasyPeasy
 class DetailsViewController: UIViewController {
     
     let titleArticle: String
-    let summaryArticle: String
+    let descriptionArticle: String
     let imageArticle: String
     let linkArticle: String
+    let author: String?
+    let publishedAt: String
     
     private lazy var scrollView: UIScrollView = makeScrollView()
     private lazy var contentView: UIView = makeContentViewScrollView()
     private lazy var titleLabel: UILabel = makeTitleLabel()
-    private lazy var summaryLabel: UILabel = makeSummaryLabel()
+    private lazy var descriptionLabel: UILabel = makeDescriptionLabel()
     private lazy var image: UIImageView = makeImage()
     private lazy var buttonLink: UIButton = makeButtonLink()
     private lazy var shareIcon: UIBarButtonItem = makeShareIcon(iconID: Constants.shareIconID)
+    private lazy var authorPublishedAtLabel: UILabel = makeAuthorPublishedAtLabel()
     
-    internal init(titleArticle: String, summaryArticle: String, imageArticle: String, linkArticle: String) {
+    // TODO: namen veranderen naar de juiste variabele
+    internal init(titleArticle: String, descriptionArticle: String, imageArticle: String, linkArticle: String, author: String?, publishedAt: String) {
         self.titleArticle = titleArticle
-        self.summaryArticle = summaryArticle
+        self.descriptionArticle = descriptionArticle
         self.imageArticle = imageArticle
         self.linkArticle = linkArticle
+        self.author = author
+        self.publishedAt = publishedAt
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -37,6 +43,9 @@ class DetailsViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        print(author ?? "No Author")
+        print(publishedAt)
+        print(dateFormatter(date: publishedAt))
         setupLayout()
         setUpNavigationController()
         buttonLink.addTarget(self, action: #selector(self.didTapOnLinkBtn), for: .touchUpInside)
@@ -46,13 +55,13 @@ class DetailsViewController: UIViewController {
     private func animations() {
         titleLabel.alpha = 0
         image.alpha = 0
-        summaryLabel.alpha = 0
+        descriptionLabel.alpha = 0
         buttonLink.alpha = 0
         
         UIView.animate(withDuration: 0.5) {
             self.titleLabel.alpha = 1.0
             self.image.alpha = 1.0
-            self.summaryLabel.alpha = 1.0
+            self.descriptionLabel.alpha = 1.0
             self.buttonLink.alpha = 1.0
         }
     }
@@ -68,14 +77,17 @@ class DetailsViewController: UIViewController {
         view.addSubview(scrollView)
         
         titleLabel.text = titleArticle
-        summaryLabel.text = summaryArticle
+        descriptionLabel.text = descriptionArticle
+        authorPublishedAtLabel.text = "\(author ?? "No author") \(dateFormatter(date: publishedAt))"
+        image.image = UIImage(named: "placeholder")
         image.loadFrom(urlAdress: imageArticle)
         
         scrollView.addSubview(contentView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(buttonLink)
         contentView.addSubview(image)
-        contentView.addSubview(summaryLabel)
+        contentView.addSubview(descriptionLabel)
+        contentView.addSubview(authorPublishedAtLabel)
         
         // topMargin = safearea = Top(0).to(view, .topMargin),
         scrollView.easy.layout([
@@ -104,14 +116,20 @@ class DetailsViewController: UIViewController {
             Height(200)
         ])
         
-        summaryLabel.easy.layout([
+        authorPublishedAtLabel.easy.layout([
             Top(16).to(image),
             Left(16),
             Right(16)
         ])
         
+        descriptionLabel.easy.layout([
+            Top(16).to(authorPublishedAtLabel),
+            Left(16),
+            Right(16)
+        ])
+        
         buttonLink.easy.layout([
-            Top(10).to(summaryLabel),
+            Top(10).to(descriptionLabel),
             Left(16),
             Right(16),
             Bottom(16)
@@ -140,6 +158,21 @@ class DetailsViewController: UIViewController {
         let activity = UIActivityViewController(activityItems: [urlArticle!, text], applicationActivities: nil)
         present(activity, animated: true)
     }
+    
+    private func dateFormatter(date: String) -> String {
+        let regexPattern = try! NSRegularExpression(pattern: "[A-Z]")
+        let range = NSMakeRange(0, date.count)
+        let newDate = regexPattern.stringByReplacingMatches(in: date, range: range, withTemplate: " ")
+        
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        let outputFormatter = DateFormatter()
+        outputFormatter.dateFormat = "dd-MM-YYYY"
+        
+        let showDate = inputFormatter.date(from: newDate)
+        return outputFormatter.string(from: showDate!)
+    }
 }
 
 private extension DetailsViewController {
@@ -164,12 +197,12 @@ private extension DetailsViewController {
         return titleLabel
     }
     
-    func makeSummaryLabel() -> UILabel {
-        let summaryLabel = UILabel()
-        summaryLabel.numberOfLines = 0
-        summaryLabel.textColor = Colors.blackWhiteTextColor
-        summaryLabel.font = .systemFont(ofSize: 14, weight: .regular)
-        return summaryLabel
+    func makeDescriptionLabel() -> UILabel {
+        let descriptionLabel = UILabel()
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.textColor = Colors.blackWhiteTextColor
+        descriptionLabel.font = .systemFont(ofSize: 14, weight: .regular)
+        return descriptionLabel
     }
     
     func makeImage() -> UIImageView {
@@ -197,5 +230,14 @@ private extension DetailsViewController {
         
         shareButton.addTarget(self, action: #selector(handleShareIcon), for: .touchUpInside)
         return UIBarButtonItem(customView: shareButton)
+    }
+    
+    func makeAuthorPublishedAtLabel() -> UILabel {
+        let authorPublishedAtLabel = UILabel()
+        authorPublishedAtLabel.numberOfLines = 0
+        authorPublishedAtLabel.textColor = .lightGray
+        authorPublishedAtLabel.font = .systemFont(ofSize: 14, weight: .medium)
+        
+        return authorPublishedAtLabel
     }
 }

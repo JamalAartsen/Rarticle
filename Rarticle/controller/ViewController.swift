@@ -190,9 +190,11 @@ extension ViewController: UITableViewDelegate {
     
         navigationController?.pushViewController(DetailsViewController(
             titleArticle: article.title,
-            summaryArticle: article.description,
+            descriptionArticle: article.description,
             imageArticle: article.urlToImage,
-            linkArticle: article.url
+            linkArticle: article.url,
+            author: article.author,
+            publishedAt: article.publishedAt
         ), animated: true)
     }
         
