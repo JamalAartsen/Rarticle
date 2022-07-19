@@ -12,4 +12,8 @@ struct Constants {
     static let filterIconID = "FilterIcon"
     static let backButtonID = "BackButton"
     static let shareIconID = "ShareIcon"
+    static let placeHolderImage = "placeholder"
+    static let regexPatternAZ = "[A-Z]"
+    static let beforeDateFormat = "yyyy-MM-dd HH:mm:ss"
+    static let afterDateFormat = "dd-MM-YYYY"
 }

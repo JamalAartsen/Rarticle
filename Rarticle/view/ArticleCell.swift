@@ -11,7 +11,7 @@ import EasyPeasy
 class ArticleCell: UITableViewCell {
     
     private lazy var titleLabel: UILabel = makeTitleLabel()
-    private lazy var summaryLabel: UILabel = makeSummaryLabel()
+    private lazy var descriptionLabel: UILabel = makeDescriptionLabel()
     private lazy var articleImage: UIImageView = makeArticleImage()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -25,13 +25,13 @@ class ArticleCell: UITableViewCell {
     
     func updateCellView(article: Article) {
         titleLabel.text = article.title
-        summaryLabel.text = article.description
-        articleImage.loadFrom(urlAdress: article.urlToImage)
+        descriptionLabel.text = article.description
+        articleImage.loadFrom(urlAdress: article.urlToImage, placeholder: Constants.placeHolderImage)
     }
     
     private func setup() {
         contentView.addSubview(titleLabel)
-        contentView.addSubview(summaryLabel)
+        contentView.addSubview(descriptionLabel)
         contentView.addSubview(articleImage)
         
         titleLabel.easy.layout([
@@ -40,7 +40,7 @@ class ArticleCell: UITableViewCell {
             Right(10).to(articleImage)
         ])
         
-        summaryLabel.easy.layout([
+        descriptionLabel.easy.layout([
             Top(5).to(titleLabel),
             Left(10),
             Right(10).to(articleImage)
@@ -48,7 +48,7 @@ class ArticleCell: UITableViewCell {
         
         articleImage.easy.layout([
             Width(100),
-            //Height(50),
+            Height(50),
             Right(10),
             Top(10),
             Bottom(10)
@@ -64,16 +64,16 @@ private extension ArticleCell {
         return titleLabel
     }
     
-    func makeSummaryLabel() -> UILabel {
-        let summaryLabel = UILabel()
-        summaryLabel.textColor = Colors.blackWhiteTextColor
-        summaryLabel.font = .systemFont(ofSize: 12, weight: .regular)
-        return summaryLabel
+    func makeDescriptionLabel() -> UILabel {
+        let descriptionLabel = UILabel()
+        descriptionLabel.textColor = Colors.blackWhiteTextColor
+        descriptionLabel.font = .systemFont(ofSize: 12, weight: .regular)
+        return descriptionLabel
     }
     
     func makeArticleImage() -> UIImageView {
         let articleImage = UIImageView()
-        articleImage.image = UIImage(named: "placeholder")
+        articleImage.image = UIImage(named: Constants.placeHolderImage)
         return articleImage
     }
 }

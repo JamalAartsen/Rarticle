@@ -9,8 +9,9 @@ import UIKit
 import EasyPeasy
 import Resolver
 import DropDown
-
-// Moet veel veranderd worden als er een nieuwe API gebruikt gaat worden. MVC pattern is waarschijnlijk niet de juiste pattern. 
+ 
+// TODO: Tab bar for search or automatisch zoeken naar bijvoorbeeld 1 seconde geen user interactie inplaats van enter klikken (throttle / debounce) -> property wrapper om naar te kijken
+// TODO: Service classes maken voor busines logic methodes -> Single principles
 class ViewController: UIViewController {
     
     private lazy var articlesTableView: UITableView = makeTableView()
@@ -28,15 +29,11 @@ class ViewController: UIViewController {
             articlesTableView.reloadData()
         }
     }
-    // Only for search for title
-    //var articles: [Article] = DummyData.fakeData()
-    //var filteredArticles: [Article]!
     
     @Injected var newsRepository: NewsRepository
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //filteredArticles = articles
         
         articlesTableView.delegate = self
         articlesTableView.dataSource = self
@@ -52,6 +49,7 @@ class ViewController: UIViewController {
         getAllNewsArticles()
     }
     
+    // TODO:
     private func setupPullToRefreshTableview() {
         refreshControl.attributedTitle = NSAttributedString(string: "Loading articles")
         refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
@@ -74,8 +72,8 @@ class ViewController: UIViewController {
         
         view.backgroundColor = Colors.backgroundArticlesScreenColor
         
-//        articlesTableView.estimatedRowHeight = 75
-//        articlesTableView.rowHeight = UITableView.automaticDimension
+        articlesTableView.estimatedRowHeight = 75
+        articlesTableView.rowHeight = UITableView.automaticDimension
         
         navigationController?.navigationBar.tintColor = Colors.navigationBarColor
         
@@ -99,6 +97,8 @@ class ViewController: UIViewController {
         ])
         
         retryButton.easy.layout(Width(100))
+        //TODO: Is dit goed?
+        filterIcon.customView?.easy.layout(Size(24))
     }
     
     private func animations() {
@@ -110,8 +110,8 @@ class ViewController: UIViewController {
         }
     }
     
+    // TODO: Hier een extions functie maken bij tableview
     private func tableViewSpinner() {
-        // TODO: Bovenaan zetten. Word nu elke keer opnieuw gemaakt
         let spinner = UIActivityIndicatorView(style: .large)
         spinner.startAnimating()
         articlesTableView.backgroundView = spinner
@@ -127,12 +127,9 @@ class ViewController: UIViewController {
         Task {
             do {
                 articles = try await newsRepository.getAllNewsArticles().articles
-                //articles = DummyData.fakeData()
                 articlesTableView.backgroundView = nil
             }
             catch let error {
-                print(error.localizedDescription)
-                print(error)
                 showAlertDialog(error: error.localizedDescription)
                 articlesTableView.backgroundView = retryButton
                 articlesTableView.backgroundView?.easy.layout(Center())
@@ -149,7 +146,6 @@ class ViewController: UIViewController {
     
     func showSearchBarButton(shouldShow: Bool) {
         if shouldShow {
-            // TODO: Misschien beter om dit boven aan te zetten
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleShowSearchBar))
         } else {
             navigationItem.rightBarButtonItem = nil
@@ -177,6 +173,25 @@ class ViewController: UIViewController {
 //            default:
 //                print("")
 //            }
+        }
+    }
+    
+    // TODO: Same as getAllArticles, maybe this can make as one method with generics
+    // TODO: Show something when there is no internet, laat geen error zien
+    private func searchArticles(topic: String?) {
+        Task {
+            do {
+                let specificTopic = topic?.replaceEmptyWithPlus()
+                articles = try await newsRepository.getNewsArticlesFromTopic(topic: specificTopic!).articles
+                articlesTableView.backgroundView = nil
+            }
+            catch let error {
+                print(error.localizedDescription)
+                print(error)
+                showAlertDialog(error: error.localizedDescription)
+                articlesTableView.backgroundView = retryButton
+                articlesTableView.backgroundView?.easy.layout(Center())
+            }
         }
     }
 }
@@ -236,10 +251,6 @@ extension ViewController: UITableViewDataSource {
             cell.alpha = 1
         }
     }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75
-    }
 }
 
 extension ViewController: UISearchBarDelegate {
@@ -249,20 +260,14 @@ extension ViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         print("\(searchText)")
-//        filteredArticles = []
-//
-//        if searchText == "" {
-//            filteredArticles = articles
-//        } else {
-//            for article in articles {
-//                if article.title.lowercased().contains(searchText.lowercased()) {
-//                    filteredArticles.append(article)
-//                }
-//            }
-//        }
-//        articlesTableView.reloadData()
     }
     
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // TODO: This method is not triggered when internet is gone
+        tableViewSpinner()
+        searchArticles(topic: searchBar.text! as String)
+        print("searchBarSearchButtonClickd is triggered")
+    }
 }
 
 private extension ViewController {
@@ -299,16 +304,11 @@ private extension ViewController {
         return searchBar
     }
     
-    // TODO: Moet misschien veranderd worden
     func makeCustomUIBarButtonItem(iconID: String) -> UIBarButtonItem {
         let filterButton = UIButton(type: .custom)
         filterButton.setImage(UIImage(named: iconID), for: .normal)
-        filterButton.easy.layout([
-            Height(24),
-            Width(24)
-        ])
-        
         filterButton.addTarget(self, action: #selector(handleFilterIcon), for: .touchUpInside)
+        
         return UIBarButtonItem(customView: filterButton)
     }
 }

@@ -18,4 +18,5 @@ struct LocalizedStrings {
     static let filterTitleByZA = NSLocalizedString("filterTitleZA", comment: "Filter title by Z-A")
     static let articles = NSLocalizedString("articles", comment: "Articles")
     static let shareArticleText = NSLocalizedString("shareArticleText", comment: "Look at this article!")
+    static let noAuthor = NSLocalizedString("noAuthor", comment: "No Author")
 }

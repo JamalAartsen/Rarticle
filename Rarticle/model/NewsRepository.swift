@@ -14,4 +14,8 @@ class NewsRepository {
     func getAllNewsArticles() async throws -> Response {
         return try await iNewsAPI.getAllNewsArticles()
     }
+    
+    func getNewsArticlesFromTopic(topic: String) async throws -> Response {
+        return try await iNewsAPI.getNewsArticlesFromTopic(topic: topic)
+    }
 }

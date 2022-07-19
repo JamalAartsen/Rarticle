@@ -9,15 +9,18 @@ import UIKit
 
 extension UIImageView {
     // Can use the library Nuke for this
-    func loadFrom(urlAdress: String) {
-        guard let url = URL(string: urlAdress) else {
+    func loadFrom(urlAdress: String?, placeholder: String) {
+        guard let url = URL(string: urlAdress ?? placeholder) else {
             return
         }
         
-        DispatchQueue.main.async { [weak self] in
+        // TODO: label in constants zetten
+        DispatchQueue.init(label: "loadImageFromUrl", qos: .userInitiated).async { [weak self] in
             if let imageData = try? Data(contentsOf: url) {
                 if let loadedImage = UIImage(data: imageData) {
-                    self?.image = loadedImage
+                    DispatchQueue.main.async { [weak self] in
+                        self?.image = loadedImage
+                    }
                 }
             }
         }
