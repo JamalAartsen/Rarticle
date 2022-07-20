@@ -11,7 +11,6 @@ import Resolver
 import DropDown
  
 // TODO: Tab bar for search or automatisch zoeken naar bijvoorbeeld 1 seconde geen user interactie inplaats van enter klikken (throttle / debounce) -> property wrapper om naar te kijken
-// TODO: Service classes maken voor busines logic methodes -> Single principles
 class ViewController: UIViewController {
     
     private lazy var articlesTableView: UITableView = makeTableView()
@@ -77,10 +76,12 @@ class ViewController: UIViewController {
         
         navigationController?.navigationBar.tintColor = Colors.navigationBarColor
         
-//        let article = Article.init(description: "", title: "", url: "", urlToImage: "https://static.wikia.nocookie.net/lotr/images/9/90/Sauron-2.jpg/revision/latest?cb=20110508182634", author: "", publishedAt: "")
-//        let article2 = Article.init(description: "", title: "", url: "", urlToImage: nil, author: "", publishedAt: "")
-//        print("URL: \(article.urlToImageConverter())")
-//        print("URL2: \(article2.urlToImageConverter())")
+        // TODO: /////////////////////////////////////////////////////////////////////////
+        let article = Article.init(description: "", title: "", url: "", urlToImage: "https://static.wikia.nocookie.net/lotr/images/9/90/Sauron-2.jpg/revision/latest?cb=20110508182634", author: "", publishedAt: "")
+        let article2 = Article.init(description: "", title: "", url: "", urlToImage: nil, author: "", publishedAt: "")
+        print("URL: \(article.stringToUrlConverter())")
+        print("URL2: \(article2.stringToUrlConverter())")
+        // TODO: ///////////////////////////////////////////////////////////////////////
         
         navigationItem.leftBarButtonItem = filterIcon
         searchBar.sizeToFit()
@@ -102,7 +103,6 @@ class ViewController: UIViewController {
         ])
         
         retryButton.easy.layout(Width(100))
-        //TODO: Is dit goed?
         filterIcon.customView?.easy.layout(Size(24))
     }
     
@@ -115,7 +115,7 @@ class ViewController: UIViewController {
         }
     }
     
-    // TODO: Topic kan misschien niet nil zijn als de gebruikers iets aan het zoeken is. Als het goed is hoeft dat niet als er een nieuwe viewcontroller komt voor search
+    // TODO: Topic kan misschien niet nil zijn als de gebruiker iets aan het zoeken is. Als het goed is hoeft dat niet als er een nieuwe viewcontroller komt voor search
     @objc private func retryReloadTableView() {
         articlesTableView.reloadData()
         articlesTableView.showSpinner(showSpinner: true)

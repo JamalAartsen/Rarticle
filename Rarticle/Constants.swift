@@ -16,4 +16,5 @@ struct Constants {
     static let regexPatternAZ = "[A-Z]"
     static let beforeDateFormat = "yyyy-MM-dd HH:mm:ss"
     static let afterDateFormat = "dd-MM-YYYY"
+    static let loadImageFromUrl = "loadImageFromUrl"
 }

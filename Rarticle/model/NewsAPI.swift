@@ -8,14 +8,12 @@ import Foundation
 
 class NewsApi: INewsAPI {
     private var session = URLSession.shared
-    // TODO: Moet newsapi.org zijn
     private let baseUrl = "newsapi.org"
     private let scheme = "https"
     private let apiKey = "5d18b3403d1e40b6a3c89cc4e368abed"
     private let baseTopic = "lord of the rings"
     private let totalArticles = 10
     
-    // TODO: URL QUERY ITEM GEBRUIKEN + URLCOMPONENTS
     func getAllNewsArticles(topic: String?) async throws -> Response {
         let queryItems = [
             URLQueryItem(name: "q", value: topic ?? baseTopic),

@@ -12,7 +12,7 @@ class URLLinkService {
     @Injected private var application: UIApplication
     
     func openUrl(link: String) {
-        // TODO: Add guard and async als URL niet in model gedaan wordt
+        // TODO: Kan dit? Add guard and async als URL niet in model gedaan wordt +  wordt toch al async gedaan?
         application.open(URL(string: link)!)
     }
 }

@@ -14,8 +14,7 @@ extension UIImageView {
             return
         }
         
-        // TODO: label in constants zetten
-        DispatchQueue.init(label: "loadImageFromUrl", qos: .userInitiated).async { [weak self] in
+        DispatchQueue.init(label: Constants.loadImageFromUrl, qos: .userInitiated).async { [weak self] in
             if let imageData = try? Data(contentsOf: url) {
                 if let loadedImage = UIImage(data: imageData) {
                     DispatchQueue.main.async { [weak self] in

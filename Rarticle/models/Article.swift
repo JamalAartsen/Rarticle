@@ -16,7 +16,8 @@ struct Article: Codable {
     let author: String?
     let publishedAt: String
     
-    func urlToImageConverter() -> URL {
+    // TODO: Kan dit? Vragen aan Kevin of dit kan
+    func stringToUrlConverter() -> URL {
         return URL(string: urlToImage ?? Constants.placeHolderImage)!
     }
 }
