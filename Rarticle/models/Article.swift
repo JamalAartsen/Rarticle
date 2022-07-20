@@ -15,4 +15,8 @@ struct Article: Codable {
     let urlToImage: String?
     let author: String?
     let publishedAt: String
+    
+    func urlToImageConverter() -> URL {
+        return URL(string: urlToImage ?? Constants.placeHolderImage)!
+    }
 }

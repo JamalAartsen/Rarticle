@@ -8,10 +8,10 @@
 import Foundation
 
 protocol INewsAPI {
-    func getAllNewsArticles() async throws -> Response
-    func getNewsArticlesFromTopic(topic: String) async throws -> Response
+    func getAllNewsArticles(topic: String?) async throws -> Response
 }
 
+// TODO: 
 enum NewsApiError: Error {
     case general(message: String)
 }

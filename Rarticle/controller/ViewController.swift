@@ -43,13 +43,13 @@ class ViewController: UIViewController {
         animations()
         handleDropDownSelection()
         
-        tableViewSpinner()
+        articlesTableView.showSpinner(showSpinner: true)
         setupLayout()
         setupPullToRefreshTableview()
-        getAllNewsArticles()
+        getAllNewsArticles(topic: nil)
     }
     
-    // TODO:
+    // TODO: 
     private func setupPullToRefreshTableview() {
         refreshControl.attributedTitle = NSAttributedString(string: "Loading articles")
         refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
@@ -76,6 +76,11 @@ class ViewController: UIViewController {
         articlesTableView.rowHeight = UITableView.automaticDimension
         
         navigationController?.navigationBar.tintColor = Colors.navigationBarColor
+        
+//        let article = Article.init(description: "", title: "", url: "", urlToImage: "https://static.wikia.nocookie.net/lotr/images/9/90/Sauron-2.jpg/revision/latest?cb=20110508182634", author: "", publishedAt: "")
+//        let article2 = Article.init(description: "", title: "", url: "", urlToImage: nil, author: "", publishedAt: "")
+//        print("URL: \(article.urlToImageConverter())")
+//        print("URL2: \(article2.urlToImageConverter())")
         
         navigationItem.leftBarButtonItem = filterIcon
         searchBar.sizeToFit()
@@ -110,24 +115,18 @@ class ViewController: UIViewController {
         }
     }
     
-    // TODO: Hier een extions functie maken bij tableview
-    private func tableViewSpinner() {
-        let spinner = UIActivityIndicatorView(style: .large)
-        spinner.startAnimating()
-        articlesTableView.backgroundView = spinner
-    }
-    
+    // TODO: Topic kan misschien niet nil zijn als de gebruikers iets aan het zoeken is. Als het goed is hoeft dat niet als er een nieuwe viewcontroller komt voor search
     @objc private func retryReloadTableView() {
         articlesTableView.reloadData()
-        tableViewSpinner()
-        getAllNewsArticles()
+        articlesTableView.showSpinner(showSpinner: true)
+        getAllNewsArticles(topic: nil)
     }
     
-    private func getAllNewsArticles() {
+    private func getAllNewsArticles(topic: String?) {
         Task {
             do {
-                articles = try await newsRepository.getAllNewsArticles().articles
-                articlesTableView.backgroundView = nil
+                articles = try await newsRepository.getAllNewsArticles(topic: topic).articles
+                articlesTableView.showSpinner(showSpinner: false)
             }
             catch let error {
                 showAlertDialog(error: error.localizedDescription)
@@ -176,23 +175,9 @@ class ViewController: UIViewController {
         }
     }
     
-    // TODO: Same as getAllArticles, maybe this can make as one method with generics
     // TODO: Show something when there is no internet, laat geen error zien
     private func searchArticles(topic: String?) {
-        Task {
-            do {
-                let specificTopic = topic?.replaceEmptyWithPlus()
-                articles = try await newsRepository.getNewsArticlesFromTopic(topic: specificTopic!).articles
-                articlesTableView.backgroundView = nil
-            }
-            catch let error {
-                print(error.localizedDescription)
-                print(error)
-                showAlertDialog(error: error.localizedDescription)
-                articlesTableView.backgroundView = retryButton
-                articlesTableView.backgroundView?.easy.layout(Center())
-            }
-        }
+        getAllNewsArticles(topic: topic)
     }
 }
 
@@ -260,11 +245,14 @@ extension ViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         print("\(searchText)")
+        if searchText.isEmpty {
+            searchArticles(topic: nil)
+        }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // TODO: This method is not triggered when internet is gone
-        tableViewSpinner()
+        articlesTableView.showSpinner(showSpinner: true)
         searchArticles(topic: searchBar.text! as String)
         print("searchBarSearchButtonClickd is triggered")
     }

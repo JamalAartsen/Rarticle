@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import EasyPeasy
+import Resolver
 
 // TODO: Safariviewcontroller om article te openen
 class DetailsViewController: UIViewController {
@@ -27,6 +28,9 @@ class DetailsViewController: UIViewController {
     private lazy var buttonLink: UIButton = makeButtonLink()
     private lazy var shareIcon: UIBarButtonItem = makeShareIcon(iconID: Constants.shareIconID)
     private lazy var authorPublishedAtLabel: UILabel = makeAuthorPublishedAtLabel()
+    
+    @Injected private var dateFormatterService: DateFormatterService
+    @Injected private var urlLinkService: URLLinkService
    
     internal init(titleArticle: String, descriptionArticle: String, imageArticle: String?, linkArticle: String, author: String?, publishedAt: String) {
         self.titleArticle = titleArticle
@@ -66,7 +70,7 @@ class DetailsViewController: UIViewController {
     }
     
     @objc private func didTapOnLinkBtn() {
-        UIApplication.shared.open(URL(string: linkArticle)!)
+        urlLinkService.openUrl(link: linkArticle)
     }
     
     private func setupLayout() {
@@ -77,7 +81,7 @@ class DetailsViewController: UIViewController {
         
         titleLabel.text = titleArticle
         descriptionLabel.text = descriptionArticle
-        authorPublishedAtLabel.text = "\(author ?? LocalizedStrings.noAuthor) \(dateFormatter(date: publishedAt))"
+        authorPublishedAtLabel.text = "\(author ?? LocalizedStrings.noAuthor) \(dateFormatterService.dateFormatter(date: publishedAt))"
         image.image = UIImage(named: Constants.placeHolderImage)
         image.loadFrom(urlAdress: imageArticle, placeholder: Constants.placeHolderImage)
         
@@ -158,21 +162,6 @@ class DetailsViewController: UIViewController {
         let text = LocalizedStrings.shareArticleText
         let activity = UIActivityViewController(activityItems: [urlArticle!, text], applicationActivities: nil)
         present(activity, animated: true)
-    }
-    
-    private func dateFormatter(date: String) -> String {
-        let regexPattern = try! NSRegularExpression(pattern: Constants.regexPatternAZ)
-        let range = NSMakeRange(0, date.count)
-        let newDate = regexPattern.stringByReplacingMatches(in: date, range: range, withTemplate: " ")
-        
-        let inputFormatter = DateFormatter()
-        inputFormatter.dateFormat = Constants.beforeDateFormat
-        
-        let outputFormatter = DateFormatter()
-        outputFormatter.dateFormat = Constants.afterDateFormat
-        
-        let showDate = inputFormatter.date(from: newDate)
-        return outputFormatter.string(from: showDate!)
     }
 }
 

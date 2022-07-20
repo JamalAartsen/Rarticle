@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		2B1E13160A50920AE9CF7B33 /* Pods_Rarticle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC733AF04E176734A0784948 /* Pods_Rarticle.framework */; };
 		C62B518628869D7000EC812E /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62B518528869D7000EC812E /* String+Extensions.swift */; };
+		C62B51882886E62400EC812E /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62B51872886E62400EC812E /* UITableView+Extensions.swift */; };
+		C62B518D2887EEC100EC812E /* DateFormatterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62B518C2887EEC100EC812E /* DateFormatterService.swift */; };
+		C62B51912887F2EE00EC812E /* ControllerServices+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62B51902887F2EE00EC812E /* ControllerServices+Injection.swift */; };
+		C62B51932887F69B00EC812E /* URLLinkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62B51922887F69B00EC812E /* URLLinkService.swift */; };
 		C63148B92872D54700F7B393 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63148B82872D54700F7B393 /* AppDelegate.swift */; };
 		C63148BD2872D54700F7B393 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63148BC2872D54700F7B393 /* ViewController.swift */; };
 		C63148C22872D54900F7B393 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C63148C12872D54900F7B393 /* Assets.xcassets */; };
@@ -38,6 +42,10 @@
 		350362E005C974DC9CD0D987 /* Pods-Rarticle.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rarticle.release.xcconfig"; path = "Target Support Files/Pods-Rarticle/Pods-Rarticle.release.xcconfig"; sourceTree = "<group>"; };
 		AC733AF04E176734A0784948 /* Pods_Rarticle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Rarticle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C62B518528869D7000EC812E /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		C62B51872886E62400EC812E /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
+		C62B518C2887EEC100EC812E /* DateFormatterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterService.swift; sourceTree = "<group>"; };
+		C62B51902887F2EE00EC812E /* ControllerServices+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ControllerServices+Injection.swift"; sourceTree = "<group>"; };
+		C62B51922887F69B00EC812E /* URLLinkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLLinkService.swift; sourceTree = "<group>"; };
 		C63148B52872D54700F7B393 /* Rarticle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rarticle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C63148B82872D54700F7B393 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C63148BC2872D54700F7B393 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -95,6 +103,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C62B518B2887EEA900EC812E /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				C6F9E74D287CA5EC006826CD /* DetailsViewController.swift */,
+				C62B518C2887EEC100EC812E /* DateFormatterService.swift */,
+				C62B51922887F69B00EC812E /* URLLinkService.swift */,
+			);
+			path = Details;
+			sourceTree = "<group>";
+		};
 		C63148AC2872D54700F7B393 = {
 			isa = PBXGroup;
 			children = (
@@ -116,13 +134,14 @@
 		C63148B72872D54700F7B393 /* Rarticle */ = {
 			isa = PBXGroup;
 			children = (
+				C63148CF2872D86B00F7B393 /* models */,
 				C6F9E74C287C70C6006826CD /* Extensions */,
 				C691BBE52875C357002FDBA1 /* view */,
 				C691BBE42875C347002FDBA1 /* controller */,
 				C63148CC2872D5EE00F7B393 /* model */,
 				C63148B82872D54700F7B393 /* AppDelegate.swift */,
-				C691BC08287C3E5D002FDBA1 /* Constants.swift */,
 				C65B0221287D4F6E0007FB08 /* LocalizedStrings.swift */,
+				C691BC08287C3E5D002FDBA1 /* Constants.swift */,
 				C63148C12872D54900F7B393 /* Assets.xcassets */,
 				C63148C32872D54900F7B393 /* LaunchScreen.storyboard */,
 				C63148C62872D54900F7B393 /* Info.plist */,
@@ -137,7 +156,6 @@
 		C63148CC2872D5EE00F7B393 /* model */ = {
 			isa = PBXGroup;
 			children = (
-				C63148CF2872D86B00F7B393 /* models */,
 				C63148CD2872D60C00F7B393 /* NewsCatcherApi.swift */,
 				C6F9E744287C5FEF006826CD /* APIServices+Injection.swift */,
 				C65B0218287D37830007FB08 /* NewsRepository.swift */,
@@ -159,8 +177,9 @@
 		C691BBE42875C347002FDBA1 /* controller */ = {
 			isa = PBXGroup;
 			children = (
+				C62B518B2887EEA900EC812E /* Details */,
 				C63148BC2872D54700F7B393 /* ViewController.swift */,
-				C6F9E74D287CA5EC006826CD /* DetailsViewController.swift */,
+				C62B51902887F2EE00EC812E /* ControllerServices+Injection.swift */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -181,6 +200,7 @@
 				C6F9E74A287C70B2006826CD /* CGColor+Extensions.swift */,
 				C64F7744288005450027C058 /* Array+Extensions.swift */,
 				C62B518528869D7000EC812E /* String+Extensions.swift */,
+				C62B51872886E62400EC812E /* UITableView+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -306,9 +326,12 @@
 				C63148CE2872D60C00F7B393 /* NewsCatcherApi.swift in Sources */,
 				C6F9E747287C702F006826CD /* UIImageView+Extensions.swift in Sources */,
 				C6F9E745287C5FEF006826CD /* APIServices+Injection.swift in Sources */,
+				C62B51932887F69B00EC812E /* URLLinkService.swift in Sources */,
 				C63148BD2872D54700F7B393 /* ViewController.swift in Sources */,
+				C62B51882886E62400EC812E /* UITableView+Extensions.swift in Sources */,
 				C63148D32872D91100F7B393 /* Article.swift in Sources */,
 				C6CE583228858B8F0098EEBF /* NewsAPI.swift in Sources */,
+				C62B518D2887EEC100EC812E /* DateFormatterService.swift in Sources */,
 				C63148B92872D54700F7B393 /* AppDelegate.swift in Sources */,
 				C6F9E749287C7088006826CD /* UIColor+Extensions.swift in Sources */,
 				C63148FE287455F900F7B393 /* ArticleCell.swift in Sources */,
@@ -321,6 +344,7 @@
 				C691BC09287C3E5D002FDBA1 /* Constants.swift in Sources */,
 				C65B0219287D37830007FB08 /* NewsRepository.swift in Sources */,
 				C64F7743287FFBA70027C058 /* DummyData.swift in Sources */,
+				C62B51912887F2EE00EC812E /* ControllerServices+Injection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
