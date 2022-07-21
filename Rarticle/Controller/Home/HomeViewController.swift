@@ -10,7 +10,6 @@ import EasyPeasy
 import Resolver
 import DropDown
  
-// TODO: Tab bar for search or automatisch zoeken naar bijvoorbeeld 1 seconde geen user interactie inplaats van enter klikken (throttle / debounce) -> property wrapper om naar te kijken
 class HomeViewController: UIViewController {
     
     private lazy var articlesTableView: UITableView = makeTableView()

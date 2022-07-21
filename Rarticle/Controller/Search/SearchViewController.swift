@@ -49,7 +49,7 @@ class SearchViewController: UIViewController {
     
     private func setupConstraints() {
         searchArticlesTableView.easy.layout(
-            Top(16).to(view, .topMargin),
+            Top(0).to(view, .topMargin),
             Bottom(0),
             Right(0),
             Left(0)

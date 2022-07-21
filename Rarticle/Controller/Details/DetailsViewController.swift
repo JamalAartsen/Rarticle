@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import EasyPeasy
 import Resolver
+import SafariServices
 
 // TODO: Safariviewcontroller om article te openen
 class DetailsViewController: UIViewController {
@@ -70,10 +71,6 @@ class DetailsViewController: UIViewController {
             self.buttonLink.alpha = 1.0
             self.authorPublishedAtLabel.alpha = 1.0
         }
-    }
-    
-    @objc private func didTapOnLinkBtn() {
-        urlLinkService.openUrl(link: linkArticle)
     }
     
     private func setupLayout() {
@@ -157,6 +154,17 @@ class DetailsViewController: UIViewController {
         
         backItem.title = backButtonTitle
         navigationBar?.topItem?.backBarButtonItem = backItem
+    }
+    
+    @objc private func didTapOnLinkBtn() {
+//        urlLinkService.openUrl(link: linkArticle)
+        if let url = URL(string: linkArticle) {
+            let safariConfiguration = SFSafariViewController.Configuration()
+            safariConfiguration.entersReaderIfAvailable = true
+            
+            let safariController = SFSafariViewController(url: url, configuration: safariConfiguration)
+            present(safariController, animated: true)
+        }
     }
         
     // TODO: Gives errors: https://stackoverflow.com/questions/71946700/uiactivityviewcontroller-and-presentviewcontroller-generating-numerous-errors
