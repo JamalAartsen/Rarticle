@@ -19,4 +19,7 @@ struct LocalizedStrings {
     static let articles = NSLocalizedString("articles", comment: "Articles")
     static let shareArticleText = NSLocalizedString("shareArticleText", comment: "Look at this article!")
     static let noAuthor = NSLocalizedString("noAuthor", comment: "No Author")
+    static let placeholderSearch = NSLocalizedString("placeholderSearch", comment: "Search")
+    static let searchResults = NSLocalizedString("searchResults", comment: "Results")
+    static let noResults = NSLocalizedString("noResults", comment: "No results")
 }

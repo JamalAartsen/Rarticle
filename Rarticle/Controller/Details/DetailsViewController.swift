@@ -13,32 +13,34 @@ import Resolver
 // TODO: Safariviewcontroller om article te openen
 class DetailsViewController: UIViewController {
     
-    let titleArticle: String
-    let descriptionArticle: String
-    let imageArticle: String?
-    let linkArticle: String
-    let author: String?
-    let publishedAt: String
+    private let titleArticle: String
+    private let descriptionArticle: String
+    private let imageArticle: String?
+    private let linkArticle: String
+    private let author: String?
+    private let publishedAt: String
+    private let backButtonTitle: String
     
     private lazy var scrollView: UIScrollView = makeScrollView()
     private lazy var contentView: UIView = makeContentViewScrollView()
     private lazy var titleLabel: UILabel = makeTitleLabel()
     private lazy var descriptionLabel: UILabel = makeDescriptionLabel()
     private lazy var image: UIImageView = makeImage()
-    private lazy var buttonLink: UIButton = makeButtonLink()
+    private lazy var buttonLink: UIButton = .makeButton(backgroundColor: Colors.buttonBackgroundcolor!, cornerRadius: 5, title: LocalizedStrings.openArticle)
     private lazy var shareIcon: UIBarButtonItem = makeShareIcon(iconID: Constants.shareIconID)
     private lazy var authorPublishedAtLabel: UILabel = makeAuthorPublishedAtLabel()
     
     @Injected private var dateFormatterService: DateFormatterService
     @Injected private var urlLinkService: URLLinkService
    
-    internal init(titleArticle: String, descriptionArticle: String, imageArticle: String?, linkArticle: String, author: String?, publishedAt: String) {
+    internal init(titleArticle: String, descriptionArticle: String, imageArticle: String?, linkArticle: String, author: String?, publishedAt: String, backButtonTitle: String) {
         self.titleArticle = titleArticle
         self.descriptionArticle = descriptionArticle
         self.imageArticle = imageArticle
         self.linkArticle = linkArticle
         self.author = author
         self.publishedAt = publishedAt
+        self.backButtonTitle = backButtonTitle
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -48,6 +50,7 @@ class DetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         setupLayout()
+        setupConstraints()
         setUpNavigationController()
         buttonLink.addTarget(self, action: #selector(self.didTapOnLinkBtn), for: .touchUpInside)
         animations()
@@ -74,8 +77,6 @@ class DetailsViewController: UIViewController {
     }
     
     private func setupLayout() {
-        view.backgroundColor = .white
-        
         scrollView.backgroundColor = Colors.backgroundDetailsScreenColor
         view.addSubview(scrollView)
         
@@ -91,7 +92,9 @@ class DetailsViewController: UIViewController {
         contentView.addSubview(image)
         contentView.addSubview(descriptionLabel)
         contentView.addSubview(authorPublishedAtLabel)
-        
+    }
+    
+    private func setupConstraints() {
         // topMargin = safearea = Top(0).to(view, .topMargin),
         scrollView.easy.layout([
             Top(0),
@@ -107,20 +110,20 @@ class DetailsViewController: UIViewController {
         ])
         
         titleLabel.easy.layout([
-            Top(16),
+            Top(16).to(image),
             Right(16),
             Left(16),
         ])
         
         image.easy.layout([
-            Top(16).to(titleLabel),
-            Left(16),
-            Right(16),
+            Top(16),
+            Left(0),
+            Right(0),
             Height(200)
         ])
         
         authorPublishedAtLabel.easy.layout([
-            Top(16).to(image),
+            Top(16).to(titleLabel),
             Left(16),
             Right(16)
         ])
@@ -152,7 +155,7 @@ class DetailsViewController: UIViewController {
         navigationBar?.backIndicatorImage = backButtonImage
         navigationBar?.backIndicatorTransitionMaskImage = backButtonImage
         
-        backItem.title = LocalizedStrings.articles
+        backItem.title = backButtonTitle
         navigationBar?.topItem?.backBarButtonItem = backItem
     }
         
@@ -199,14 +202,6 @@ private extension DetailsViewController {
         let imageArticle = UIImageView()
         
         return imageArticle
-    }
-    
-    func makeButtonLink() -> UIButton {
-        let btn = UIButton()
-        btn.backgroundColor = Colors.buttonBackgroundcolor
-        btn.layer.cornerRadius = 5
-        btn.setTitle(LocalizedStrings.openArticle, for: .normal)
-        return btn
     }
     
     func makeShareIcon(iconID: String) -> UIBarButtonItem {

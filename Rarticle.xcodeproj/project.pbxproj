@@ -13,8 +13,9 @@
 		C62B518D2887EEC100EC812E /* DateFormatterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62B518C2887EEC100EC812E /* DateFormatterService.swift */; };
 		C62B51912887F2EE00EC812E /* ControllerServices+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62B51902887F2EE00EC812E /* ControllerServices+Injection.swift */; };
 		C62B51932887F69B00EC812E /* URLLinkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62B51922887F69B00EC812E /* URLLinkService.swift */; };
+		C62B519528887B2400EC812E /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62B519428887B2400EC812E /* SearchViewController.swift */; };
 		C63148B92872D54700F7B393 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63148B82872D54700F7B393 /* AppDelegate.swift */; };
-		C63148BD2872D54700F7B393 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63148BC2872D54700F7B393 /* ViewController.swift */; };
+		C63148BD2872D54700F7B393 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63148BC2872D54700F7B393 /* HomeViewController.swift */; };
 		C63148C22872D54900F7B393 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C63148C12872D54900F7B393 /* Assets.xcassets */; };
 		C63148C52872D54900F7B393 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C63148C32872D54900F7B393 /* LaunchScreen.storyboard */; };
 		C63148CE2872D60C00F7B393 /* NewsCatcherApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63148CD2872D60C00F7B393 /* NewsCatcherApi.swift */; };
@@ -24,6 +25,8 @@
 		C64F7743287FFBA70027C058 /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64F7742287FFBA70027C058 /* DummyData.swift */; };
 		C64F7745288005450027C058 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64F7744288005450027C058 /* Array+Extensions.swift */; };
 		C64F7747288015C40027C058 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64F7746288015C40027C058 /* Colors.swift */; };
+		C65961D128893CB200215A25 /* RButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65961D028893CB200215A25 /* RButton.swift */; };
+		C65961D328894B6100215A25 /* RAlertDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65961D228894B6100215A25 /* RAlertDialog.swift */; };
 		C65B0219287D37830007FB08 /* NewsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65B0218287D37830007FB08 /* NewsRepository.swift */; };
 		C65B021B287D37B20007FB08 /* INewsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65B021A287D37B20007FB08 /* INewsAPI.swift */; };
 		C65B021E287D4C3E0007FB08 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C65B0220287D4C3E0007FB08 /* Localizable.strings */; };
@@ -46,9 +49,10 @@
 		C62B518C2887EEC100EC812E /* DateFormatterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterService.swift; sourceTree = "<group>"; };
 		C62B51902887F2EE00EC812E /* ControllerServices+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ControllerServices+Injection.swift"; sourceTree = "<group>"; };
 		C62B51922887F69B00EC812E /* URLLinkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLLinkService.swift; sourceTree = "<group>"; };
+		C62B519428887B2400EC812E /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		C63148B52872D54700F7B393 /* Rarticle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rarticle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C63148B82872D54700F7B393 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C63148BC2872D54700F7B393 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C63148BC2872D54700F7B393 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		C63148C12872D54900F7B393 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C63148C42872D54900F7B393 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C63148C62872D54900F7B393 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -59,6 +63,8 @@
 		C64F7742287FFBA70027C058 /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
 		C64F7744288005450027C058 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		C64F7746288015C40027C058 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		C65961D028893CB200215A25 /* RButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RButton.swift; sourceTree = "<group>"; };
+		C65961D228894B6100215A25 /* RAlertDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAlertDialog.swift; sourceTree = "<group>"; };
 		C65B0218287D37830007FB08 /* NewsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsRepository.swift; sourceTree = "<group>"; };
 		C65B021A287D37B20007FB08 /* INewsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = INewsAPI.swift; sourceTree = "<group>"; };
 		C65B021F287D4C3E0007FB08 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -107,8 +113,6 @@
 			isa = PBXGroup;
 			children = (
 				C6F9E74D287CA5EC006826CD /* DetailsViewController.swift */,
-				C62B518C2887EEC100EC812E /* DateFormatterService.swift */,
-				C62B51922887F69B00EC812E /* URLLinkService.swift */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -134,11 +138,11 @@
 		C63148B72872D54700F7B393 /* Rarticle */ = {
 			isa = PBXGroup;
 			children = (
-				C63148CF2872D86B00F7B393 /* models */,
+				C63148CF2872D86B00F7B393 /* DataModels */,
 				C6F9E74C287C70C6006826CD /* Extensions */,
-				C691BBE52875C357002FDBA1 /* view */,
-				C691BBE42875C347002FDBA1 /* controller */,
-				C63148CC2872D5EE00F7B393 /* model */,
+				C691BBE52875C357002FDBA1 /* View */,
+				C691BBE42875C347002FDBA1 /* Controller */,
+				C63148CC2872D5EE00F7B393 /* Model */,
 				C63148B82872D54700F7B393 /* AppDelegate.swift */,
 				C65B0221287D4F6E0007FB08 /* LocalizedStrings.swift */,
 				C691BC08287C3E5D002FDBA1 /* Constants.swift */,
@@ -153,7 +157,7 @@
 			path = Rarticle;
 			sourceTree = "<group>";
 		};
-		C63148CC2872D5EE00F7B393 /* model */ = {
+		C63148CC2872D5EE00F7B393 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				C63148CD2872D60C00F7B393 /* NewsCatcherApi.swift */,
@@ -162,34 +166,63 @@
 				C65B021A287D37B20007FB08 /* INewsAPI.swift */,
 				C6CE583128858B8F0098EEBF /* NewsAPI.swift */,
 			);
-			path = model;
+			path = Model;
 			sourceTree = "<group>";
 		};
-		C63148CF2872D86B00F7B393 /* models */ = {
+		C63148CF2872D86B00F7B393 /* DataModels */ = {
 			isa = PBXGroup;
 			children = (
 				C63148D02872D88400F7B393 /* Response.swift */,
 				C63148D22872D91100F7B393 /* Article.swift */,
 			);
-			path = models;
+			path = DataModels;
 			sourceTree = "<group>";
 		};
-		C691BBE42875C347002FDBA1 /* controller */ = {
+		C65961D42889503400215A25 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				C62B518B2887EEA900EC812E /* Details */,
-				C63148BC2872D54700F7B393 /* ViewController.swift */,
-				C62B51902887F2EE00EC812E /* ControllerServices+Injection.swift */,
+				C62B518C2887EEC100EC812E /* DateFormatterService.swift */,
+				C62B51922887F69B00EC812E /* URLLinkService.swift */,
 			);
-			path = controller;
+			path = Services;
 			sourceTree = "<group>";
 		};
-		C691BBE52875C357002FDBA1 /* view */ = {
+		C65961D52889504600215A25 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				C63148BC2872D54700F7B393 /* HomeViewController.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		C65961D62889505300215A25 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				C62B519428887B2400EC812E /* SearchViewController.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		C691BBE42875C347002FDBA1 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C65961D62889505300215A25 /* Search */,
+				C65961D52889504600215A25 /* Home */,
+				C65961D42889503400215A25 /* Services */,
+				C62B518B2887EEA900EC812E /* Details */,
+				C62B51902887F2EE00EC812E /* ControllerServices+Injection.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		C691BBE52875C357002FDBA1 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				C63148FD287455F900F7B393 /* ArticleCell.swift */,
+				C65961D028893CB200215A25 /* RButton.swift */,
+				C65961D228894B6100215A25 /* RAlertDialog.swift */,
 			);
-			path = view;
+			path = View;
 			sourceTree = "<group>";
 		};
 		C6F9E74C287C70C6006826CD /* Extensions */ = {
@@ -320,6 +353,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C65961D128893CB200215A25 /* RButton.swift in Sources */,
 				C6F9E743287C5FA3006826CD /* AppDelegate+Injection.swift in Sources */,
 				C62B518628869D7000EC812E /* String+Extensions.swift in Sources */,
 				C64F7745288005450027C058 /* Array+Extensions.swift in Sources */,
@@ -327,8 +361,10 @@
 				C6F9E747287C702F006826CD /* UIImageView+Extensions.swift in Sources */,
 				C6F9E745287C5FEF006826CD /* APIServices+Injection.swift in Sources */,
 				C62B51932887F69B00EC812E /* URLLinkService.swift in Sources */,
-				C63148BD2872D54700F7B393 /* ViewController.swift in Sources */,
+				C63148BD2872D54700F7B393 /* HomeViewController.swift in Sources */,
+				C62B519528887B2400EC812E /* SearchViewController.swift in Sources */,
 				C62B51882886E62400EC812E /* UITableView+Extensions.swift in Sources */,
+				C65961D328894B6100215A25 /* RAlertDialog.swift in Sources */,
 				C63148D32872D91100F7B393 /* Article.swift in Sources */,
 				C6CE583228858B8F0098EEBF /* NewsAPI.swift in Sources */,
 				C62B518D2887EEC100EC812E /* DateFormatterService.swift in Sources */,

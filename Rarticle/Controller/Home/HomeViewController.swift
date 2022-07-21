@@ -11,13 +11,12 @@ import Resolver
 import DropDown
  
 // TODO: Tab bar for search or automatisch zoeken naar bijvoorbeeld 1 seconde geen user interactie inplaats van enter klikken (throttle / debounce) -> property wrapper om naar te kijken
-class ViewController: UIViewController {
+class HomeViewController: UIViewController {
     
     private lazy var articlesTableView: UITableView = makeTableView()
-    private var alert: UIAlertController = UIAlertController()
+    private var alert: RAlertDialog = RAlertDialog()
     private lazy var titlePage: UILabel = makeTitleLabel()
-    private lazy var retryButton: UIButton = makeRetryButton()
-    private lazy var searchBar: UISearchBar = makeSearchBar()
+    private lazy var retryButton: UIButton = .makeButton(backgroundColor: Colors.buttonBackgroundcolor!, cornerRadius: 5, title: LocalizedStrings.retry)
     private lazy var filterIcon: UIBarButtonItem = makeCustomUIBarButtonItem(iconID: Constants.filterIconID)
     
     let dropDown = DropDown()
@@ -34,47 +33,27 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        articlesTableView.delegate = self
-        articlesTableView.dataSource = self
-        searchBar.delegate = self
-        
         retryButton.addTarget(self, action: #selector(self.retryReloadTableView), for: .touchUpInside)
         animations()
         handleDropDownSelection()
         
         articlesTableView.showSpinner(showSpinner: true)
         setupLayout()
+        setupNavigationController()
+        setupConstraints()
         setupPullToRefreshTableview()
         getAllNewsArticles(topic: nil)
-    }
-    
-    // TODO: 
-    private func setupPullToRefreshTableview() {
-        refreshControl.attributedTitle = NSAttributedString(string: "Loading articles")
-        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
-        articlesTableView.addSubview(refreshControl)
-    }
-    
-    // TODO: 
-    @objc func refresh(_ sender: AnyObject) {
-        print("Refresh data")
-    }
-
-    @objc private func handleShowSearchBar() {
-        search(shouldShow: true)
-        searchBar.becomeFirstResponder()
     }
         
     private func setupLayout() {
         view.addSubview(titlePage)
         view.addSubview(articlesTableView)
         
-        view.backgroundColor = Colors.backgroundArticlesScreenColor
-        
+        articlesTableView.delegate = self
+        articlesTableView.dataSource = self
+    
         articlesTableView.estimatedRowHeight = 75
         articlesTableView.rowHeight = UITableView.automaticDimension
-        
-        navigationController?.navigationBar.tintColor = Colors.navigationBarColor
         
         // TODO: /////////////////////////////////////////////////////////////////////////
         let article = Article.init(description: "", title: "", url: "", urlToImage: "https://static.wikia.nocookie.net/lotr/images/9/90/Sauron-2.jpg/revision/latest?cb=20110508182634", author: "", publishedAt: "")
@@ -83,13 +62,18 @@ class ViewController: UIViewController {
         print("URL2: \(article2.stringToUrlConverter())")
         // TODO: ///////////////////////////////////////////////////////////////////////
         
-        navigationItem.leftBarButtonItem = filterIcon
-        searchBar.sizeToFit()
-        showSearchBarButton(shouldShow: true)
-        
         dropDown.anchorView = filterIcon
         dropDown.dataSource = [LocalizedStrings.filterTitleByAZ, LocalizedStrings.filterTitleByZA]
+    }
+    
+    private func setupNavigationController() {
+        navigationController?.navigationBar.tintColor = Colors.navigationBarColor
         
+        navigationItem.leftBarButtonItem = filterIcon
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleSearchIcon))
+    }
+    
+    private func setupConstraints() {
         articlesTableView.easy.layout([
             Top(8).to(titlePage),
             Bottom(0),
@@ -115,9 +99,11 @@ class ViewController: UIViewController {
         }
     }
     
-    // TODO: Topic kan misschien niet nil zijn als de gebruiker iets aan het zoeken is. Als het goed is hoeft dat niet als er een nieuwe viewcontroller komt voor search
+    @objc private func handleSearchIcon() {
+        navigationController?.pushViewController(SearchViewController(), animated: true)
+    }
+    
     @objc private func retryReloadTableView() {
-        articlesTableView.reloadData()
         articlesTableView.showSpinner(showSpinner: true)
         getAllNewsArticles(topic: nil)
     }
@@ -127,6 +113,7 @@ class ViewController: UIViewController {
             do {
                 articles = try await newsRepository.getAllNewsArticles(topic: topic).articles
                 articlesTableView.showSpinner(showSpinner: false)
+                articlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
             }
             catch let error {
                 showAlertDialog(error: error.localizedDescription)
@@ -137,24 +124,10 @@ class ViewController: UIViewController {
     }
     
     private func showAlertDialog(error: String) {
-        alert = makeAlertDialog()
+        alert = .makeAlertDialog(title: LocalizedStrings.alertDialogTitle)
         alert.message = error
         alert.addAction(UIAlertAction(title: LocalizedStrings.alertActionTitle, style: .default))
         present(alert, animated: true, completion: nil)
-    }
-    
-    func showSearchBarButton(shouldShow: Bool) {
-        if shouldShow {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleShowSearchBar))
-        } else {
-            navigationItem.rightBarButtonItem = nil
-        }
-    }
-    
-    func search(shouldShow: Bool) {
-        showSearchBarButton(shouldShow: !shouldShow)
-        searchBar.showsCancelButton = shouldShow
-        navigationItem.titleView = shouldShow ? searchBar : nil
     }
     
     @objc func handleFilterIcon() {
@@ -175,13 +148,20 @@ class ViewController: UIViewController {
         }
     }
     
-    // TODO: Show something when there is no internet, laat geen error zien
-    private func searchArticles(topic: String?) {
-        getAllNewsArticles(topic: topic)
+    // TODO:
+    private func setupPullToRefreshTableview() {
+        refreshControl.attributedTitle = NSAttributedString(string: "Loading articles")
+        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        articlesTableView.addSubview(refreshControl)
+    }
+    
+    // TODO: 
+    @objc func refresh(_ sender: AnyObject) {
+        print("Refresh data")
     }
 }
 
-extension ViewController: UITableViewDelegate {
+extension HomeViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         articlesTableView.deselectRow(at: indexPath, animated: true)
@@ -194,7 +174,8 @@ extension ViewController: UITableViewDelegate {
             imageArticle: article.urlToImage,
             linkArticle: article.url,
             author: article.author,
-            publishedAt: article.publishedAt
+            publishedAt: article.publishedAt,
+            backButtonTitle: LocalizedStrings.articles
         ), animated: true)
     }
         
@@ -211,7 +192,7 @@ extension ViewController: UITableViewDelegate {
     }
 }
 
-extension ViewController: UITableViewDataSource {
+extension HomeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return articles.count
     }
@@ -238,27 +219,7 @@ extension ViewController: UITableViewDataSource {
     }
 }
 
-extension ViewController: UISearchBarDelegate {
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        search(shouldShow: false)
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print("\(searchText)")
-        if searchText.isEmpty {
-            searchArticles(topic: nil)
-        }
-    }
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        // TODO: This method is not triggered when internet is gone
-        articlesTableView.showSpinner(showSpinner: true)
-        searchArticles(topic: searchBar.text! as String)
-        print("searchBarSearchButtonClickd is triggered")
-    }
-}
-
-private extension ViewController {
+private extension HomeViewController {
     func makeTableView() -> UITableView {
         let tableView = UITableView()
         tableView.layer.cornerRadius = 10
@@ -271,19 +232,6 @@ private extension ViewController {
         titlePage.text = LocalizedStrings.appTitle
         titlePage.font = .systemFont(ofSize: 30, weight: .bold)
         return titlePage
-    }
-    
-    func makeAlertDialog() -> UIAlertController {
-        let alertController = UIAlertController(title: LocalizedStrings.alertDialogTitle, message: nil, preferredStyle: .actionSheet)
-        return alertController
-    }
-    
-    func makeRetryButton() -> UIButton {
-        let retryBtn = UIButton()
-        retryBtn.backgroundColor = .systemBlue
-        retryBtn.layer.cornerRadius = 5
-        retryBtn.setTitle(LocalizedStrings.retry, for: .normal)
-        return retryBtn
     }
     
     func makeSearchBar() -> UISearchBar {

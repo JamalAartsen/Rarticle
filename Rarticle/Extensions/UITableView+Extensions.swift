@@ -18,4 +18,14 @@ extension UITableView {
             self.backgroundView = nil
         }
     }
+    
+    func showMessage(show: Bool, messageResult: String) {
+        let message = UILabel()
+        message.text = messageResult
+        message.textAlignment = NSTextAlignment.center
+      
+        if show {
+            self.backgroundView = message
+        }
+    }
 }
