@@ -12,19 +12,19 @@ import Resolver
 
 class SearchViewController: UIViewController {
     
+    // MARK: Properties
     private lazy var searchArticlesTableView: UITableView = makeTableView()
     private lazy var searchBar: UISearchBar = makeSearchBar()
     private lazy var retryButton: UIButton = .makeButton(backgroundColor: Colors.buttonBackgroundcolor!, cornerRadius: 5, title: LocalizedStrings.retry)
-    private lazy var alert: RAlertDialog = RAlertDialog()
     
-    var articles: [Article] = [] {
+    private var articles: [Article] = [] {
         didSet {
             searchArticlesTableView.reloadData()
         }
     }
     
-    @Injected var newsRepository: NewsRepository
-    @Injected var sortingService: SortingService
+    @Injected private var newsRepository: NewsRepository
+    @Injected private var sortingService: SortingService
     
     override func viewDidLoad() {
         setupLayout()
@@ -32,7 +32,9 @@ class SearchViewController: UIViewController {
         setUpNavigationController()
     }
     
+    // MARK: Get Articles
     private func getArticlesByTopic(topic: String?, sortBy: String) {
+        searchArticlesTableView.showSpinner(showSpinner: true)
         Task {
             do {
                 articles = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy).articles
@@ -40,7 +42,7 @@ class SearchViewController: UIViewController {
                 searchArticlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
             }
             catch let error {
-                // TODO: Wanneer de home tableview alle articles laat zien en daarna offline gaat en iets search worden de errors niet weergegeven
+                // TODO: Catch word niet getriggered als de internet weg valt na dat alle artikelen al geladen zijn in de HomeViewController. Doe het volgende om dit te laten gebeuren: Run de app -> Laat alle artikelen laden in de HomeViewController -> Doe het internet uit -> Ga naar SearchViewController -> Typ een topic in en klik op zoeken (Enter op emulator). Deze catch wordt wel getriggered als je het volgende doet: Run de app zonder internet -> Ga naar SearchViewController -> Typ een topic in en klik op zoeken (Enter op emulator)
                 searchArticlesTableView.backgroundView = retryButton
                 searchArticlesTableView.backgroundView?.easy.layout(Center())
                 showAlertDialog(error: error.localizedDescription)
@@ -48,6 +50,7 @@ class SearchViewController: UIViewController {
         }
     }
     
+    // MARK: Setup constraints
     private func setupConstraints() {
         searchArticlesTableView.easy.layout(
             Top(0).to(view, .topMargin),
@@ -59,53 +62,23 @@ class SearchViewController: UIViewController {
         retryButton.easy.layout(Width(100))
     }
     
-    private func setupLayout() {
-        searchArticlesTableView.delegate = self
-        searchArticlesTableView.dataSource = self
-        searchBar.delegate = self
-        
-        view.backgroundColor = Colors.backgroundArticlesScreenColor
-        view.addSubview(searchArticlesTableView)
-        
-        searchBar.sizeToFit()
-        searchBar.becomeFirstResponder()
-        //TODO: make one object of LocalizedStrings(This is for all viewcontrollers)
-        searchBar.placeholder = LocalizedStrings.placeholderSearch
-        
-        searchArticlesTableView.estimatedRowHeight = 75
-        searchArticlesTableView.rowHeight = UITableView.automaticDimension
-    }
-    
-    private func setUpNavigationController() {
-        let backButtonImage = UIImage(named: Constants.backButtonID)
-        let backItem = UIBarButtonItem()
-        let navigationBar = navigationController?.navigationBar
-        
-        navigationController?.navigationBar.tintColor = Colors.navigationBarColor
-        navigationItem.titleView = searchBar
-        
-        navigationBar?.backIndicatorImage = backButtonImage
-        navigationBar?.backIndicatorTransitionMaskImage = backButtonImage
-        
-        backItem.title = LocalizedStrings.articles
-        navigationBar?.topItem?.backBarButtonItem = backItem
-    }
-    
+    // MARK: Show alert dialog
     private func showAlertDialog(error: String) {
-        alert = .makeAlertDialog(title: LocalizedStrings.alertDialogTitle)
+        let alert: RAlertDialog = .makeAlertDialog(title: LocalizedStrings.alertDialogTitle)
         alert.message = error
         alert.addAction(UIAlertAction(title: LocalizedStrings.alertActionTitle, style: .default))
         present(alert, animated: true, completion: nil)
     }
     
-    @objc private func retryReloadTableView() {
-        searchArticlesTableView.showSpinner(showSpinner: true)
-        // TODO: Deze moet een bepaalde index and topic hebben
+    // MARK: User actions
+    @objc private func didTapReload() {
+        // TODO: Wanneer de retry functie is toegevoegd aan de SearchViewController moet hieronder een topic gegeven worden die de gebruiker gegeven heeft zodat de artikelen geladen worden die de gebruiker wilt. Hiervoor zou NSUserDefaults gebruikt kunnen worden.
         getArticlesByTopic(topic: nil, sortBy: sortingService.sortBy())
     }
     
 }
 
+// MARK: UITableViewDelegate
 extension SearchViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -137,6 +110,7 @@ extension SearchViewController: UITableViewDelegate {
     }
 }
 
+// MARK: UITableViewDataSource
 extension SearchViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -165,16 +139,19 @@ extension SearchViewController: UITableViewDataSource {
     }
 }
 
+// MARK: UISearchBarDelegate
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         getArticlesByTopic(topic: searchBar.text, sortBy: sortingService.sortBy())
-        searchArticlesTableView.showSpinner(showSpinner: true)
     }
 }
 
+// MARK: Factory
 private extension SearchViewController {
     func makeTableView() -> UITableView {
         let tableView = UITableView()
+        tableView.estimatedRowHeight = 75
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.register(ArticleCell.self, forCellReuseIdentifier: Constants.articleCellIndentifier)
         
         return tableView
@@ -184,5 +161,39 @@ private extension SearchViewController {
         let searchBar = UISearchBar()
         
         return searchBar
+    }
+}
+
+// MARK: Setup
+private extension SearchViewController {
+    private func setupLayout() {
+        searchArticlesTableView.delegate = self
+        searchArticlesTableView.dataSource = self
+        searchBar.delegate = self
+        
+        view.backgroundColor = Colors.backgroundArticlesScreenColor
+        view.addSubview(searchArticlesTableView)
+        
+        searchBar.sizeToFit()
+        searchBar.becomeFirstResponder()
+        searchBar.placeholder = LocalizedStrings.placeholderSearch
+        
+        searchArticlesTableView.estimatedRowHeight = 75
+        searchArticlesTableView.rowHeight = UITableView.automaticDimension
+    }
+    
+    private func setUpNavigationController() {
+        let backButtonImage = UIImage(named: Constants.backButtonID)
+        let backItem = UIBarButtonItem()
+        let navigationBar = navigationController?.navigationBar
+        
+        navigationController?.navigationBar.tintColor = Colors.navigationBarColor
+        navigationItem.titleView = searchBar
+        
+        navigationBar?.backIndicatorImage = backButtonImage
+        navigationBar?.backIndicatorTransitionMaskImage = backButtonImage
+        
+        backItem.title = LocalizedStrings.articles
+        navigationBar?.topItem?.backBarButtonItem = backItem
     }
 }

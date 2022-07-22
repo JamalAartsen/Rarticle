@@ -11,9 +11,9 @@ import EasyPeasy
 import Resolver
 import SafariServices
 
-// TODO: Safariviewcontroller om article te openen
 class DetailsViewController: UIViewController {
     
+    // MARK: Properties
     private let titleArticle: String
     private let descriptionArticle: String
     private let imageArticle: String?
@@ -57,6 +57,7 @@ class DetailsViewController: UIViewController {
         animations()
     }
     
+    // MARK: Properties
     private func animations() {
         titleLabel.alpha = 0
         image.alpha = 0
@@ -73,6 +74,7 @@ class DetailsViewController: UIViewController {
         }
     }
     
+    // MARK: Setup
     private func setupLayout() {
         scrollView.backgroundColor = Colors.backgroundDetailsScreenColor
         view.addSubview(scrollView)
@@ -156,6 +158,7 @@ class DetailsViewController: UIViewController {
         navigationBar?.topItem?.backBarButtonItem = backItem
     }
     
+    // MARK: User actions
     @objc private func didTapOnLinkBtn() {
 //        urlLinkService.openUrl(link: linkArticle)
         if let url = URL(string: linkArticle) {
@@ -168,7 +171,7 @@ class DetailsViewController: UIViewController {
     }
         
     // TODO: Gives errors: https://stackoverflow.com/questions/71946700/uiactivityviewcontroller-and-presentviewcontroller-generating-numerous-errors
-    @objc private func handleShareIcon() {
+    @objc private func didTapShare() {
         let urlArticle = URL(string: linkArticle)
         let text = LocalizedStrings.shareArticleText
         let activity = UIActivityViewController(activityItems: [urlArticle!, text], applicationActivities: nil)
@@ -176,6 +179,7 @@ class DetailsViewController: UIViewController {
     }
 }
 
+// MARK: Factory
 private extension DetailsViewController {
     
     func makeScrollView() -> UIScrollView {
@@ -215,7 +219,7 @@ private extension DetailsViewController {
     func makeShareIcon(iconID: String) -> UIBarButtonItem {
         let shareButton = UIButton(type: .custom)
         shareButton.setImage(UIImage(named: iconID), for: .normal)
-        shareButton.addTarget(self, action: #selector(handleShareIcon), for: .touchUpInside)
+        shareButton.addTarget(self, action: #selector(didTapShare), for: .touchUpInside)
         
         return UIBarButtonItem(customView: shareButton)
     }

@@ -18,7 +18,6 @@
 		C63148BD2872D54700F7B393 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63148BC2872D54700F7B393 /* HomeViewController.swift */; };
 		C63148C22872D54900F7B393 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C63148C12872D54900F7B393 /* Assets.xcassets */; };
 		C63148C52872D54900F7B393 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C63148C32872D54900F7B393 /* LaunchScreen.storyboard */; };
-		C63148CE2872D60C00F7B393 /* NewsCatcherApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63148CD2872D60C00F7B393 /* NewsCatcherApi.swift */; };
 		C63148D12872D88400F7B393 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63148D02872D88400F7B393 /* Response.swift */; };
 		C63148D32872D91100F7B393 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63148D22872D91100F7B393 /* Article.swift */; };
 		C63148FE287455F900F7B393 /* ArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63148FD287455F900F7B393 /* ArticleCell.swift */; };
@@ -57,7 +56,6 @@
 		C63148C12872D54900F7B393 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C63148C42872D54900F7B393 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C63148C62872D54900F7B393 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C63148CD2872D60C00F7B393 /* NewsCatcherApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCatcherApi.swift; sourceTree = "<group>"; };
 		C63148D02872D88400F7B393 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		C63148D22872D91100F7B393 /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
 		C63148FD287455F900F7B393 /* ArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCell.swift; sourceTree = "<group>"; };
@@ -140,21 +138,17 @@
 		C63148B72872D54700F7B393 /* Rarticle */ = {
 			isa = PBXGroup;
 			children = (
+				C65961DF288ACF4A00215A25 /* Localization */,
+				C65961DE288ACE6700215A25 /* General */,
+				C65961DD288ACE3500215A25 /* Resources */,
 				C63148CF2872D86B00F7B393 /* DataModels */,
 				C6F9E74C287C70C6006826CD /* Extensions */,
 				C691BBE52875C357002FDBA1 /* View */,
 				C691BBE42875C347002FDBA1 /* Controller */,
 				C63148CC2872D5EE00F7B393 /* Model */,
 				C63148B82872D54700F7B393 /* AppDelegate.swift */,
-				C65B0221287D4F6E0007FB08 /* LocalizedStrings.swift */,
-				C691BC08287C3E5D002FDBA1 /* Constants.swift */,
-				C63148C12872D54900F7B393 /* Assets.xcassets */,
-				C63148C32872D54900F7B393 /* LaunchScreen.storyboard */,
-				C63148C62872D54900F7B393 /* Info.plist */,
 				C6F9E742287C5FA3006826CD /* AppDelegate+Injection.swift */,
-				C65B0220287D4C3E0007FB08 /* Localizable.strings */,
 				C64F7742287FFBA70027C058 /* DummyData.swift */,
-				C64F7746288015C40027C058 /* Colors.swift */,
 			);
 			path = Rarticle;
 			sourceTree = "<group>";
@@ -163,7 +157,6 @@
 			isa = PBXGroup;
 			children = (
 				C65961DA2889B7CB00215A25 /* Protocols */,
-				C65961D92889B7C000215A25 /* NewsCatcherApi */,
 				C65961D82889B7B400215A25 /* NewsApi */,
 				C65961D72889B7A700215A25 /* Repositories */,
 				C6F9E744287C5FEF006826CD /* APIServices+Injection.swift */,
@@ -222,20 +215,40 @@
 			path = NewsApi;
 			sourceTree = "<group>";
 		};
-		C65961D92889B7C000215A25 /* NewsCatcherApi */ = {
-			isa = PBXGroup;
-			children = (
-				C63148CD2872D60C00F7B393 /* NewsCatcherApi.swift */,
-			);
-			path = NewsCatcherApi;
-			sourceTree = "<group>";
-		};
 		C65961DA2889B7CB00215A25 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
 				C65B021A287D37B20007FB08 /* INewsAPI.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		C65961DD288ACE3500215A25 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C63148C12872D54900F7B393 /* Assets.xcassets */,
+				C63148C62872D54900F7B393 /* Info.plist */,
+				C63148C32872D54900F7B393 /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		C65961DE288ACE6700215A25 /* General */ = {
+			isa = PBXGroup;
+			children = (
+				C65B0221287D4F6E0007FB08 /* LocalizedStrings.swift */,
+				C691BC08287C3E5D002FDBA1 /* Constants.swift */,
+				C64F7746288015C40027C058 /* Colors.swift */,
+			);
+			path = General;
+			sourceTree = "<group>";
+		};
+		C65961DF288ACF4A00215A25 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				C65B0220287D4C3E0007FB08 /* Localizable.strings */,
+			);
+			path = Localization;
 			sourceTree = "<group>";
 		};
 		C691BBE42875C347002FDBA1 /* Controller */ = {
@@ -392,7 +405,6 @@
 				C6F9E743287C5FA3006826CD /* AppDelegate+Injection.swift in Sources */,
 				C62B518628869D7000EC812E /* String+Extensions.swift in Sources */,
 				C64F7745288005450027C058 /* Array+Extensions.swift in Sources */,
-				C63148CE2872D60C00F7B393 /* NewsCatcherApi.swift in Sources */,
 				C6F9E747287C702F006826CD /* UIImageView+Extensions.swift in Sources */,
 				C6F9E745287C5FEF006826CD /* APIServices+Injection.swift in Sources */,
 				C62B51932887F69B00EC812E /* URLLinkService.swift in Sources */,

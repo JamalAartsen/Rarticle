@@ -6,6 +6,7 @@
 //
 import Foundation
 
+// TODO: Meestal zou je dus ook geen api hebben waar alle functies bij elkaar zitten, maar meer losse services voor deze losse calls. Deze services (bijv NewsArticlesService) roepen de APIService aan met een bepaalde base url, path en parameters, en handelen dan zelf intern het mappen af
 class NewsApi: INewsAPI {
     private var session = URLSession.shared
     private let baseUrl = "newsapi.org"
@@ -14,7 +15,6 @@ class NewsApi: INewsAPI {
     private let baseTopic = "lord of the rings"
     private let totalArticles = 10
     
-    // TODO: Vragen of ik het filteren op de juiste manier gedaan hebt.
     func getAllNewsArticles(topic: String?, sortBy: String) async throws -> Response {
         let queryItems = [
             URLQueryItem(name: "q", value: topic ?? baseTopic),
@@ -24,8 +24,6 @@ class NewsApi: INewsAPI {
         ]
         let (data, _) = try await session.data(from: URL(string: .createComplicatedUrl(scheme: scheme, host: baseUrl, path: NewsAPIEndpoints.everythingEndpoint, queryItems: queryItems))!)
         let articles = try JSONDecoder().decode(Response.self, from: data)
-        
-        print("\(sortBy)")
         
         return articles
     }

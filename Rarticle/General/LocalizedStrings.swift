@@ -22,4 +22,7 @@ struct LocalizedStrings {
     static let placeholderSearch = NSLocalizedString("placeholderSearch", comment: "Search")
     static let searchResults = NSLocalizedString("searchResults", comment: "Results")
     static let noResults = NSLocalizedString("noResults", comment: "No results")
+    static let sortByNewest = NSLocalizedString("sortByNewest", comment: "Sort by newest")
+    static let sortByPopularity = NSLocalizedString("sortByPopularity", comment: "Sort by popularity")
+    static let sortByRelevancy = NSLocalizedString("sortByRelevancy", comment: "Sort by relevancy")
 }

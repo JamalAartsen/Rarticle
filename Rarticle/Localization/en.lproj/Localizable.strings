@@ -21,3 +21,6 @@
 "placeholderSearch" = "Search";
 "searchResults" = "Results";
 "noResults" = "No results";
+"sortByNewest" = "Sort by newest";
+"sortByPopularity" = "Sort by popularity";
+"sortByRelevancy" = "Sort by relevancy";

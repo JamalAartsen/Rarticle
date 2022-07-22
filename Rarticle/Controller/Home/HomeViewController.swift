@@ -11,71 +11,43 @@ import Resolver
 import DropDown
  
 
-// TODO: nsuserdefaults voor sorting values
+// TODO: Misschien NSUserDefaults gebruiken voor het opslaan van de sorting keuze van de gebruiker?
 class HomeViewController: UIViewController {
     
+    // MARK: Properties
     private lazy var articlesTableView: UITableView = makeTableView()
-    private var alert: RAlertDialog = RAlertDialog()
     private lazy var titlePage: UILabel = makeTitleLabel()
     private lazy var retryButton: UIButton = .makeButton(backgroundColor: Colors.buttonBackgroundcolor!, cornerRadius: 5, title: LocalizedStrings.retry)
     private lazy var filterIcon: UIBarButtonItem = makeCustomUIBarButtonItem(iconID: Constants.filterIconID)
+    private lazy var dropDown: DropDown = makeDropDown()
     
-    let dropDown = DropDown()
-    let refreshControl = UIRefreshControl()
+    private let refreshControl = UIRefreshControl()
     
-    var articles: [Article] = [] {
+    private var articles: [Article] = [] {
         didSet {
             articlesTableView.reloadData()
         }
     }
     
-    @Injected var newsRepository: NewsRepository
-    @Injected var sortingService: SortingService
+    @Injected private var newsRepository: NewsRepository
+    @Injected private var sortingService: SortingService
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        retryButton.addTarget(self, action: #selector(self.retryReloadTableView), for: .touchUpInside)
+        retryButton.addTarget(self, action: #selector(self.didTapReload), for: .touchUpInside)
         animations()
         handleDropDownSelection()
         
-        articlesTableView.showSpinner(showSpinner: true)
         setupLayout()
+        setupDropDown()
         setupNavigationController()
         setupConstraints()
         setupPullToRefreshTableview()
         getAllNewsArticles(topic: nil, sortBy: sortingService.sortBy())
     }
-        
-    private func setupLayout() {
-        view.addSubview(titlePage)
-        view.addSubview(articlesTableView)
-        
-        articlesTableView.delegate = self
-        articlesTableView.dataSource = self
     
-        articlesTableView.estimatedRowHeight = 75
-        articlesTableView.rowHeight = UITableView.automaticDimension
-        
-        // TODO: /////////////////////////////////////////////////////////////////////////
-        let article = Article.init(description: "", title: "", url: "", urlToImage: "https://static.wikia.nocookie.net/lotr/images/9/90/Sauron-2.jpg/revision/latest?cb=20110508182634", author: "", publishedAt: "")
-        let article2 = Article.init(description: "", title: "", url: "", urlToImage: nil, author: "", publishedAt: "")
-        print("URL: \(article.stringToUrlConverter())")
-        print("URL2: \(article2.stringToUrlConverter())")
-        // TODO: ///////////////////////////////////////////////////////////////////////
-        
-        dropDown.anchorView = filterIcon
-        // TODO: In Localizestrings doen
-        dropDown.dataSource = ["Sort by newest", "Sort by popularity", "Sort by relevancy"]
-    }
-    
-    private func setupNavigationController() {
-        navigationController?.navigationBar.tintColor = Colors.navigationBarColor
-        
-        navigationItem.leftBarButtonItem = filterIcon
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleSearchIcon))
-    }
-    
+    // MARK Setup constraints
     private func setupConstraints() {
         articlesTableView.easy.layout([
             Top(8).to(titlePage),
@@ -93,6 +65,7 @@ class HomeViewController: UIViewController {
         filterIcon.customView?.easy.layout(Size(24))
     }
     
+    // MARK: Animations
     private func animations() {
         titlePage.alpha = 0
         articlesTableView.alpha = 0
@@ -102,17 +75,9 @@ class HomeViewController: UIViewController {
         }
     }
     
-    @objc private func handleSearchIcon() {
-        navigationController?.pushViewController(SearchViewController(), animated: true)
-    }
-    
-    @objc private func retryReloadTableView() {
-        articlesTableView.showSpinner(showSpinner: true)
-        // TODO: Deze moet een bepaalde sorting index hebben
-        getAllNewsArticles(topic: nil, sortBy: sortingService.sortBy())
-    }
-    
+    // MARK: Get articles
     private func getAllNewsArticles(topic: String?, sortBy: String) {
+        articlesTableView.showSpinner(showSpinner: true)
         Task {
             do {
                 articles = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy).articles
@@ -127,36 +92,31 @@ class HomeViewController: UIViewController {
         }
     }
     
+    // MARK: Show alert dialog
     private func showAlertDialog(error: String) {
-        alert = .makeAlertDialog(title: LocalizedStrings.alertDialogTitle)
+        let alert: RAlertDialog = .makeAlertDialog(title: LocalizedStrings.alertDialogTitle)
         alert.message = error
         alert.addAction(UIAlertAction(title: LocalizedStrings.alertActionTitle, style: .default))
         present(alert, animated: true, completion: nil)
     }
     
-    @objc func handleFilterIcon() {
-        dropDown.show()
-    }
-    
+    // Code gaf een reference cycle. ViewController wijst naar dropDown (omdat dropDown een variabele is in je state). ropDown wijst naar ViewController (door de self referentie in het completion block)
+    // MARK: Handle dropdown
     private func handleDropDownSelection() {
-        dropDown.selectionAction = { (index: Int, item: String) in
+        dropDown.selectionAction = { [weak self] (index: Int, item: String) in
+            guard let self = self else { return }
             self.getAllNewsArticles(topic: nil, sortBy: self.sortingService.sortBy(index: index))
         }
     }
     
-    // TODO:
     private func setupPullToRefreshTableview() {
         refreshControl.attributedTitle = NSAttributedString(string: "Loading articles")
-        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(didTapRefresh(_:)), for: .valueChanged)
         articlesTableView.addSubview(refreshControl)
-    }
-    
-    // TODO: 
-    @objc func refresh(_ sender: AnyObject) {
-        print("Refresh data")
     }
 }
 
+// MARK: UITabkeViewDelegate
 extension HomeViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -188,6 +148,7 @@ extension HomeViewController: UITableViewDelegate {
     }
 }
 
+// MARK: UITableViewDataSource
 extension HomeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return articles.count
@@ -215,10 +176,44 @@ extension HomeViewController: UITableViewDataSource {
     }
 }
 
+// MARK: Setup
 private extension HomeViewController {
+    private func setupLayout() {
+        view.addSubview(titlePage)
+        view.addSubview(articlesTableView)
+        
+        articlesTableView.delegate = self
+        articlesTableView.dataSource = self
+        
+        // TODO: /////////////////////////////////////////////////////////////////////////
+        let article = Article.init(description: "", title: "", url: "", urlToImage: "https://static.wikia.nocookie.net/lotr/images/9/90/Sauron-2.jpg/revision/latest?cb=20110508182634", author: "", publishedAt: "")
+        let article2 = Article.init(description: "", title: "", url: "", urlToImage: nil, author: "", publishedAt: "")
+        print("URL: \(article.stringToUrlConverter())")
+        print("URL2: \(article2.stringToUrlConverter())")
+        // TODO: ///////////////////////////////////////////////////////////////////////
+    }
+    
+    private func setupDropDown() {
+        dropDown.anchorView = filterIcon
+        dropDown.dataSource = [LocalizedStrings.sortByNewest, LocalizedStrings.sortByPopularity, LocalizedStrings.sortByRelevancy]
+    }
+    
+    private func setupNavigationController() {
+        navigationController?.navigationBar.tintColor = Colors.navigationBarColor
+        
+        navigationItem.leftBarButtonItem = filterIcon
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(didTapSearch))
+    }
+}
+
+// MARK: Factory
+private extension HomeViewController {
+    // TODO: TableView kan een reusable view zijn. In HomeViewController en SearchViewController worden dezelfde TableView gebruikt.
     func makeTableView() -> UITableView {
         let tableView = UITableView()
         tableView.layer.cornerRadius = 10
+        tableView.estimatedRowHeight = 75
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.register(ArticleCell.self, forCellReuseIdentifier: Constants.articleCellIndentifier)
         return tableView
     }
@@ -239,8 +234,36 @@ private extension HomeViewController {
     func makeCustomUIBarButtonItem(iconID: String) -> UIBarButtonItem {
         let filterButton = UIButton(type: .custom)
         filterButton.setImage(UIImage(named: iconID), for: .normal)
-        filterButton.addTarget(self, action: #selector(handleFilterIcon), for: .touchUpInside)
+        filterButton.addTarget(self, action: #selector(didTapFilter), for: .touchUpInside)
         
         return UIBarButtonItem(customView: filterButton)
+    }
+    
+    func makeDropDown() -> DropDown {
+        let dropDown = DropDown()
+        dropDown.cornerRadius = 5
+        
+        return dropDown
+    }
+}
+
+// MARK: User actions
+@objc extension HomeViewController {
+    private func didTapSearch() {
+        navigationController?.pushViewController(SearchViewController(), animated: true)
+    }
+    
+    private func didTapReload() {
+        // TODO: Wanneer de gebruiker sorting preference opgeslagen wordt moet die hier gegeven worden bij sortingService.sortBy(index: Int)
+        getAllNewsArticles(topic: nil, sortBy: sortingService.sortBy())
+    }
+    
+    private func didTapFilter() {
+        dropDown.show()
+    }
+    
+    // TODO: 
+    private func didTapRefresh(_ sender: AnyObject) {
+        print("Refresh data")
     }
 }
