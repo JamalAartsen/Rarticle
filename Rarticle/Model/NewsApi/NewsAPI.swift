@@ -14,15 +14,18 @@ class NewsApi: INewsAPI {
     private let baseTopic = "lord of the rings"
     private let totalArticles = 10
     
-    func getAllNewsArticles(topic: String?) async throws -> Response {
+    // TODO: Vragen of ik het filteren op de juiste manier gedaan hebt.
+    func getAllNewsArticles(topic: String?, sortBy: String) async throws -> Response {
         let queryItems = [
             URLQueryItem(name: "q", value: topic ?? baseTopic),
             URLQueryItem(name: "apikey", value: apiKey),
-            URLQueryItem(name: "pageSize", value: "\(totalArticles)")
+            URLQueryItem(name: "pageSize", value: "\(totalArticles)"),
+            URLQueryItem(name: "sortBy", value: sortBy)
         ]
         let (data, _) = try await session.data(from: URL(string: .createComplicatedUrl(scheme: scheme, host: baseUrl, path: NewsAPIEndpoints.everythingEndpoint, queryItems: queryItems))!)
         let articles = try JSONDecoder().decode(Response.self, from: data)
-            
+        
+        print("\(sortBy)")
         
         return articles
     }

@@ -24,6 +24,7 @@ class SearchViewController: UIViewController {
     }
     
     @Injected var newsRepository: NewsRepository
+    @Injected var sortingService: SortingService
     
     override func viewDidLoad() {
         setupLayout()
@@ -31,10 +32,10 @@ class SearchViewController: UIViewController {
         setUpNavigationController()
     }
     
-    private func getArticlesByTopic(topic: String?) {
+    private func getArticlesByTopic(topic: String?, sortBy: String) {
         Task {
             do {
-                articles = try await newsRepository.getAllNewsArticles(topic: topic).articles
+                articles = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy).articles
                 searchArticlesTableView.showSpinner(showSpinner: false)
                 searchArticlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
             }
@@ -99,7 +100,8 @@ class SearchViewController: UIViewController {
     
     @objc private func retryReloadTableView() {
         searchArticlesTableView.showSpinner(showSpinner: true)
-        getArticlesByTopic(topic: nil)
+        // TODO: Deze moet een bepaalde index and topic hebben
+        getArticlesByTopic(topic: nil, sortBy: sortingService.sortBy())
     }
     
 }
@@ -165,7 +167,7 @@ extension SearchViewController: UITableViewDataSource {
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        getArticlesByTopic(topic: searchBar.text)
+        getArticlesByTopic(topic: searchBar.text, sortBy: sortingService.sortBy())
         searchArticlesTableView.showSpinner(showSpinner: true)
     }
 }

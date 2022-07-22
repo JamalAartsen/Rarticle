@@ -10,6 +10,8 @@ import EasyPeasy
 import Resolver
 import DropDown
  
+
+// TODO: nsuserdefaults voor sorting values
 class HomeViewController: UIViewController {
     
     private lazy var articlesTableView: UITableView = makeTableView()
@@ -28,6 +30,7 @@ class HomeViewController: UIViewController {
     }
     
     @Injected var newsRepository: NewsRepository
+    @Injected var sortingService: SortingService
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +44,7 @@ class HomeViewController: UIViewController {
         setupNavigationController()
         setupConstraints()
         setupPullToRefreshTableview()
-        getAllNewsArticles(topic: nil)
+        getAllNewsArticles(topic: nil, sortBy: sortingService.sortBy())
     }
         
     private func setupLayout() {
@@ -62,7 +65,8 @@ class HomeViewController: UIViewController {
         // TODO: ///////////////////////////////////////////////////////////////////////
         
         dropDown.anchorView = filterIcon
-        dropDown.dataSource = [LocalizedStrings.filterTitleByAZ, LocalizedStrings.filterTitleByZA]
+        // TODO: In Localizestrings doen
+        dropDown.dataSource = ["Sort by newest", "Sort by popularity", "Sort by relevancy"]
     }
     
     private func setupNavigationController() {
@@ -104,13 +108,14 @@ class HomeViewController: UIViewController {
     
     @objc private func retryReloadTableView() {
         articlesTableView.showSpinner(showSpinner: true)
-        getAllNewsArticles(topic: nil)
+        // TODO: Deze moet een bepaalde sorting index hebben
+        getAllNewsArticles(topic: nil, sortBy: sortingService.sortBy())
     }
     
-    private func getAllNewsArticles(topic: String?) {
+    private func getAllNewsArticles(topic: String?, sortBy: String) {
         Task {
             do {
-                articles = try await newsRepository.getAllNewsArticles(topic: topic).articles
+                articles = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy).articles
                 articlesTableView.showSpinner(showSpinner: false)
                 articlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
             }
@@ -135,15 +140,7 @@ class HomeViewController: UIViewController {
     
     private func handleDropDownSelection() {
         dropDown.selectionAction = { (index: Int, item: String) in
-            self.articles = self.articles.sortingByTitle(index: index)
-//            switch index {
-//            case 0:
-//                self.articles = self.articles.sorting(by: Array<Article>.SortingType.TITLE)
-//            case 1:
-//                self.articles.sorting(by: Array<Article>.SortingType.DATE)
-//            default:
-//                print("")
-//            }
+            self.getAllNewsArticles(topic: nil, sortBy: self.sortingService.sortBy(index: index))
         }
     }
     

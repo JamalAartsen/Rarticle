@@ -27,6 +27,7 @@
 		C64F7747288015C40027C058 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64F7746288015C40027C058 /* Colors.swift */; };
 		C65961D128893CB200215A25 /* RButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65961D028893CB200215A25 /* RButton.swift */; };
 		C65961D328894B6100215A25 /* RAlertDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65961D228894B6100215A25 /* RAlertDialog.swift */; };
+		C65961DC288A7A0A00215A25 /* SortingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65961DB288A7A0A00215A25 /* SortingService.swift */; };
 		C65B0219287D37830007FB08 /* NewsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65B0218287D37830007FB08 /* NewsRepository.swift */; };
 		C65B021B287D37B20007FB08 /* INewsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65B021A287D37B20007FB08 /* INewsAPI.swift */; };
 		C65B021E287D4C3E0007FB08 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C65B0220287D4C3E0007FB08 /* Localizable.strings */; };
@@ -65,6 +66,7 @@
 		C64F7746288015C40027C058 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		C65961D028893CB200215A25 /* RButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RButton.swift; sourceTree = "<group>"; };
 		C65961D228894B6100215A25 /* RAlertDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAlertDialog.swift; sourceTree = "<group>"; };
+		C65961DB288A7A0A00215A25 /* SortingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingService.swift; sourceTree = "<group>"; };
 		C65B0218287D37830007FB08 /* NewsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsRepository.swift; sourceTree = "<group>"; };
 		C65B021A287D37B20007FB08 /* INewsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = INewsAPI.swift; sourceTree = "<group>"; };
 		C65B021F287D4C3E0007FB08 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -160,11 +162,11 @@
 		C63148CC2872D5EE00F7B393 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				C63148CD2872D60C00F7B393 /* NewsCatcherApi.swift */,
+				C65961DA2889B7CB00215A25 /* Protocols */,
+				C65961D92889B7C000215A25 /* NewsCatcherApi */,
+				C65961D82889B7B400215A25 /* NewsApi */,
+				C65961D72889B7A700215A25 /* Repositories */,
 				C6F9E744287C5FEF006826CD /* APIServices+Injection.swift */,
-				C65B0218287D37830007FB08 /* NewsRepository.swift */,
-				C65B021A287D37B20007FB08 /* INewsAPI.swift */,
-				C6CE583128858B8F0098EEBF /* NewsAPI.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -183,6 +185,7 @@
 			children = (
 				C62B518C2887EEC100EC812E /* DateFormatterService.swift */,
 				C62B51922887F69B00EC812E /* URLLinkService.swift */,
+				C65961DB288A7A0A00215A25 /* SortingService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -201,6 +204,38 @@
 				C62B519428887B2400EC812E /* SearchViewController.swift */,
 			);
 			path = Search;
+			sourceTree = "<group>";
+		};
+		C65961D72889B7A700215A25 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				C65B0218287D37830007FB08 /* NewsRepository.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		C65961D82889B7B400215A25 /* NewsApi */ = {
+			isa = PBXGroup;
+			children = (
+				C6CE583128858B8F0098EEBF /* NewsAPI.swift */,
+			);
+			path = NewsApi;
+			sourceTree = "<group>";
+		};
+		C65961D92889B7C000215A25 /* NewsCatcherApi */ = {
+			isa = PBXGroup;
+			children = (
+				C63148CD2872D60C00F7B393 /* NewsCatcherApi.swift */,
+			);
+			path = NewsCatcherApi;
+			sourceTree = "<group>";
+		};
+		C65961DA2889B7CB00215A25 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				C65B021A287D37B20007FB08 /* INewsAPI.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		C691BBE42875C347002FDBA1 /* Controller */ = {
@@ -374,6 +409,7 @@
 				C65B021B287D37B20007FB08 /* INewsAPI.swift in Sources */,
 				C65B0222287D4F6E0007FB08 /* LocalizedStrings.swift in Sources */,
 				C64F7747288015C40027C058 /* Colors.swift in Sources */,
+				C65961DC288A7A0A00215A25 /* SortingService.swift in Sources */,
 				C63148D12872D88400F7B393 /* Response.swift in Sources */,
 				C6F9E74E287CA5EC006826CD /* DetailsViewController.swift in Sources */,
 				C6F9E74B287C70B2006826CD /* CGColor+Extensions.swift in Sources */,
