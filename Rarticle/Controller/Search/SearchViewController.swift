@@ -16,6 +16,7 @@ class SearchViewController: UIViewController {
     private lazy var searchArticlesTableView: RTableView = .makeTableView()
     private lazy var searchBar: UISearchBar = makeSearchBar()
     private lazy var retryButton: UIButton = .makeButton(backgroundColor: Colors.buttonBackgroundcolor!, cornerRadius: 5, title: LocalizedStrings.retry)
+    private lazy var faButton: UIButton = makeFloatingActionButton()
     
     private var articles: [Article] = [] {
         didSet {
@@ -60,6 +61,12 @@ class SearchViewController: UIViewController {
         )
         
         retryButton.easy.layout(Width(100))
+        faButton.easy.layout(
+            Width(60),
+            Height(60),
+            Bottom(16),
+            Right(16)
+        )
     }
     
     // MARK: Show alert dialog
@@ -153,6 +160,15 @@ private extension SearchViewController {
         
         return searchBar
     }
+    
+    func makeFloatingActionButton() -> UIButton {
+        let faButton = UIButton()
+        faButton.layer.masksToBounds = true
+        faButton.layer.cornerRadius = 30
+        faButton.backgroundColor = Colors.buttonBackgroundcolor
+        
+        return faButton
+    }
 }
 
 // MARK: Setup
@@ -164,6 +180,7 @@ private extension SearchViewController {
         
         view.backgroundColor = Colors.backgroundArticlesScreenColor
         view.addSubview(searchArticlesTableView)
+        view.addSubview(faButton)
         
         searchBar.sizeToFit()
         searchBar.becomeFirstResponder()

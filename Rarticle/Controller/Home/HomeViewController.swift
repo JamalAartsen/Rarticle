@@ -181,6 +181,7 @@ private extension HomeViewController {
     private func setupLayout() {
         view.addSubview(titlePage)
         view.addSubview(articlesTableView)
+        view.backgroundColor = Colors.backgroundArticlesScreenColor
         
         articlesTableView.delegate = self
         articlesTableView.dataSource = self
