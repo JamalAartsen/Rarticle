@@ -15,7 +15,7 @@ import DropDown
 class HomeViewController: UIViewController {
     
     // MARK: Properties
-    private lazy var articlesTableView: UITableView = makeTableView()
+    private lazy var articlesTableView: RTableView = .makeTableView(cornerRadius: 10)
     private lazy var titlePage: UILabel = makeTitleLabel()
     private lazy var retryButton: UIButton = .makeButton(backgroundColor: Colors.buttonBackgroundcolor!, cornerRadius: 5, title: LocalizedStrings.retry)
     private lazy var filterIcon: UIBarButtonItem = makeCustomUIBarButtonItem(iconID: Constants.filterIconID)
@@ -208,27 +208,12 @@ private extension HomeViewController {
 
 // MARK: Factory
 private extension HomeViewController {
-    // TODO: TableView kan een reusable view zijn. In HomeViewController en SearchViewController worden dezelfde TableView gebruikt.
-    func makeTableView() -> UITableView {
-        let tableView = UITableView()
-        tableView.layer.cornerRadius = 10
-        tableView.estimatedRowHeight = 75
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.register(ArticleCell.self, forCellReuseIdentifier: Constants.articleCellIndentifier)
-        return tableView
-    }
     
     func makeTitleLabel() -> UILabel {
         let titlePage = UILabel()
         titlePage.text = LocalizedStrings.appTitle
         titlePage.font = .systemFont(ofSize: 30, weight: .bold)
         return titlePage
-    }
-    
-    func makeSearchBar() -> UISearchBar {
-        let searchBar = UISearchBar()
-        
-        return searchBar
     }
     
     func makeCustomUIBarButtonItem(iconID: String) -> UIBarButtonItem {

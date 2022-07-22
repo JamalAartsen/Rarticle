@@ -13,7 +13,7 @@ import Resolver
 class SearchViewController: UIViewController {
     
     // MARK: Properties
-    private lazy var searchArticlesTableView: UITableView = makeTableView()
+    private lazy var searchArticlesTableView: RTableView = .makeTableView()
     private lazy var searchBar: UISearchBar = makeSearchBar()
     private lazy var retryButton: UIButton = .makeButton(backgroundColor: Colors.buttonBackgroundcolor!, cornerRadius: 5, title: LocalizedStrings.retry)
     
@@ -147,16 +147,7 @@ extension SearchViewController: UISearchBarDelegate {
 }
 
 // MARK: Factory
-private extension SearchViewController {
-    func makeTableView() -> UITableView {
-        let tableView = UITableView()
-        tableView.estimatedRowHeight = 75
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.register(ArticleCell.self, forCellReuseIdentifier: Constants.articleCellIndentifier)
-        
-        return tableView
-    }
-    
+private extension SearchViewController {    
     func makeSearchBar() -> UISearchBar {
         let searchBar = UISearchBar()
         
