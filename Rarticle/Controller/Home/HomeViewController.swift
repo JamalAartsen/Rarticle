@@ -186,10 +186,10 @@ private extension HomeViewController {
         articlesTableView.dataSource = self
         
         // TODO: /////////////////////////////////////////////////////////////////////////
-        let article = Article.init(description: "", title: "", url: "", urlToImage: "https://static.wikia.nocookie.net/lotr/images/9/90/Sauron-2.jpg/revision/latest?cb=20110508182634", author: "", publishedAt: "")
-        let article2 = Article.init(description: "", title: "", url: "", urlToImage: nil, author: "", publishedAt: "")
-        print("URL: \(article.stringToUrlConverter())")
-        print("URL2: \(article2.stringToUrlConverter())")
+//        let article = Article.init(description: "", title: "", url: "", urlToImage: "https://static.wikia.nocookie.net/lotr/images/9/90/Sauron-2.jpg/revision/latest?cb=20110508182634", author: "", publishedAt: "")
+//        let article2 = Article.init(description: "", title: "", url: "", urlToImage: nil, author: "", publishedAt: "")
+//        print("URL: \(article.stringToUrlConverter())")
+//        print("URL2: \(article2.stringToUrlConverter())")
         // TODO: ///////////////////////////////////////////////////////////////////////
     }
     

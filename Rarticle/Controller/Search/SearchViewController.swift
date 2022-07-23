@@ -180,7 +180,6 @@ private extension SearchViewController {
     func makeFloatingActionButton() -> UIButton {
         let faButton = UIButton(type: .custom)
         let image = UIImage(named: Constants.filterIconID)
-        
         faButton.layer.cornerRadius = 30
         faButton.backgroundColor = Colors.buttonBackgroundcolor
         

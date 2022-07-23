@@ -14,7 +14,7 @@ import SafariServices
 class DetailsViewController: UIViewController {
     
     // MARK: Properties
-    private let titleArticle: String
+    private let titleArticle: String?
     private let descriptionArticle: String
     private let imageArticle: String?
     private let linkArticle: String
@@ -34,7 +34,7 @@ class DetailsViewController: UIViewController {
     @Injected private var dateFormatterService: DateFormatterService
     @Injected private var urlLinkService: URLLinkService
    
-    internal init(titleArticle: String, descriptionArticle: String, imageArticle: String?, linkArticle: String, author: String?, publishedAt: String, backButtonTitle: String) {
+    internal init(titleArticle: String?, descriptionArticle: String, imageArticle: String?, linkArticle: String, author: String?, publishedAt: String, backButtonTitle: String) {
         self.titleArticle = titleArticle
         self.descriptionArticle = descriptionArticle
         self.imageArticle = imageArticle
@@ -79,6 +79,7 @@ class DetailsViewController: UIViewController {
         scrollView.backgroundColor = Colors.backgroundDetailsScreenColor
         view.addSubview(scrollView)
         
+        // TODO: Put No title into Localization
         titleLabel.text = titleArticle
         descriptionLabel.text = descriptionArticle
         authorPublishedAtLabel.text = "\(author ?? LocalizedStrings.noAuthor) \(dateFormatterService.dateFormatter(date: publishedAt))"
