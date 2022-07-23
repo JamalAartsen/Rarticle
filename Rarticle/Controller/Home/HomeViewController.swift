@@ -19,8 +19,7 @@ class HomeViewController: UIViewController {
     private lazy var titlePage: UILabel = makeTitleLabel()
     private lazy var retryButton: UIButton = .makeButton(backgroundColor: Colors.buttonBackgroundcolor!, cornerRadius: 5, title: LocalizedStrings.retry)
     private lazy var filterIcon: UIBarButtonItem = makeCustomUIBarButtonItem(iconID: Constants.filterIconID)
-    private lazy var dropDown: DropDown = makeDropDown()
-    
+    private lazy var dropDown: RDropDown = .makeDropDown(cornerRadius: 5)
     private let refreshControl = UIRefreshControl()
     
     private var articles: [Article] = [] {
@@ -223,13 +222,6 @@ private extension HomeViewController {
         filterButton.addTarget(self, action: #selector(didTapFilter), for: .touchUpInside)
         
         return UIBarButtonItem(customView: filterButton)
-    }
-    
-    func makeDropDown() -> DropDown {
-        let dropDown = DropDown()
-        dropDown.cornerRadius = 5
-        
-        return dropDown
     }
 }
 

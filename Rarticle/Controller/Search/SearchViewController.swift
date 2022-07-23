@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import EasyPeasy
 import Resolver
+import DropDown
 
 class SearchViewController: UIViewController {
     
@@ -17,6 +18,7 @@ class SearchViewController: UIViewController {
     private lazy var searchBar: UISearchBar = makeSearchBar()
     private lazy var retryButton: UIButton = .makeButton(backgroundColor: Colors.buttonBackgroundcolor!, cornerRadius: 5, title: LocalizedStrings.retry)
     private lazy var faButton: UIButton = makeFloatingActionButton()
+    private lazy var dropDown: RDropDown = .makeDropDown(cornerRadius: 5)
     
     private var articles: [Article] = [] {
         didSet {
@@ -32,8 +34,9 @@ class SearchViewController: UIViewController {
         setupLayout()
         setupConstraints()
         setUpNavigationController()
-        
-        retryButton.addTarget(self, action: #selector(self.didTapReload), for: .touchUpInside)
+        setupDropDown()
+        buttonClicks()
+        handleDropDownSelection()
     }
     
     // MARK: Get Articles
@@ -67,9 +70,15 @@ class SearchViewController: UIViewController {
         faButton.easy.layout(
             Width(60),
             Height(60),
-            Bottom(16),
-            Right(16)
+            Bottom(32),
+            Right(32)
         )
+    }
+    
+    // MARK: Button clicks
+    private func buttonClicks() {
+        retryButton.addTarget(self, action: #selector(self.didTapReload), for: .touchUpInside)
+        faButton.addTarget(self, action: #selector(didTapFilter), for: .touchUpInside)
     }
     
     // MARK: Show alert dialog
@@ -80,12 +89,15 @@ class SearchViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    // MARK: User actions
-    @objc private func didTapReload() {
-        // TODO: Wanneer de retry functie is toegevoegd aan de SearchViewController moet hieronder een topic gegeven worden die de gebruiker gegeven heeft zodat de artikelen geladen worden die de gebruiker wilt. Hiervoor zou NSUserDefaults gebruikt kunnen worden.
-        getArticlesByTopic(topic: searchTopic, sortBy: sortingService.sortBy())
+    // MARK: Handle dropdown
+    private func handleDropDownSelection() {
+        dropDown.selectionAction = { [weak self] (index: Int, item: String) in
+            guard let self = self else { return }
+            guard !self.articles.isEmpty else { return }
+            self.getArticlesByTopic(topic: self.searchTopic, sortBy: self.sortingService.sortBy(index: index))
+        }
     }
-    
+
 }
 
 // MARK: UITableViewDelegate
@@ -166,10 +178,16 @@ private extension SearchViewController {
     }
     
     func makeFloatingActionButton() -> UIButton {
-        let faButton = UIButton()
-        faButton.layer.masksToBounds = true
+        let faButton = UIButton(type: .custom)
+        let image = UIImage(named: Constants.filterIconID)
+        
         faButton.layer.cornerRadius = 30
         faButton.backgroundColor = Colors.buttonBackgroundcolor
+        
+        faButton.setImage(image, for: .normal)
+        faButton.tintColor = .white
+        faButton.layer.shadowRadius = 10
+        faButton.layer.shadowOpacity = 0.3
         
         return faButton
     }
@@ -207,5 +225,21 @@ private extension SearchViewController {
         
         backItem.title = LocalizedStrings.articles
         navigationBar?.topItem?.backBarButtonItem = backItem
+    }
+    
+    private func setupDropDown() {
+        dropDown.anchorView = faButton
+        dropDown.dataSource = [LocalizedStrings.sortByNewest, LocalizedStrings.sortByPopularity, LocalizedStrings.sortByRelevancy]
+    }
+}
+
+// MARK: User actions
+@objc extension SearchViewController {
+    private func didTapReload() {
+        getArticlesByTopic(topic: searchTopic, sortBy: sortingService.sortBy())
+    }
+    
+    private func didTapFilter() {
+        dropDown.show()
     }
 }

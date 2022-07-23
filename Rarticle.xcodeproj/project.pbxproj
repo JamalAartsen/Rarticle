@@ -31,6 +31,7 @@
 		C65B021B287D37B20007FB08 /* INewsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65B021A287D37B20007FB08 /* INewsAPI.swift */; };
 		C65B021E287D4C3E0007FB08 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C65B0220287D4C3E0007FB08 /* Localizable.strings */; };
 		C65B0222287D4F6E0007FB08 /* LocalizedStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65B0221287D4F6E0007FB08 /* LocalizedStrings.swift */; };
+		C686F20E288C5D350070C6C1 /* RDropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = C686F20D288C5D350070C6C1 /* RDropDown.swift */; };
 		C691BC09287C3E5D002FDBA1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C691BC08287C3E5D002FDBA1 /* Constants.swift */; };
 		C6CE583228858B8F0098EEBF /* NewsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CE583128858B8F0098EEBF /* NewsAPI.swift */; };
 		C6F9E743287C5FA3006826CD /* AppDelegate+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F9E742287C5FA3006826CD /* AppDelegate+Injection.swift */; };
@@ -69,6 +70,7 @@
 		C65B021A287D37B20007FB08 /* INewsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = INewsAPI.swift; sourceTree = "<group>"; };
 		C65B021F287D4C3E0007FB08 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C65B0221287D4F6E0007FB08 /* LocalizedStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedStrings.swift; sourceTree = "<group>"; };
+		C686F20D288C5D350070C6C1 /* RDropDown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RDropDown.swift; sourceTree = "<group>"; };
 		C691BC08287C3E5D002FDBA1 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = /Users/jamalaartsen/Desktop/IOSApplications/Rarticle/Rarticle/Constants.swift; sourceTree = "<absolute>"; };
 		C6CE583128858B8F0098EEBF /* NewsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsAPI.swift; sourceTree = "<group>"; };
 		C6F9E742287C5FA3006826CD /* AppDelegate+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Injection.swift"; sourceTree = "<group>"; };
@@ -269,6 +271,7 @@
 				C65961D028893CB200215A25 /* RButton.swift */,
 				C65961D228894B6100215A25 /* RAlertDialog.swift */,
 				C65961E0288B179F00215A25 /* RTableView.swift */,
+				C686F20D288C5D350070C6C1 /* RDropDown.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -428,6 +431,7 @@
 				C6F9E74B287C70B2006826CD /* CGColor+Extensions.swift in Sources */,
 				C691BC09287C3E5D002FDBA1 /* Constants.swift in Sources */,
 				C65B0219287D37830007FB08 /* NewsRepository.swift in Sources */,
+				C686F20E288C5D350070C6C1 /* RDropDown.swift in Sources */,
 				C62B51912887F2EE00EC812E /* ControllerServices+Injection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
