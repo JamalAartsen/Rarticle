@@ -23,6 +23,7 @@ class SearchViewController: UIViewController {
             searchArticlesTableView.reloadData()
         }
     }
+    private var searchTopic: String? = nil
     
     @Injected private var newsRepository: NewsRepository
     @Injected private var sortingService: SortingService
@@ -31,6 +32,8 @@ class SearchViewController: UIViewController {
         setupLayout()
         setupConstraints()
         setUpNavigationController()
+        
+        retryButton.addTarget(self, action: #selector(self.didTapReload), for: .touchUpInside)
     }
     
     // MARK: Get Articles
@@ -80,7 +83,7 @@ class SearchViewController: UIViewController {
     // MARK: User actions
     @objc private func didTapReload() {
         // TODO: Wanneer de retry functie is toegevoegd aan de SearchViewController moet hieronder een topic gegeven worden die de gebruiker gegeven heeft zodat de artikelen geladen worden die de gebruiker wilt. Hiervoor zou NSUserDefaults gebruikt kunnen worden.
-        getArticlesByTopic(topic: nil, sortBy: sortingService.sortBy())
+        getArticlesByTopic(topic: searchTopic, sortBy: sortingService.sortBy())
     }
     
 }
@@ -149,6 +152,7 @@ extension SearchViewController: UITableViewDataSource {
 // MARK: UISearchBarDelegate
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchTopic = searchBar.text
         getArticlesByTopic(topic: searchBar.text, sortBy: sortingService.sortBy())
     }
 }
