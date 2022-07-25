@@ -27,6 +27,7 @@ class HomeViewController: UIViewController {
             articlesTableView.reloadData()
         }
     }
+    private var pagePagination = 1
     
     @Injected private var newsRepository: NewsRepository
     @Injected private var sortingService: SortingService
@@ -43,10 +44,10 @@ class HomeViewController: UIViewController {
         setupNavigationController()
         setupConstraints()
         setupPullToRefreshTableview()
-        getAllNewsArticles(topic: nil, sortBy: sortingService.sortBy())
+        getArticles(topic: nil)
     }
     
-    // MARK Setup constraints
+    // MARK: Setup constraints
     private func setupConstraints() {
         articlesTableView.easy.layout([
             Top(8).to(titlePage),
@@ -75,14 +76,38 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: Get articles
-    private func getAllNewsArticles(topic: String?, sortBy: String) {
+    private func getAllNewsArticles(topic: String?, sortBy: String = Constants.publishedAt, page: Int = 1) {
         articlesTableView.showSpinner(showSpinner: true)
         Task {
             do {
-                articles = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy).articles
+                articles = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy, page: page).articles
                 articlesTableView.showSpinner(showSpinner: false)
                 articlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
             }
+            catch let error {
+                showAlertDialog(error: error.localizedDescription)
+                articlesTableView.backgroundView = retryButton
+                articlesTableView.backgroundView?.easy.layout(Center())
+            }
+        }
+    }
+    
+    private func getArticles(topic: String?, sortBy: String = Constants.publishedAt, page: Int = 1, isPagination: Bool = false) {
+        articlesTableView.showSpinner(showSpinner: true)
+        Task {
+            do {
+                let articlesAPI = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy, page: page).articles
+                
+                if isPagination {
+                    articles.append(contentsOf: articlesAPI)
+                } else {
+                    articles = articlesAPI
+                }
+                
+                articlesTableView.showSpinner(showSpinner: false)
+                articlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
+            }
+            
             catch let error {
                 showAlertDialog(error: error.localizedDescription)
                 articlesTableView.backgroundView = retryButton
@@ -99,12 +124,11 @@ class HomeViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    // Code gaf een reference cycle. ViewController wijst naar dropDown (omdat dropDown een variabele is in je state). ropDown wijst naar ViewController (door de self referentie in het completion block)
     // MARK: Handle dropdown
     private func handleDropDownSelection() {
         dropDown.selectionAction = { [weak self] (index: Int, item: String) in
             guard let self = self else { return }
-            self.getAllNewsArticles(topic: nil, sortBy: self.sortingService.sortBy(index: index))
+            self.getArticles(topic: nil, sortBy: self.sortingService.sortBy(index: index))
         }
     }
     
@@ -167,10 +191,22 @@ extension HomeViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cell.alpha = 0
-        
-        UIView.animate(withDuration: 0.5, delay: 0.05 * Double(indexPath.row)) {
-            cell.alpha = 1
+//        cell.alpha = 0
+//
+//        UIView.animate(withDuration: 0.5, delay: 0.05 * Double(indexPath.row)) {
+//            cell.alpha = 1
+//        }
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let height = scrollView.frame.size.height
+        let contentYoffset = scrollView.contentOffset.y
+        let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+
+        if distanceFromBottom < height {
+            print("end!")
+            pagePagination += 1
+            getArticles(topic: nil, page: pagePagination, isPagination: true)
         }
     }
 }
@@ -233,7 +269,7 @@ private extension HomeViewController {
     
     private func didTapReload() {
         // TODO: Wanneer de gebruiker sorting preference opgeslagen wordt moet die hier gegeven worden bij sortingService.sortBy(index: Int)
-        getAllNewsArticles(topic: nil, sortBy: sortingService.sortBy())
+        getArticles(topic: nil)
     }
     
     private func didTapFilter() {

@@ -17,4 +17,5 @@ struct Constants {
     static let beforeDateFormat = "yyyy-MM-dd HH:mm:ss"
     static let afterDateFormat = "dd-MM-YYYY"
     static let loadImageFromUrl = "loadImageFromUrl"
+    static let publishedAt = "publishedAt"
 }

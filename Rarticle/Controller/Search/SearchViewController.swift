@@ -40,16 +40,15 @@ class SearchViewController: UIViewController {
     }
     
     // MARK: Get Articles
-    private func getArticlesByTopic(topic: String?, sortBy: String) {
+    private func getArticlesByTopic(topic: String?, sortBy: String = Constants.publishedAt, page: Int = 1) {
         searchArticlesTableView.showSpinner(showSpinner: true)
         Task {
             do {
-                articles = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy).articles
+                articles = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy, page: page).articles
                 searchArticlesTableView.showSpinner(showSpinner: false)
                 searchArticlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
             }
             catch let error {
-                // TODO: Catch word niet getriggered als de internet weg valt na dat alle artikelen al geladen zijn in de HomeViewController. Doe het volgende om dit te laten gebeuren: Run de app -> Laat alle artikelen laden in de HomeViewController -> Doe het internet uit -> Ga naar SearchViewController -> Typ een topic in en klik op zoeken (Enter op emulator). Deze catch wordt wel getriggered als je het volgende doet: Run de app zonder internet -> Ga naar SearchViewController -> Typ een topic in en klik op zoeken (Enter op emulator)
                 searchArticlesTableView.backgroundView = retryButton
                 searchArticlesTableView.backgroundView?.easy.layout(Center())
                 showAlertDialog(error: error.localizedDescription)
@@ -165,7 +164,7 @@ extension SearchViewController: UITableViewDataSource {
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchTopic = searchBar.text
-        getArticlesByTopic(topic: searchBar.text, sortBy: sortingService.sortBy())
+        getArticlesByTopic(topic: searchBar.text)
     }
 }
 
@@ -235,7 +234,7 @@ private extension SearchViewController {
 // MARK: User actions
 @objc extension SearchViewController {
     private func didTapReload() {
-        getArticlesByTopic(topic: searchTopic, sortBy: sortingService.sortBy())
+        getArticlesByTopic(topic: searchTopic)
     }
     
     private func didTapFilter() {
