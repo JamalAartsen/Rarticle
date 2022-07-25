@@ -27,6 +27,7 @@ class SearchViewController: UIViewController {
     }
     private var searchTopic: String? = nil
     private var pagePagination = 1
+    private var dropDownIndex = 0
     
     @Injected private var newsRepository: NewsRepository
     @Injected private var sortingService: SortingService
@@ -47,7 +48,7 @@ class SearchViewController: UIViewController {
             do {
                 let articlesAPI = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy, page: page).articles
                 
-                articles.isPagination(isPagination: true, articles: articlesAPI)
+                articles.isPagination(isPagination: isPagination, articles: articlesAPI)
                 searchArticlesTableView.showSpinner(showSpinner: false)
                 searchArticlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
             }
@@ -96,6 +97,8 @@ class SearchViewController: UIViewController {
         dropDown.selectionAction = { [weak self] (index: Int, item: String) in
             guard let self = self else { return }
             guard !self.articles.isEmpty else { return }
+            self.dropDownIndex = index
+            self.pagePagination = 1
             self.getArticlesByTopic(topic: self.searchTopic, sortBy: self.sortingService.sortBy(index: index))
         }
     }
@@ -168,9 +171,8 @@ extension SearchViewController: UITableViewDataSource {
         let distanceFromBottom = scrollView.contentSize.height - contentYoffset
 
         if distanceFromBottom < height {
-            print("end!")
             pagePagination += 1
-            getArticlesByTopic(topic: searchTopic, page: pagePagination, isPagination: true)
+            getArticlesByTopic(topic: searchTopic, sortBy: sortingService.sortBy(index: dropDownIndex), page: pagePagination, isPagination: true)
         }
     }
 }

@@ -28,6 +28,7 @@ class HomeViewController: UIViewController {
         }
     }
     private var pagePagination = 1
+    private var dropDownIndex = 0
     
     @Injected private var newsRepository: NewsRepository
     @Injected private var sortingService: SortingService
@@ -98,7 +99,7 @@ class HomeViewController: UIViewController {
             do {
                 let articlesAPI = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy, page: page).articles
                 
-                articles.isPagination(isPagination: true, articles: articlesAPI)
+                articles.isPagination(isPagination: isPagination, articles: articlesAPI)
                 articlesTableView.showSpinner(showSpinner: false)
                 articlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
             }
@@ -123,6 +124,8 @@ class HomeViewController: UIViewController {
     private func handleDropDownSelection() {
         dropDown.selectionAction = { [weak self] (index: Int, item: String) in
             guard let self = self else { return }
+            self.dropDownIndex = index
+            self.pagePagination = 1
             self.getArticles(topic: nil, sortBy: self.sortingService.sortBy(index: index))
         }
     }
@@ -199,9 +202,8 @@ extension HomeViewController: UITableViewDataSource {
         let distanceFromBottom = scrollView.contentSize.height - contentYoffset
 
         if distanceFromBottom < height {
-            print("end!")
             pagePagination += 1
-            getArticles(topic: nil, page: pagePagination, isPagination: true)
+            getArticles(topic: nil, sortBy: sortingService.sortBy(index: dropDownIndex), page: pagePagination, isPagination: true)
         }
     }
 }
