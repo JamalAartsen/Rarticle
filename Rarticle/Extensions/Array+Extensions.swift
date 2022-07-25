@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 extension Array {
     subscript(safe index: Int) -> Element? {
@@ -13,6 +14,16 @@ extension Array {
             return nil
         } else {
             return self[index]
+        }
+    }
+}
+
+extension Array where Element == Article {
+    mutating func isPagination(isPagination: Bool, articles: [Article]) {
+        if isPagination {
+            self.append(contentsOf: articles)
+        } else {
+            self = articles
         }
     }
 }

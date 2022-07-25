@@ -79,7 +79,6 @@ class DetailsViewController: UIViewController {
         scrollView.backgroundColor = Colors.backgroundDetailsScreenColor
         view.addSubview(scrollView)
         
-        // TODO: Put No title into Localization
         titleLabel.text = titleArticle
         descriptionLabel.text = descriptionArticle
         authorPublishedAtLabel.text = "\(author ?? LocalizedStrings.noAuthor) \(dateFormatterService.dateFormatter(date: publishedAt))"

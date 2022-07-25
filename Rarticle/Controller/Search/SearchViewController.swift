@@ -26,6 +26,7 @@ class SearchViewController: UIViewController {
         }
     }
     private var searchTopic: String? = nil
+    private var pagePagination = 1
     
     @Injected private var newsRepository: NewsRepository
     @Injected private var sortingService: SortingService
@@ -40,11 +41,13 @@ class SearchViewController: UIViewController {
     }
     
     // MARK: Get Articles
-    private func getArticlesByTopic(topic: String?, sortBy: String = Constants.publishedAt, page: Int = 1) {
+    private func getArticlesByTopic(topic: String?, sortBy: String = Constants.publishedAt, page: Int = 1, isPagination: Bool = false) {
         searchArticlesTableView.showSpinner(showSpinner: true)
         Task {
             do {
-                articles = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy, page: page).articles
+                let articlesAPI = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy, page: page).articles
+                
+                articles.isPagination(isPagination: true, articles: articlesAPI)
                 searchArticlesTableView.showSpinner(showSpinner: false)
                 searchArticlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
             }
@@ -152,10 +155,22 @@ extension SearchViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cell.alpha = 0
-        
-        UIView.animate(withDuration: 0.5, delay: 0.05 * Double(indexPath.row)) {
-            cell.alpha = 1
+//        cell.alpha = 0
+//
+//        UIView.animate(withDuration: 0.5, delay: 0.05 * Double(indexPath.row)) {
+//            cell.alpha = 1
+//        }
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let height = scrollView.frame.size.height
+        let contentYoffset = scrollView.contentOffset.y
+        let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+
+        if distanceFromBottom < height {
+            print("end!")
+            pagePagination += 1
+            getArticlesByTopic(topic: searchTopic, page: pagePagination, isPagination: true)
         }
     }
 }

@@ -98,12 +98,7 @@ class HomeViewController: UIViewController {
             do {
                 let articlesAPI = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy, page: page).articles
                 
-                if isPagination {
-                    articles.append(contentsOf: articlesAPI)
-                } else {
-                    articles = articlesAPI
-                }
-                
+                articles.isPagination(isPagination: true, articles: articlesAPI)
                 articlesTableView.showSpinner(showSpinner: false)
                 articlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
             }

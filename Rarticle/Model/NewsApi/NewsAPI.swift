@@ -13,7 +13,7 @@ class NewsApi: INewsAPI {
     private let scheme = "https"
     private let apiKey = "5d18b3403d1e40b6a3c89cc4e368abed"
     private let baseTopic = "lord of the rings"
-    private let totalArticles = 10
+    private let totalArticles = 2
     
     func getAllNewsArticles(topic: String?, sortBy: String, page: Int) async throws -> Response {
         let queryItems = [
