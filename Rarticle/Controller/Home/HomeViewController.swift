@@ -10,14 +10,12 @@ import EasyPeasy
 import Resolver
 import DropDown
  
-
-// TODO: Misschien NSUserDefaults gebruiken voor het opslaan van de sorting keuze van de gebruiker?
 class HomeViewController: UIViewController {
     
     // MARK: Properties
     private lazy var articlesTableView: RTableView = .makeTableView(cornerRadius: 10)
     private lazy var titlePage: UILabel = makeTitleLabel()
-    private lazy var retryButton: UIButton = .makeButton(backgroundColor: Colors.buttonBackgroundcolor!, cornerRadius: 5, title: LocalizedStrings.retry)
+    private lazy var retryButton: UIButton = .makeButton(backgroundColor: Colors.buttonBackgroundcolor!, cornerRadius: 5)
     private lazy var filterIcon: UIBarButtonItem = makeCustomUIBarButtonItem(iconID: Constants.filterIconID)
     private lazy var dropDown: RDropDown = .makeDropDown(cornerRadius: 5)
     private let refreshControl = UIRefreshControl()
@@ -38,10 +36,10 @@ class HomeViewController: UIViewController {
         
         retryButton.addTarget(self, action: #selector(self.didTapReload), for: .touchUpInside)
         animations()
-        handleDropDownSelection()
         
         setupLayout()
         setupDropDown()
+        setupLocalization()
         setupNavigationController()
         setupConstraints()
         setupPullToRefreshTableview()
@@ -77,29 +75,13 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: Get articles
-    private func getAllNewsArticles(topic: String?, sortBy: String = Constants.publishedAt, page: Int = 1) {
-        articlesTableView.showSpinner(showSpinner: true)
-        Task {
-            do {
-                articles = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy, page: page).articles
-                articlesTableView.showSpinner(showSpinner: false)
-                articlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
-            }
-            catch let error {
-                showAlertDialog(error: error.localizedDescription)
-                articlesTableView.backgroundView = retryButton
-                articlesTableView.backgroundView?.easy.layout(Center())
-            }
-        }
-    }
-    
-    private func getArticles(topic: String?, sortBy: String = Constants.publishedAt, page: Int = 1, isPagination: Bool = false) {
+    private func getArticles(topic: String? = nil, sortBy: String = Constants.publishedAt, page: Int = 1, isPagination: Bool = false) {
         articlesTableView.showSpinner(showSpinner: true)
         Task {
             do {
                 let articlesAPI = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy, page: page).articles
                 
-                articles.isPagination(isPagination: isPagination, articles: articlesAPI)
+                articles.replaceOrAppendCurrentList(isPagination: isPagination, articles: articlesAPI)
                 articlesTableView.showSpinner(showSpinner: false)
                 articlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
             }
@@ -120,16 +102,6 @@ class HomeViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    // MARK: Handle dropdown
-    private func handleDropDownSelection() {
-        dropDown.selectionAction = { [weak self] (index: Int, item: String) in
-            guard let self = self else { return }
-            self.dropDownIndex = index
-            self.pagePagination = 1
-            self.getArticles(topic: nil, sortBy: self.sortingService.sortBy(index: index))
-        }
-    }
-    
     private func setupPullToRefreshTableview() {
         refreshControl.attributedTitle = NSAttributedString(string: "Loading articles")
         refreshControl.addTarget(self, action: #selector(didTapRefresh(_:)), for: .valueChanged)
@@ -142,18 +114,9 @@ extension HomeViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         articlesTableView.deselectRow(at: indexPath, animated: true)
-        
         let article = articles[indexPath.row]
     
-        navigationController?.pushViewController(DetailsViewController(
-            titleArticle: article.title,
-            descriptionArticle: article.description,
-            imageArticle: article.urlToImage,
-            linkArticle: article.url,
-            author: article.author,
-            publishedAt: article.publishedAt,
-            backButtonTitle: LocalizedStrings.articles
-        ), animated: true)
+        didSelectCell(article: article)
     }
         
     func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
@@ -217,18 +180,14 @@ private extension HomeViewController {
         
         articlesTableView.delegate = self
         articlesTableView.dataSource = self
-        
-        // TODO: /////////////////////////////////////////////////////////////////////////
-//        let article = Article.init(description: "", title: "", url: "", urlToImage: "https://static.wikia.nocookie.net/lotr/images/9/90/Sauron-2.jpg/revision/latest?cb=20110508182634", author: "", publishedAt: "")
-//        let article2 = Article.init(description: "", title: "", url: "", urlToImage: nil, author: "", publishedAt: "")
-//        print("URL: \(article.stringToUrlConverter())")
-//        print("URL2: \(article2.stringToUrlConverter())")
-        // TODO: ///////////////////////////////////////////////////////////////////////
     }
     
     private func setupDropDown() {
         dropDown.anchorView = filterIcon
-        dropDown.dataSource = [LocalizedStrings.sortByNewest, LocalizedStrings.sortByPopularity, LocalizedStrings.sortByRelevancy]
+        dropDown.selectionAction = { [weak self] (index: Int, item: String) in
+            // TODO: Enum mee geven + word een domein model + dit pas doen na workshop van Kevin
+            self?.didSelectDropDownItem(index: index)
+        }
     }
     
     private func setupNavigationController() {
@@ -237,6 +196,12 @@ private extension HomeViewController {
         navigationItem.leftBarButtonItem = filterIcon
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(didTapSearch))
     }
+    
+    private func setupLocalization() {
+        retryButton.setTitle(LocalizedStrings.retry, for: .normal)
+        dropDown.dataSource = [LocalizedStrings.sortByNewest, LocalizedStrings.sortByPopularity, LocalizedStrings.sortByRelevancy]
+        titlePage.text = LocalizedStrings.appTitle
+    }
 }
 
 // MARK: Factory
@@ -244,7 +209,6 @@ private extension HomeViewController {
     
     func makeTitleLabel() -> UILabel {
         let titlePage = UILabel()
-        titlePage.text = LocalizedStrings.appTitle
         titlePage.font = .systemFont(ofSize: 30, weight: .bold)
         return titlePage
     }
@@ -259,22 +223,40 @@ private extension HomeViewController {
 }
 
 // MARK: User actions
-@objc extension HomeViewController {
-    private func didTapSearch() {
+private extension HomeViewController {
+    @objc private func didTapSearch() {
         navigationController?.pushViewController(SearchViewController(), animated: true)
     }
     
-    private func didTapReload() {
+    @objc private func didTapReload() {
         // TODO: Wanneer de gebruiker sorting preference opgeslagen wordt moet die hier gegeven worden bij sortingService.sortBy(index: Int)
         getArticles(topic: nil)
     }
     
-    private func didTapFilter() {
+    @objc private func didTapFilter() {
         dropDown.show()
     }
     
     // TODO: 
-    private func didTapRefresh(_ sender: AnyObject) {
+    @objc private func didTapRefresh(_ sender: AnyObject) {
         print("Refresh data")
+    }
+    
+    @objc private func didSelectDropDownItem(index: Int) {
+        dropDownIndex = index
+        pagePagination = 1
+        getArticles(topic: nil, sortBy: sortingService.sortBy(index: index))
+    }
+    
+    private func didSelectCell(article: Article) {
+        navigationController?.pushViewController(DetailsViewController(
+            titleArticle: article.title,
+            descriptionArticle: article.description,
+            imageArticle: article.urlToImage,
+            linkArticle: article.url,
+            author: article.author,
+            publishedAt: article.publishedAt,
+            backButtonTitle: LocalizedStrings.articles
+        ), animated: true)
     }
 }

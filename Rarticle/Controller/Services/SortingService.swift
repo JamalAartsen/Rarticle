@@ -8,6 +8,7 @@
 import Foundation
 
 class SortingService {
+    // TODO: Dit pas doen in de model laag !!!
     func sortBy(index: Int? = 0) -> String {
         switch index {
         case 0:

@@ -91,7 +91,7 @@
 		2107941B321D5B6C6F87D4A6ECBD21A5 /* EasyPeasy.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = EasyPeasy.modulemap; sourceTree = "<group>"; };
 		22A0338DEC14AE76ED0AD35C386863BB /* EasyPeasy-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "EasyPeasy-dummy.m"; sourceTree = "<group>"; };
 		26DFB0FCE509AC96548875D2FD38B225 /* Pods-Rarticle-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Rarticle-acknowledgements.plist"; sourceTree = "<group>"; };
-		2C02222EBBAFE962298F042781C18099 /* Pods-Rarticle */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-Rarticle"; path = Pods_Rarticle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C02222EBBAFE962298F042781C18099 /* Pods_Rarticle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Rarticle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		31B3C95FC7999BE68369B9E15C424B70 /* ReferenceAttribute.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ReferenceAttribute.swift; path = EasyPeasy/ReferenceAttribute.swift; sourceTree = "<group>"; };
 		33BC3DD83D4E2EF554B5974DC754DDB9 /* Resolver.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Resolver.debug.xcconfig; sourceTree = "<group>"; };
 		373E13F6890FDEA9C55CCBFB563612C8 /* UILayoutGuide+Easy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UILayoutGuide+Easy.swift"; path = "EasyPeasy/UILayoutGuide+Easy.swift"; sourceTree = "<group>"; };
@@ -118,7 +118,7 @@
 		9146575CC811201343E7B62F003A8359 /* EasyPeasy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = EasyPeasy.release.xcconfig; sourceTree = "<group>"; };
 		9304FF45B414312C76B30B0F19DB55D0 /* DropDown+Appearance.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "DropDown+Appearance.swift"; path = "DropDown/src/DropDown+Appearance.swift"; sourceTree = "<group>"; };
 		9B6725B782188F18CB76A740433F14E4 /* DropDown */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = DropDown; path = DropDown.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A507C7525B3110394AB0E7FA61C9B20D /* UIView+Easy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIView+Easy.swift"; path = "EasyPeasy/UIView+Easy.swift"; sourceTree = "<group>"; };
 		A6132B7FF42179BBDDE1F17D144AEBA9 /* Pods-Rarticle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Rarticle.debug.xcconfig"; sourceTree = "<group>"; };
 		AB2078876E379F9EF7B6562B78073F99 /* DPDUIView+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "DPDUIView+Extension.swift"; path = "DropDown/helpers/DPDUIView+Extension.swift"; sourceTree = "<group>"; };
@@ -210,7 +210,6 @@
 				A507C7525B3110394AB0E7FA61C9B20D /* UIView+Easy.swift */,
 				80000F8ADCCF66CE4D2AA111957EE381 /* Support Files */,
 			);
-			name = EasyPeasy;
 			path = EasyPeasy;
 			sourceTree = "<group>";
 		};
@@ -219,7 +218,7 @@
 			children = (
 				9B6725B782188F18CB76A740433F14E4 /* DropDown */,
 				8328E6FCAC1E4D4E635FEAE69D63A19E /* EasyPeasy */,
-				2C02222EBBAFE962298F042781C18099 /* Pods-Rarticle */,
+				2C02222EBBAFE962298F042781C18099 /* Pods_Rarticle.framework */,
 				DDFD6E1EE7FB75CC6E6CEB7213F706BD /* Resolver */,
 			);
 			name = Products;
@@ -245,7 +244,6 @@
 				DDE75E6D4EEB701CE8D43D5CDEFA8F6B /* Resources */,
 				53384990ABDE844AA287A91FC767190A /* Support Files */,
 			);
-			name = DropDown;
 			path = DropDown;
 			sourceTree = "<group>";
 		};
@@ -255,7 +253,6 @@
 				5AABE9C1CCAD7B61444F18ADE15B7F92 /* Resolver.swift */,
 				CE13C374AB2AB75CE6BB5DB1C1C50B16 /* Support Files */,
 			);
-			name = Resolver;
 			path = Resolver;
 			sourceTree = "<group>";
 		};
@@ -459,7 +456,7 @@
 			);
 			name = "Pods-Rarticle";
 			productName = Pods_Rarticle;
-			productReference = 2C02222EBBAFE962298F042781C18099 /* Pods-Rarticle */;
+			productReference = 2C02222EBBAFE962298F042781C18099 /* Pods_Rarticle.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		E9F9401E9C74C0C393164FD8D86D0068 /* DropDown */ = {

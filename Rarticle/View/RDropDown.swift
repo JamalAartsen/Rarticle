@@ -18,15 +18,3 @@ extension RDropDown {
         return rDropDown
     }
 }
-
-// TODO: Kan dit? datasource en anchorView hier in?
-//extension RDropDown {
-//    static func makeDropDown(cornerRadius: Int? = 0, items: [String], view: AnchorView) ->RDropDown {
-//        let rDropDown = DropDown()
-//        rDropDown.cornerRadius = CGFloat(cornerRadius!)
-//        rDropDown.dataSource = items
-//        rDropDown.anchorView = view
-//
-//        return rDropDown
-//    }
-//}

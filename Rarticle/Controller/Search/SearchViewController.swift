@@ -16,7 +16,7 @@ class SearchViewController: UIViewController {
     // MARK: Properties
     private lazy var searchArticlesTableView: RTableView = .makeTableView()
     private lazy var searchBar: UISearchBar = makeSearchBar()
-    private lazy var retryButton: UIButton = .makeButton(backgroundColor: Colors.buttonBackgroundcolor!, cornerRadius: 5, title: LocalizedStrings.retry)
+    private lazy var retryButton: UIButton = .makeButton(backgroundColor: Colors.buttonBackgroundcolor!, cornerRadius: 5)
     private lazy var faButton: UIButton = makeFloatingActionButton()
     private lazy var dropDown: RDropDown = .makeDropDown(cornerRadius: 5)
     
@@ -37,8 +37,8 @@ class SearchViewController: UIViewController {
         setupConstraints()
         setUpNavigationController()
         setupDropDown()
+        setupLocalization()
         buttonClicks()
-        handleDropDownSelection()
     }
     
     // MARK: Get Articles
@@ -48,7 +48,7 @@ class SearchViewController: UIViewController {
             do {
                 let articlesAPI = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy, page: page).articles
                 
-                articles.isPagination(isPagination: isPagination, articles: articlesAPI)
+                articles.replaceOrAppendCurrentList(isPagination: isPagination, articles: articlesAPI)
                 searchArticlesTableView.showSpinner(showSpinner: false)
                 searchArticlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
             }
@@ -91,18 +91,6 @@ class SearchViewController: UIViewController {
         alert.addAction(UIAlertAction(title: LocalizedStrings.alertActionTitle, style: .default))
         present(alert, animated: true, completion: nil)
     }
-    
-    // MARK: Handle dropdown
-    private func handleDropDownSelection() {
-        dropDown.selectionAction = { [weak self] (index: Int, item: String) in
-            guard let self = self else { return }
-            guard !self.articles.isEmpty else { return }
-            self.dropDownIndex = index
-            self.pagePagination = 1
-            self.getArticlesByTopic(topic: self.searchTopic, sortBy: self.sortingService.sortBy(index: index))
-        }
-    }
-
 }
 
 // MARK: UITableViewDelegate
@@ -110,18 +98,9 @@ extension SearchViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         searchArticlesTableView.deselectRow(at: indexPath, animated: true)
-        
         let article = articles[indexPath.row]
     
-        navigationController?.pushViewController(DetailsViewController(
-            titleArticle: article.title,
-            descriptionArticle: article.description,
-            imageArticle: article.urlToImage,
-            linkArticle: article.url,
-            author: article.author,
-            publishedAt: article.publishedAt,
-            backButtonTitle: LocalizedStrings.searchResults
-        ), animated: true)
+        didSelectCell(article: article)
     }
     
     func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
@@ -169,6 +148,8 @@ extension SearchViewController: UITableViewDataSource {
         let height = scrollView.frame.size.height
         let contentYoffset = scrollView.contentOffset.y
         let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+        
+        guard !self.articles.isEmpty else { return }
 
         if distanceFromBottom < height {
             pagePagination += 1
@@ -210,7 +191,7 @@ private extension SearchViewController {
 
 // MARK: Setup
 private extension SearchViewController {
-    private func setupLayout() {
+    func setupLayout() {
         searchArticlesTableView.delegate = self
         searchArticlesTableView.dataSource = self
         searchBar.delegate = self
@@ -221,13 +202,12 @@ private extension SearchViewController {
         
         searchBar.sizeToFit()
         searchBar.becomeFirstResponder()
-        searchBar.placeholder = LocalizedStrings.placeholderSearch
         
         searchArticlesTableView.estimatedRowHeight = 75
         searchArticlesTableView.rowHeight = UITableView.automaticDimension
     }
     
-    private func setUpNavigationController() {
+    func setUpNavigationController() {
         let backButtonImage = UIImage(named: Constants.backButtonID)
         let backItem = UIBarButtonItem()
         let navigationBar = navigationController?.navigationBar
@@ -242,19 +222,46 @@ private extension SearchViewController {
         navigationBar?.topItem?.backBarButtonItem = backItem
     }
     
-    private func setupDropDown() {
+    func setupDropDown() {
         dropDown.anchorView = faButton
+        dropDown.selectionAction = { [weak self] (index: Int, item: String) in
+            guard !(self?.articles.isEmpty)! else { return }
+            self?.didSelectDropDownItem(index: index)
+        }
+    }
+    
+    func setupLocalization() {
+        retryButton.setTitle(LocalizedStrings.retry, for: .normal)
+        searchBar.placeholder = LocalizedStrings.placeholderSearch
         dropDown.dataSource = [LocalizedStrings.sortByNewest, LocalizedStrings.sortByPopularity, LocalizedStrings.sortByRelevancy]
     }
 }
 
 // MARK: User actions
-@objc extension SearchViewController {
-    private func didTapReload() {
+private extension SearchViewController {
+    @objc func didTapReload() {
         getArticlesByTopic(topic: searchTopic)
     }
     
-    private func didTapFilter() {
+    @objc func didTapFilter() {
         dropDown.show()
+    }
+    
+    @objc func didSelectDropDownItem(index: Int) {
+        dropDownIndex = index
+        pagePagination = 1
+        getArticlesByTopic(topic: searchTopic, sortBy: sortingService.sortBy(index: index))
+    }
+    
+    func didSelectCell(article: Article) {
+        navigationController?.pushViewController(DetailsViewController(
+            titleArticle: article.title,
+            descriptionArticle: article.description,
+            imageArticle: article.urlToImage,
+            linkArticle: article.url,
+            author: article.author,
+            publishedAt: article.publishedAt,
+            backButtonTitle: LocalizedStrings.searchResults
+        ), animated: true)
     }
 }

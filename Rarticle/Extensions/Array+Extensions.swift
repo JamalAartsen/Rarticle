@@ -19,7 +19,7 @@ extension Array {
 }
 
 extension Array where Element == Article {
-    mutating func isPagination(isPagination: Bool, articles: [Article]) {
+    mutating func replaceOrAppendCurrentList(isPagination: Bool, articles: [Article]) {
         if isPagination {
             self.append(contentsOf: articles)
         } else {

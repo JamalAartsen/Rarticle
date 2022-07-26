@@ -150,7 +150,6 @@
 				C63148CC2872D5EE00F7B393 /* Model */,
 				C63148B82872D54700F7B393 /* AppDelegate.swift */,
 				C6F9E742287C5FA3006826CD /* AppDelegate+Injection.swift */,
-				C63148C62872D54900F7B393 /* Info.plist */,
 			);
 			path = Rarticle;
 			sourceTree = "<group>";
@@ -229,6 +228,7 @@
 			isa = PBXGroup;
 			children = (
 				C63148C32872D54900F7B393 /* LaunchScreen.storyboard */,
+				C63148C62872D54900F7B393 /* Info.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -582,7 +582,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = PB44JK4952;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Rarticle/Info.plist;
+				INFOPLIST_FILE = Rarticle/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Rarticle;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -611,7 +611,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = PB44JK4952;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Rarticle/Info.plist;
+				INFOPLIST_FILE = Rarticle/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Rarticle;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;

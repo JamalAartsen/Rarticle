@@ -8,10 +8,12 @@
 import Foundation
 import Resolver
 
+// Use Case
 class NewsRepository {
     @Injected private var iNewsAPI: INewsAPI
     
+    // TODO: Return articles
     func getAllNewsArticles(topic: String?, sortBy: String, page: Int) async throws -> Response {
-        return try await iNewsAPI.getAllNewsArticles(topic: topic, sortBy: sortBy, page: page)
+        return try await iNewsAPI.FetchData(topic: topic, sortBy: sortBy, page: page)
     }
 }

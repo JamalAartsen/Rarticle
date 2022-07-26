@@ -11,11 +11,10 @@ import UIKit
 typealias RButton = UIButton
 
 extension RButton {
-    static func makeButton(backgroundColor: UIColor, cornerRadius: Int, title: String) -> RButton {
+    static func makeButton(backgroundColor: UIColor, cornerRadius: Int) -> RButton {
         let rButton = UIButton()
         rButton.backgroundColor = backgroundColor
         rButton.layer.cornerRadius = CGFloat(cornerRadius)
-        rButton.setTitle(title, for: .normal)
         
         return rButton
     }

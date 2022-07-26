@@ -14,6 +14,7 @@ import SafariServices
 class DetailsViewController: UIViewController {
     
     // MARK: Properties
+    // TODO: String die url zijn omzetten naar URL. Dit gaat gebeuren in de mappers.
     private let titleArticle: String?
     private let descriptionArticle: String
     private let imageArticle: String?
@@ -27,7 +28,7 @@ class DetailsViewController: UIViewController {
     private lazy var titleLabel: UILabel = makeTitleLabel()
     private lazy var descriptionLabel: UILabel = makeDescriptionLabel()
     private lazy var image: UIImageView = makeImage()
-    private lazy var buttonLink: UIButton = .makeButton(backgroundColor: Colors.buttonBackgroundcolor!, cornerRadius: 5, title: LocalizedStrings.openArticle)
+    private lazy var buttonLink: UIButton = .makeButton(backgroundColor: Colors.buttonBackgroundcolor!, cornerRadius: 5)
     private lazy var shareIcon: UIBarButtonItem = makeShareIcon(iconID: Constants.shareIconID)
     private lazy var authorPublishedAtLabel: UILabel = makeAuthorPublishedAtLabel()
     
@@ -53,6 +54,7 @@ class DetailsViewController: UIViewController {
         setupLayout()
         setupConstraints()
         setUpNavigationController()
+        setupLocalization()
         buttonLink.addTarget(self, action: #selector(self.didTapOnLinkBtn), for: .touchUpInside)
         animations()
     }
@@ -79,7 +81,7 @@ class DetailsViewController: UIViewController {
         scrollView.backgroundColor = Colors.backgroundDetailsScreenColor
         view.addSubview(scrollView)
         
-        titleLabel.text = titleArticle
+        titleLabel.text = titleArticle ?? "No title"
         descriptionLabel.text = descriptionArticle
         authorPublishedAtLabel.text = "\(author ?? LocalizedStrings.noAuthor) \(dateFormatterService.dateFormatter(date: publishedAt))"
         image.image = UIImage(named: Constants.placeHolderImage)
@@ -143,24 +145,8 @@ class DetailsViewController: UIViewController {
         shareIcon.customView?.easy.layout(Size(24))
     }
     
-    private func setUpNavigationController() {
-        let backButtonImage = UIImage(named: Constants.backButtonID)
-        let backItem = UIBarButtonItem()
-        let navigationBar = navigationController?.navigationBar
-        
-        navigationItem.title = LocalizedStrings.detailsViewControllerNavigationTitle
-        navigationItem.rightBarButtonItem = shareIcon
-        
-        navigationBar?.backIndicatorImage = backButtonImage
-        navigationBar?.backIndicatorTransitionMaskImage = backButtonImage
-        
-        backItem.title = backButtonTitle
-        navigationBar?.topItem?.backBarButtonItem = backItem
-    }
-    
     // MARK: User actions
     @objc private func didTapOnLinkBtn() {
-//        urlLinkService.openUrl(link: linkArticle)
         if let url = URL(string: linkArticle) {
             let safariConfiguration = SFSafariViewController.Configuration()
             safariConfiguration.entersReaderIfAvailable = true
@@ -231,5 +217,28 @@ private extension DetailsViewController {
         authorPublishedAtLabel.font = .systemFont(ofSize: 14, weight: .medium)
         
         return authorPublishedAtLabel
+    }
+}
+
+// MARK: Setup
+private extension DetailsViewController {
+    
+    private func setUpNavigationController() {
+        let backButtonImage = UIImage(named: Constants.backButtonID)
+        let backItem = UIBarButtonItem()
+        let navigationBar = navigationController?.navigationBar
+        
+        navigationItem.rightBarButtonItem = shareIcon
+        
+        navigationBar?.backIndicatorImage = backButtonImage
+        navigationBar?.backIndicatorTransitionMaskImage = backButtonImage
+        
+        backItem.title = backButtonTitle
+        navigationBar?.topItem?.backBarButtonItem = backItem
+    }
+    
+    private func setupLocalization() {
+        buttonLink.setTitle(LocalizedStrings.openArticle, for: .normal)
+        navigationItem.title = LocalizedStrings.detailsViewControllerNavigationTitle
     }
 }
