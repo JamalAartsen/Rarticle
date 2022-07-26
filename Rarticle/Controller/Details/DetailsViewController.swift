@@ -83,7 +83,7 @@ class DetailsViewController: UIViewController {
         
         titleLabel.text = titleArticle ?? LocalizedStrings.noTitle
         descriptionLabel.text = descriptionArticle
-        authorPublishedAtLabel.text = "\(author ?? LocalizedStrings.noAuthor) \(dateFormatterService.dateFormatter(date: publishedAt))"
+        authorPublishedAtLabel.text = "\(author ?? LocalizedStrings.noAuthor) \(dateFormatterService.dateFormatter(date: publishedAt))" 
         image.loadFrom(urlAdress: imageArticle, placeholder: Constants.placeHolderImage)
         
         scrollView.addSubview(contentView)

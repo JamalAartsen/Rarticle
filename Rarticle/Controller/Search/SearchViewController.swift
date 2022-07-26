@@ -50,11 +50,13 @@ class SearchViewController: UIViewController {
                 articles.replaceOrAppendCurrentList(isPagination: isPagination, articles: articlesAPI)
                 searchArticlesTableView.showSpinner(showSpinner: false)
                 searchArticlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
+                searchArticlesTableView.tableFooterView = nil
             }
             catch let error {
                 searchArticlesTableView.backgroundView = retryButton
                 searchArticlesTableView.backgroundView?.easy.layout(Center())
                 showAlertDialog(error: error.localizedDescription)
+                searchArticlesTableView.tableFooterView = nil
             }
         }
     }
@@ -151,6 +153,7 @@ extension SearchViewController: UITableViewDataSource {
         guard !self.articles.isEmpty else { return }
 
         if distanceFromBottom < height {
+            searchArticlesTableView.tableFooterView = .makeFooterSpinner(view: view)
             pagePagination += 1
             getArticlesByTopic(topic: searchTopic, sortByIndex: dropDownIndex, page: pagePagination, isPagination: true)
         }

@@ -16,7 +16,7 @@ extension UIImageView {
         }
         
         self.isSkeletonable = true
-        self.showAnimatedSkeleton()
+        self.showAnimatedGradientSkeleton()
         
         DispatchQueue.init(label: Constants.loadImageFromUrl, qos: .userInitiated).async { [weak self] in
             if let imageData = try? Data(contentsOf: url) {

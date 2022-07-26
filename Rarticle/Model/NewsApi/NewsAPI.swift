@@ -7,13 +7,11 @@
 import Foundation
 import Resolver
 
-// TODO: Meestal zou je dus ook geen api hebben waar alle functies bij elkaar zitten, maar meer losse services voor deze losse calls. Deze services (bijv NewsArticlesService) roepen de APIService aan met een bepaalde base url, path en parameters, en handelen dan zelf intern het mappen af
-// TODO: Base api en use cases
 class NewsApi: INewsAPI {
     private var session = URLSession.shared
     private let baseUrl = "newsapi.org"
     private let scheme = "https"
-    private let apiKey = "5d18b3403d1e40b6a3c89cc4e368abed"
+    private let apiKey = "5058511a78c14df4919a209a0e282b5d"
     private let baseTopic = "lord of the rings"
     private let totalArticles = 2
     @Injected private var sortingService: SortingService

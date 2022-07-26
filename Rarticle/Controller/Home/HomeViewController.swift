@@ -87,12 +87,14 @@ class HomeViewController: UIViewController {
                 articles.replaceOrAppendCurrentList(isPagination: isPagination, articles: articlesAPI)
                 articlesTableView.showSpinner(showSpinner: false)
                 articlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
+                articlesTableView.tableFooterView = nil
             }
             
             catch let error {
                 showAlertDialog(error: error.localizedDescription)
                 articlesTableView.backgroundView = retryButton
                 articlesTableView.backgroundView?.easy.layout(Center())
+                articlesTableView.tableFooterView = nil
             }
         }
     }
@@ -168,6 +170,7 @@ extension HomeViewController: UITableViewDataSource {
         let bottomEdge = contentYoffset + height
 
         if bottomEdge >= height {
+            articlesTableView.tableFooterView = .makeFooterSpinner(view: view)
             pagePagination += 1
             getArticles(sortByIndex: dropDownIndex, page: pagePagination, isPagination: true)
         }
