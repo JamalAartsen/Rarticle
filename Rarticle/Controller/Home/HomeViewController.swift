@@ -41,7 +41,7 @@ class HomeViewController: UIViewController {
         setupConstraints()
         setupPullToRefreshTableview()
         buttonClicks()
-        getArticles(topic: nil)
+        getArticles()
     }
     
     // MARK: Setup constraints
@@ -78,11 +78,11 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: Get articles
-    private func getArticles(topic: String? = nil, sortBy: Int = 0, page: Int = 1, isPagination: Bool = false) {
+    private func getArticles(topic: String? = nil, sortByIndex: Int = 0, page: Int = 1, isPagination: Bool = false) {
         articlesTableView.showSpinner(showSpinner: true)
         Task {
             do {
-                let articlesAPI = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy, page: page)
+                let articlesAPI = try await newsRepository.getAllNewsArticles(topic: topic, sortByIndex: sortByIndex, page: page)
                 
                 articles.replaceOrAppendCurrentList(isPagination: isPagination, articles: articlesAPI)
                 articlesTableView.showSpinner(showSpinner: false)
@@ -169,7 +169,7 @@ extension HomeViewController: UITableViewDataSource {
 
         if bottomEdge >= height {
             pagePagination += 1
-            getArticles(topic: nil, sortBy: dropDownIndex, page: pagePagination, isPagination: true)
+            getArticles(sortByIndex: dropDownIndex, page: pagePagination, isPagination: true)
         }
     }
 }
@@ -233,7 +233,7 @@ private extension HomeViewController {
     
     @objc private func didTapReload() {
         // TODO: Wanneer de gebruiker sorting preference opgeslagen wordt moet die hier gegeven worden bij sortingService.sortBy(index: Int)
-        getArticles(topic: nil, sortBy: dropDownIndex)
+        getArticles(sortByIndex: dropDownIndex)
     }
     
     @objc private func didTapFilter() {
@@ -248,7 +248,7 @@ private extension HomeViewController {
     @objc private func didSelectDropDownItem(index: Int) {
         dropDownIndex = index
         pagePagination = 1
-        getArticles(topic: nil, sortBy: index)
+        getArticles(sortByIndex: index)
     }
     
     private func didSelectCell(article: Article) {

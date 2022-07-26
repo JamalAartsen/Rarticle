@@ -41,11 +41,11 @@ class SearchViewController: UIViewController {
     }
     
     // MARK: Get Articles
-    private func getArticlesByTopic(topic: String?, sortBy: Int = 0, page: Int = 1, isPagination: Bool = false) {
+    private func getArticlesByTopic(topic: String?, sortByIndex: Int = 0, page: Int = 1, isPagination: Bool = false) {
         searchArticlesTableView.showSpinner(showSpinner: true)
         Task {
             do {
-                let articlesAPI = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy, page: page)
+                let articlesAPI = try await newsRepository.getAllNewsArticles(topic: topic, sortByIndex: sortByIndex, page: page)
                 
                 articles.replaceOrAppendCurrentList(isPagination: isPagination, articles: articlesAPI)
                 searchArticlesTableView.showSpinner(showSpinner: false)
@@ -152,7 +152,7 @@ extension SearchViewController: UITableViewDataSource {
 
         if distanceFromBottom < height {
             pagePagination += 1
-            getArticlesByTopic(topic: searchTopic, sortBy: dropDownIndex, page: pagePagination, isPagination: true)
+            getArticlesByTopic(topic: searchTopic, sortByIndex: dropDownIndex, page: pagePagination, isPagination: true)
         }
     }
 }
@@ -249,7 +249,7 @@ private extension SearchViewController {
     @objc func didSelectDropDownItem(index: Int) {
         dropDownIndex = index
         pagePagination = 1
-        getArticlesByTopic(topic: searchTopic, sortBy: index)
+        getArticlesByTopic(topic: searchTopic, sortByIndex: index)
     }
     
     func didSelectCell(article: Article) {

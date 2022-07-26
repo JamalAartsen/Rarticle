@@ -12,7 +12,7 @@ import Resolver
 class NewsRepository {
     @Injected private var iNewsAPI: INewsAPI
     
-    func getAllNewsArticles(topic: String?, sortBy: Int, page: Int) async throws -> [Article] {
-        return try await iNewsAPI.FetchData(topic: topic, sortBy: sortBy, page: page)
+    func getAllNewsArticles(topic: String?, sortByIndex: Int, page: Int) async throws -> [Article] {
+        return try await iNewsAPI.FetchData(topic: topic, sortByIndex: sortByIndex, page: page)
     }
 }

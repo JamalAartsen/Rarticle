@@ -15,12 +15,21 @@ extension UIImageView {
             return
         }
         
+        self.isSkeletonable = true
+        self.showAnimatedSkeleton()
+        
         DispatchQueue.init(label: Constants.loadImageFromUrl, qos: .userInitiated).async { [weak self] in
             if let imageData = try? Data(contentsOf: url) {
                 if let loadedImage = UIImage(data: imageData) {
                     DispatchQueue.main.async { [weak self] in
                         self?.image = loadedImage
+                        self?.hideSkeleton()
                     }
+                }
+            } else {
+                DispatchQueue.main.async { [weak self] in
+                    self?.image = UIImage(named: placeholder)
+                    self?.hideSkeleton()
                 }
             }
         }
