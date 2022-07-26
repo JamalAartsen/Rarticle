@@ -46,7 +46,7 @@ class SearchViewController: UIViewController {
         searchArticlesTableView.showSpinner(showSpinner: true)
         Task {
             do {
-                let articlesAPI = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy, page: page).articles
+                let articlesAPI = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy, page: page)
                 
                 articles.replaceOrAppendCurrentList(isPagination: isPagination, articles: articlesAPI)
                 searchArticlesTableView.showSpinner(showSpinner: false)

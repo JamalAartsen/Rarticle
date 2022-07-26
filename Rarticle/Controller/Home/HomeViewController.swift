@@ -34,15 +34,14 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        retryButton.addTarget(self, action: #selector(self.didTapReload), for: .touchUpInside)
         animations()
-        
         setupLayout()
         setupDropDown()
         setupLocalization()
         setupNavigationController()
         setupConstraints()
         setupPullToRefreshTableview()
+        buttonClicks()
         getArticles(topic: nil)
     }
     
@@ -64,6 +63,11 @@ class HomeViewController: UIViewController {
         filterIcon.customView?.easy.layout(Size(24))
     }
     
+    // MARK: Button clicks
+    private func buttonClicks() {
+        retryButton.addTarget(self, action: #selector(self.didTapReload), for: .touchUpInside)
+    }
+    
     // MARK: Animations
     private func animations() {
         titlePage.alpha = 0
@@ -79,7 +83,7 @@ class HomeViewController: UIViewController {
         articlesTableView.showSpinner(showSpinner: true)
         Task {
             do {
-                let articlesAPI = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy, page: page).articles
+                let articlesAPI = try await newsRepository.getAllNewsArticles(topic: topic, sortBy: sortBy, page: page)
                 
                 articles.replaceOrAppendCurrentList(isPagination: isPagination, articles: articlesAPI)
                 articlesTableView.showSpinner(showSpinner: false)
@@ -162,9 +166,9 @@ extension HomeViewController: UITableViewDataSource {
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let height = scrollView.frame.size.height
         let contentYoffset = scrollView.contentOffset.y
-        let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+        let bottomEdge = contentYoffset + height
 
-        if distanceFromBottom < height {
+        if bottomEdge >= height {
             pagePagination += 1
             getArticles(topic: nil, sortBy: sortingService.sortBy(index: dropDownIndex), page: pagePagination, isPagination: true)
         }

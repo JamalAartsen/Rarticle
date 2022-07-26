@@ -25,4 +25,5 @@ struct LocalizedStrings {
     static let sortByNewest = NSLocalizedString("sortByNewest", comment: "Sort by newest")
     static let sortByPopularity = NSLocalizedString("sortByPopularity", comment: "Sort by popularity")
     static let sortByRelevancy = NSLocalizedString("sortByRelevancy", comment: "Sort by relevancy")
+    static let noTitle = NSLocalizedString("noTitle", comment: "No title")
 }
