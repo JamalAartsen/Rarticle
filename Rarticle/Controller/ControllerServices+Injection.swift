@@ -12,6 +12,5 @@ extension Resolver {
         register { DateFormatterService() }
         register { URLLinkService() }
         register { UIApplication.shared }
-        register { SortingService() }
     }
 }

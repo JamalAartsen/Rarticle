@@ -8,7 +8,7 @@
 import Foundation
 
 protocol INewsAPI {
-    func FetchData(topic: String?, sortBy: String, page: Int) async throws -> [Article]
+    func FetchData(topic: String?, sortBy: Int, page: Int) async throws -> [Article]
 }
 
 // TODO: 

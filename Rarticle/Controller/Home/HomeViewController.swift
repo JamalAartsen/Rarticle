@@ -29,7 +29,6 @@ class HomeViewController: UIViewController {
     private var dropDownIndex = 0
     
     @Injected private var newsRepository: NewsRepository
-    @Injected private var sortingService: SortingService
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,7 +78,7 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: Get articles
-    private func getArticles(topic: String? = nil, sortBy: String = Constants.publishedAt, page: Int = 1, isPagination: Bool = false) {
+    private func getArticles(topic: String? = nil, sortBy: Int = 0, page: Int = 1, isPagination: Bool = false) {
         articlesTableView.showSpinner(showSpinner: true)
         Task {
             do {
@@ -170,7 +169,7 @@ extension HomeViewController: UITableViewDataSource {
 
         if bottomEdge >= height {
             pagePagination += 1
-            getArticles(topic: nil, sortBy: sortingService.sortBy(index: dropDownIndex), page: pagePagination, isPagination: true)
+            getArticles(topic: nil, sortBy: dropDownIndex, page: pagePagination, isPagination: true)
         }
     }
 }
@@ -234,7 +233,7 @@ private extension HomeViewController {
     
     @objc private func didTapReload() {
         // TODO: Wanneer de gebruiker sorting preference opgeslagen wordt moet die hier gegeven worden bij sortingService.sortBy(index: Int)
-        getArticles(topic: nil)
+        getArticles(topic: nil, sortBy: dropDownIndex)
     }
     
     @objc private func didTapFilter() {
@@ -249,7 +248,7 @@ private extension HomeViewController {
     @objc private func didSelectDropDownItem(index: Int) {
         dropDownIndex = index
         pagePagination = 1
-        getArticles(topic: nil, sortBy: sortingService.sortBy(index: index))
+        getArticles(topic: nil, sortBy: index)
     }
     
     private func didSelectCell(article: Article) {

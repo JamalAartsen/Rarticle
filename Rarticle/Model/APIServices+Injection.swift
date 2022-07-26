@@ -11,5 +11,6 @@ extension Resolver {
     public static func registerAPIServices() {
         register { NewsRepository() }
         register { NewsApi() as INewsAPI }
+        register { SortingService() }
     }
 }

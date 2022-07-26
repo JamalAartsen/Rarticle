@@ -9,5 +9,5 @@ target 'Rarticle' do
 	pod 'EasyPeasy'
 	pod 'Resolver'
 	pod 'DropDown'
-
+	pod 'SkeletonView'
 end

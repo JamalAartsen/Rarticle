@@ -24,7 +24,6 @@ class ArticleCell: UITableViewCell {
     }
     
     func updateCellView(article: Article) {
-        // TODO: Misschien moet dit anders gedaan. Zo niet dan moet deze string in LocalizedStrings gedaan worden.
         titleLabel.text = article.title ?? LocalizedStrings.noTitle
         descriptionLabel.text = article.description
         articleImage.loadFrom(urlAdress: article.urlToImage, placeholder: Constants.placeHolderImage)

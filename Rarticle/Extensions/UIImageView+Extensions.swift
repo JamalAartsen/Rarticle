@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 extension UIImageView {
     // Can use the library Nuke for this
