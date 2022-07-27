@@ -59,7 +59,7 @@ class DetailsViewController: UIViewController {
         animations()
     }
     
-    // MARK: Properties
+    // MARK: Animations
     private func animations() {
         titleLabel.alpha = 0
         image.alpha = 0
@@ -76,24 +76,7 @@ class DetailsViewController: UIViewController {
         }
     }
     
-    // MARK: Setup
-    private func setupLayout() {
-        scrollView.backgroundColor = Colors.backgroundDetailsScreenColor
-        view.addSubview(scrollView)
-        
-        titleLabel.text = titleArticle ?? LocalizedStrings.noTitle
-        descriptionLabel.text = descriptionArticle ?? LocalizedStrings.noDescription
-        authorPublishedAtLabel.text = "\(author ?? LocalizedStrings.noAuthor) \(dateFormatterService.dateFormatter(date: publishedAt))" 
-        image.loadFrom(urlAdress: imageArticle, placeholder: Constants.placeHolderImage)
-        
-        scrollView.addSubview(contentView)
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(buttonLink)
-        contentView.addSubview(image)
-        contentView.addSubview(descriptionLabel)
-        contentView.addSubview(authorPublishedAtLabel)
-    }
-    
+    // MARK: Setup constraints
     private func setupConstraints() {
         // topMargin = safearea = Top(0).to(view, .topMargin),
         scrollView.easy.layout([
@@ -155,7 +138,6 @@ class DetailsViewController: UIViewController {
         }
     }
         
-    // TODO: Gives errors: https://stackoverflow.com/questions/71946700/uiactivityviewcontroller-and-presentviewcontroller-generating-numerous-errors
     @objc private func didTapShare() {
         let urlArticle = URL(string: linkArticle)
         let text = LocalizedStrings.shareArticleText
@@ -221,6 +203,23 @@ private extension DetailsViewController {
 
 // MARK: Setup
 private extension DetailsViewController {
+    
+    private func setupLayout() {
+        scrollView.backgroundColor = Colors.backgroundDetailsScreenColor
+        view.addSubview(scrollView)
+        
+        titleLabel.text = titleArticle ?? LocalizedStrings.noTitle
+        descriptionLabel.text = descriptionArticle ?? LocalizedStrings.noDescription
+        authorPublishedAtLabel.text = "\(author ?? LocalizedStrings.noAuthor) \(dateFormatterService.dateFormatter(date: publishedAt))"
+        image.loadFrom(urlAdress: imageArticle, placeholder: Constants.placeHolderImage)
+        
+        scrollView.addSubview(contentView)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(buttonLink)
+        contentView.addSubview(image)
+        contentView.addSubview(descriptionLabel)
+        contentView.addSubview(authorPublishedAtLabel)
+    }
     
     private func setUpNavigationController() {
         let backButtonImage = UIImage(named: Constants.backButtonID)

@@ -87,7 +87,9 @@ class HomeViewController: UIViewController {
                 articles.replaceOrAppendCurrentList(isPagination: isPagination, articles: articlesAPI)
                 articlesTableView.showSpinner(showSpinner: false)
                 articlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
+                // TODO: Vragen of dit kan of dat het via een if statement gedaan moet worden
                 articlesTableView.tableFooterView = nil
+                refreshControl.endRefreshing()
             }
             
             catch let error {
@@ -95,6 +97,7 @@ class HomeViewController: UIViewController {
                 articlesTableView.backgroundView = retryButton
                 articlesTableView.backgroundView?.easy.layout(Center())
                 articlesTableView.tableFooterView = nil
+                refreshControl.endRefreshing()
             }
         }
     }
@@ -105,12 +108,6 @@ class HomeViewController: UIViewController {
         alert.message = error
         alert.addAction(UIAlertAction(title: LocalizedStrings.alertActionTitle, style: .default))
         present(alert, animated: true, completion: nil)
-    }
-    
-    private func setupPullToRefreshTableview() {
-        refreshControl.attributedTitle = NSAttributedString(string: "Loading articles")
-        refreshControl.addTarget(self, action: #selector(didTapRefresh(_:)), for: .valueChanged)
-        articlesTableView.addSubview(refreshControl)
     }
 }
 
@@ -178,6 +175,9 @@ private extension HomeViewController {
         
         articlesTableView.delegate = self
         articlesTableView.dataSource = self
+        
+        articlesTableView.estimatedRowHeight = 75
+        articlesTableView.rowHeight = UITableView.automaticDimension
     }
     
     private func setupDropDown() {
@@ -199,6 +199,13 @@ private extension HomeViewController {
         retryButton.setTitle(LocalizedStrings.retry, for: .normal)
         dropDown.dataSource = [LocalizedStrings.sortByNewest, LocalizedStrings.sortByPopularity, LocalizedStrings.sortByRelevancy]
         titlePage.text = LocalizedStrings.appTitle
+    }
+    
+    
+    private func setupPullToRefreshTableview() {
+        refreshControl.attributedTitle = NSAttributedString(string: LocalizedStrings.loadingArticles)
+        refreshControl.addTarget(self, action: #selector(didTapRefresh(_:)), for: .valueChanged)
+        articlesTableView.addSubview(refreshControl)
     }
 }
 
@@ -227,7 +234,6 @@ private extension HomeViewController {
     }
     
     @objc private func didTapReload() {
-        // TODO: Wanneer de gebruiker sorting preference opgeslagen wordt moet die hier gegeven worden bij sortingService.sortBy(index: Int)
         getArticles(sortByIndex: dropDownIndex)
     }
     
@@ -235,9 +241,8 @@ private extension HomeViewController {
         dropDown.show()
     }
     
-    // TODO: 
     @objc private func didTapRefresh(_ sender: AnyObject) {
-        print("Refresh data")
+        getArticles()
     }
     
     @objc private func didSelectDropDownItem(index: Int) {

@@ -54,6 +54,7 @@ class ArticleCell: UITableViewCell {
         
         articleImage.easy.layout([
             Width(100),
+            // TODO: Cause constraint bug, Een fixed height in viewcontroller kan dit probleem oplossen
             Height(50),
             Right(10),
             Top(10),
