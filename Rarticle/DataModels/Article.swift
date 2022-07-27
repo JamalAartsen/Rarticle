@@ -9,7 +9,7 @@ import Foundation
 
 // Names need to be the same as in the API
 struct Article: Codable {
-    let description: String
+    let description: String?
     let title: String?
     let url: String
     let urlToImage: String?

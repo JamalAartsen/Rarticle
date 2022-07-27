@@ -25,7 +25,7 @@ class ArticleCell: UITableViewCell {
     
     func updateCellView(article: Article) {
         titleLabel.text = article.title ?? LocalizedStrings.noTitle
-        descriptionLabel.text = article.description
+        descriptionLabel.text = article.description ?? LocalizedStrings.noDescription
         articleImage.loadFrom(urlAdress: article.urlToImage, placeholder: Constants.placeHolderImage)
     }
     

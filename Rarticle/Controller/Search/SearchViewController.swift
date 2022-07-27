@@ -40,6 +40,24 @@ class SearchViewController: UIViewController {
         buttonClicks()
     }
     
+    // MARK: Setup constraints
+    private func setupConstraints() {
+        searchArticlesTableView.easy.layout(
+            Top(0).to(view, .topMargin),
+            Bottom(0),
+            Right(0),
+            Left(0)
+        )
+        
+        retryButton.easy.layout(Width(100))
+        faButton.easy.layout(
+            Width(60),
+            Height(60),
+            Bottom(32),
+            Right(32)
+        )
+    }
+    
     // MARK: Get Articles
     private func getArticlesByTopic(topic: String?, sortByIndex: Int = 0, page: Int = 1, isPagination: Bool = false) {
         searchArticlesTableView.showSpinner(showSpinner: true)
@@ -59,24 +77,6 @@ class SearchViewController: UIViewController {
                 searchArticlesTableView.tableFooterView = nil
             }
         }
-    }
-    
-    // MARK: Setup constraints
-    private func setupConstraints() {
-        searchArticlesTableView.easy.layout(
-            Top(0).to(view, .topMargin),
-            Bottom(0),
-            Right(0),
-            Left(0)
-        )
-        
-        retryButton.easy.layout(Width(100))
-        faButton.easy.layout(
-            Width(60),
-            Height(60),
-            Bottom(32),
-            Right(32)
-        )
     }
     
     // MARK: Button clicks
@@ -137,14 +137,6 @@ extension SearchViewController: UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        cell.alpha = 0
-//
-//        UIView.animate(withDuration: 0.5, delay: 0.05 * Double(indexPath.row)) {
-//            cell.alpha = 1
-//        }
-    }
-    
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let height = scrollView.frame.size.height
         let contentYoffset = scrollView.contentOffset.y
@@ -153,7 +145,7 @@ extension SearchViewController: UITableViewDataSource {
         guard !self.articles.isEmpty else { return }
 
         if distanceFromBottom < height {
-            searchArticlesTableView.tableFooterView = .makeFooterSpinner(view: view)
+            searchArticlesTableView.tableFooterView = .makeFooterSpinner(view: searchArticlesTableView.plainView)
             pagePagination += 1
             getArticlesByTopic(topic: searchTopic, sortByIndex: dropDownIndex, page: pagePagination, isPagination: true)
         }

@@ -156,21 +156,13 @@ extension HomeViewController: UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        cell.alpha = 0
-//
-//        UIView.animate(withDuration: 0.5, delay: 0.05 * Double(indexPath.row)) {
-//            cell.alpha = 1
-//        }
-    }
-    
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let height = scrollView.frame.size.height
         let contentYoffset = scrollView.contentOffset.y
         let bottomEdge = contentYoffset + height
 
         if bottomEdge >= height {
-            articlesTableView.tableFooterView = .makeFooterSpinner(view: view)
+            articlesTableView.tableFooterView = .makeFooterSpinner(view: articlesTableView.plainView)
             pagePagination += 1
             getArticles(sortByIndex: dropDownIndex, page: pagePagination, isPagination: true)
         }

@@ -16,7 +16,7 @@ class DetailsViewController: UIViewController {
     // MARK: Properties
     // TODO: String die url zijn omzetten naar URL. Dit gaat gebeuren in de mappers.
     private let titleArticle: String?
-    private let descriptionArticle: String
+    private let descriptionArticle: String?
     private let imageArticle: String?
     private let linkArticle: String
     private let author: String?
@@ -35,7 +35,7 @@ class DetailsViewController: UIViewController {
     @Injected private var dateFormatterService: DateFormatterService
     @Injected private var urlLinkService: URLLinkService
    
-    internal init(titleArticle: String?, descriptionArticle: String, imageArticle: String?, linkArticle: String, author: String?, publishedAt: String, backButtonTitle: String) {
+    internal init(titleArticle: String?, descriptionArticle: String?, imageArticle: String?, linkArticle: String, author: String?, publishedAt: String, backButtonTitle: String) {
         self.titleArticle = titleArticle
         self.descriptionArticle = descriptionArticle
         self.imageArticle = imageArticle
@@ -82,7 +82,7 @@ class DetailsViewController: UIViewController {
         view.addSubview(scrollView)
         
         titleLabel.text = titleArticle ?? LocalizedStrings.noTitle
-        descriptionLabel.text = descriptionArticle
+        descriptionLabel.text = descriptionArticle ?? LocalizedStrings.noDescription
         authorPublishedAtLabel.text = "\(author ?? LocalizedStrings.noAuthor) \(dateFormatterService.dateFormatter(date: publishedAt))" 
         image.loadFrom(urlAdress: imageArticle, placeholder: Constants.placeHolderImage)
         
