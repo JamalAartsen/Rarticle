@@ -10,6 +10,7 @@ import EasyPeasy
 import Resolver
 import DropDown
  
+// TODO: Architectuur veranderen in VIP.
 class HomeViewController: UIViewController {
     
     // MARK: Properties
