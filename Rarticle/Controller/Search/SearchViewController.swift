@@ -28,6 +28,7 @@ class SearchViewController: UIViewController {
     private var searchTopic: String? = nil
     private var pagePagination = 1
     private var dropDownIndex = 0
+    private var isPaginating = false
     
     @Injected private var newsRepository: NewsRepository
     
@@ -59,13 +60,19 @@ class SearchViewController: UIViewController {
     }
     
     // MARK: Get Articles
-    private func getArticlesByTopic(topic: String?, sortByIndex: Int = 0, page: Int = 1, isPagination: Bool = false) {
+    private func getArticlesByTopic(topic: String?, sortByIndex: Int = 0, page: Int = 1) {
         searchArticlesTableView.showSpinner(showSpinner: true)
         Task {
             do {
                 let articlesAPI = try await newsRepository.getAllNewsArticles(topic: topic, sortByIndex: sortByIndex, page: page)
                 
-                articles.replaceOrAppendCurrentList(isPagination: isPagination, articles: articlesAPI)
+                if page == 1 {
+                    articles = articlesAPI
+                } else {
+                    articles.append(contentsOf: articlesAPI)
+                    isPaginating = false
+                }
+                
                 searchArticlesTableView.showSpinner(showSpinner: false)
                 searchArticlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
                 searchArticlesTableView.tableFooterView = nil
@@ -137,17 +144,19 @@ extension SearchViewController: UITableViewDataSource {
         }
     }
     
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        let height = scrollView.frame.size.height
-        let contentYoffset = scrollView.contentOffset.y
-        let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        let scrollViewHeight = scrollView.frame.size.height
+        let tableViewHeight = searchArticlesTableView.contentSize.height + 100
         
+        guard !isPaginating else { return }
         guard !self.articles.isEmpty else { return }
-
-        if distanceFromBottom < height {
+        
+        if position > (tableViewHeight - scrollViewHeight) {
             searchArticlesTableView.tableFooterView = .makeFooterSpinner(view: searchArticlesTableView.plainView)
             pagePagination += 1
-            getArticlesByTopic(topic: searchTopic, sortByIndex: dropDownIndex, page: pagePagination, isPagination: true)
+            getArticlesByTopic(topic: searchTopic, sortByIndex: dropDownIndex, page: pagePagination)
+            isPaginating = true
         }
     }
 }

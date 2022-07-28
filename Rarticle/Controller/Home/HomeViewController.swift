@@ -27,6 +27,7 @@ class HomeViewController: UIViewController {
     }
     private var pagePagination = 1
     private var dropDownIndex = 0
+    private var isPaginating = false
     
     @Injected private var newsRepository: NewsRepository
     
@@ -78,13 +79,19 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: Get articles
-    private func getArticles(topic: String? = nil, sortByIndex: Int = 0, page: Int = 1, isPagination: Bool = false) {
+    private func getArticles(topic: String? = nil, sortByIndex: Int = 0, page: Int = 1) {
         articlesTableView.showSpinner(showSpinner: true)
         Task {
             do {
                 let articlesAPI = try await newsRepository.getAllNewsArticles(topic: topic, sortByIndex: sortByIndex, page: page)
                 
-                articles.replaceOrAppendCurrentList(isPagination: isPagination, articles: articlesAPI)
+                if page == 1 {
+                    articles = articlesAPI
+                } else {
+                    articles.append(contentsOf: articlesAPI)
+                    isPaginating = false
+                }
+                
                 articlesTableView.showSpinner(showSpinner: false)
                 articlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
                 // TODO: Vragen of dit kan of dat het via een if statement gedaan moet worden
@@ -153,15 +160,20 @@ extension HomeViewController: UITableViewDataSource {
         }
     }
     
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        let height = scrollView.frame.size.height
-        let contentYoffset = scrollView.contentOffset.y
-        let bottomEdge = contentYoffset + height
-
-        if bottomEdge >= height {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        let scrollViewHeight = scrollView.frame.size.height
+        let tableViewHeight = articlesTableView.contentSize.height + 100
+        
+        guard !isPaginating else {
+            return
+        }
+        
+        if position > (tableViewHeight - scrollViewHeight) {
             articlesTableView.tableFooterView = .makeFooterSpinner(view: articlesTableView.plainView)
             pagePagination += 1
-            getArticles(sortByIndex: dropDownIndex, page: pagePagination, isPagination: true)
+            getArticles(sortByIndex: dropDownIndex, page: pagePagination)
+            isPaginating = true
         }
     }
 }
