@@ -17,13 +17,3 @@ extension Array {
         }
     }
 }
-
-extension Array where Element == Article {
-    mutating func replaceOrAppendCurrentList(isPagination: Bool, articles: [Article]) {
-        if isPagination {
-            self.append(contentsOf: articles)
-        } else {
-            self = articles
-        }
-    }
-}

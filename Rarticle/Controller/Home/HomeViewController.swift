@@ -94,7 +94,6 @@ class HomeViewController: UIViewController {
                 
                 articlesTableView.showSpinner(showSpinner: false)
                 articlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
-                // TODO: Vragen of dit kan of dat het via een if statement gedaan moet worden
                 articlesTableView.tableFooterView = nil
                 refreshControl.endRefreshing()
             }
