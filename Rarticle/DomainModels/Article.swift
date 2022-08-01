@@ -10,8 +10,8 @@ import Foundation
 struct Article {
     let description: String?
     let title: String?
-    let url: String
-    let image: String?
+    let url: URL
+    let image: URL?
     let author: String?
     let publishedDate: String
 }

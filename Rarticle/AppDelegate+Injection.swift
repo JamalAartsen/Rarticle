@@ -11,6 +11,6 @@ extension Resolver: ResolverRegistering {
     public static func registerAllServices() {
         registerAPIServices()
         registerControllerServices()
-        registerHomeViewControllerServices()
+        registerMapperServices()
     }
 }

@@ -6,11 +6,14 @@
 //
 
 import Foundation
+import Resolver
 
 class ArticleViewModelMapper {
+    @Injected var urlMapper: URLMapper
+    
     func map(article: Article) -> ArticleCell.ViewModel {
         return ArticleCell.ViewModel(title: article.title ?? LocalizedStrings.noTitle,
                                      description: article.description ?? LocalizedStrings.noDescription,
-                                     image: article.image ?? Constants.placeHolderImage)
+                                     image: urlMapper.mapToString(url: article.image!))
     }
 }

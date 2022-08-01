@@ -33,9 +33,10 @@
 		C65B0222287D4F6E0007FB08 /* LocalizedStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65B0221287D4F6E0007FB08 /* LocalizedStrings.swift */; };
 		C686F20E288C5D350070C6C1 /* RDropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = C686F20D288C5D350070C6C1 /* RDropDown.swift */; };
 		C691BC09287C3E5D002FDBA1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C691BC08287C3E5D002FDBA1 /* Constants.swift */; };
+		C6962732289868390041BE21 /* URLMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6962731289868390041BE21 /* URLMapper.swift */; };
+		C6962734289868FE0041BE21 /* registerMapperServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6962733289868FE0041BE21 /* registerMapperServices.swift */; };
 		C698B87E2892F0EF004C4E40 /* HomeInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C698B87D2892F0EF004C4E40 /* HomeInteractor.swift */; };
 		C698B8802892F0FC004C4E40 /* HomePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C698B87F2892F0FC004C4E40 /* HomePresenter.swift */; };
-		C698B8892893D4A9004C4E40 /* HomeViewcontroller+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C698B8882893D4A9004C4E40 /* HomeViewcontroller+Injection.swift */; };
 		C698B88C28940E1A004C4E40 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = C698B88B28940E1A004C4E40 /* Article.swift */; };
 		C698B88F28944440004C4E40 /* ArticleMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C698B88E28944440004C4E40 /* ArticleMapper.swift */; };
 		C698B8912894475F004C4E40 /* ArticleViewModelMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C698B8902894475F004C4E40 /* ArticleViewModelMapper.swift */; };
@@ -80,9 +81,10 @@
 		C65B0221287D4F6E0007FB08 /* LocalizedStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedStrings.swift; sourceTree = "<group>"; };
 		C686F20D288C5D350070C6C1 /* RDropDown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RDropDown.swift; sourceTree = "<group>"; };
 		C691BC08287C3E5D002FDBA1 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = /Users/jamalaartsen/Desktop/IOSApplications/Rarticle/Rarticle/Constants.swift; sourceTree = "<absolute>"; };
+		C6962731289868390041BE21 /* URLMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLMapper.swift; sourceTree = "<group>"; };
+		C6962733289868FE0041BE21 /* registerMapperServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = registerMapperServices.swift; sourceTree = "<group>"; };
 		C698B87D2892F0EF004C4E40 /* HomeInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInteractor.swift; sourceTree = "<group>"; };
 		C698B87F2892F0FC004C4E40 /* HomePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePresenter.swift; sourceTree = "<group>"; };
-		C698B8882893D4A9004C4E40 /* HomeViewcontroller+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeViewcontroller+Injection.swift"; sourceTree = "<group>"; };
 		C698B88B28940E1A004C4E40 /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
 		C698B88E28944440004C4E40 /* ArticleMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleMapper.swift; sourceTree = "<group>"; };
 		C698B8902894475F004C4E40 /* ArticleViewModelMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleViewModelMapper.swift; sourceTree = "<group>"; };
@@ -210,7 +212,6 @@
 				C698B8852893D43A004C4E40 /* Router */,
 				C698B8842893D432004C4E40 /* Interactor */,
 				C698B8832893D424004C4E40 /* Presenter */,
-				C698B8882893D4A9004C4E40 /* HomeViewcontroller+Injection.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -344,6 +345,8 @@
 			children = (
 				C698B88E28944440004C4E40 /* ArticleMapper.swift */,
 				C698B8902894475F004C4E40 /* ArticleViewModelMapper.swift */,
+				C6962731289868390041BE21 /* URLMapper.swift */,
+				C6962733289868FE0041BE21 /* registerMapperServices.swift */,
 			);
 			path = Mappers;
 			sourceTree = "<group>";
@@ -485,7 +488,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C65961D128893CB200215A25 /* RButton.swift in Sources */,
-				C698B8892893D4A9004C4E40 /* HomeViewcontroller+Injection.swift in Sources */,
 				C6F9E743287C5FA3006826CD /* AppDelegate+Injection.swift in Sources */,
 				C698B88F28944440004C4E40 /* ArticleMapper.swift in Sources */,
 				C6E5874528906F5500160E34 /* RFooterSpinner.swift in Sources */,
@@ -502,9 +504,11 @@
 				C65961E1288B179F00215A25 /* RTableView.swift in Sources */,
 				C63148D32872D91100F7B393 /* ArticleEntity.swift in Sources */,
 				C6CE583228858B8F0098EEBF /* NewsAPI.swift in Sources */,
+				C6962732289868390041BE21 /* URLMapper.swift in Sources */,
 				C62B518D2887EEC100EC812E /* DateFormatterService.swift in Sources */,
 				C63148B92872D54700F7B393 /* AppDelegate.swift in Sources */,
 				C698B88C28940E1A004C4E40 /* Article.swift in Sources */,
+				C6962734289868FE0041BE21 /* registerMapperServices.swift in Sources */,
 				C6F9E749287C7088006826CD /* UIColor+Extensions.swift in Sources */,
 				C698B8912894475F004C4E40 /* ArticleViewModelMapper.swift in Sources */,
 				C698B87E2892F0EF004C4E40 /* HomeInteractor.swift in Sources */,

@@ -9,9 +9,9 @@ import UIKit
 import SkeletonView
 
 extension UIImageView {
-    // Can use the library Nuke for this
+    // TODO: Code moet misschien anders. Is nu duplicated code voor placeholder
     func loadFrom(urlAdress: String?, placeholder: String) {
-        guard let url = URL(string: urlAdress ?? placeholder) else {
+        guard let url = URL(string: urlAdress!) else {
             return
         }
         

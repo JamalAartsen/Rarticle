@@ -89,7 +89,6 @@ extension ArticleCell {
     struct ViewModel {
         let title: String
         let description: String
-        // TODO: Moet in de mappers omgezet worden nar URL
         let image: String
     }
 }
