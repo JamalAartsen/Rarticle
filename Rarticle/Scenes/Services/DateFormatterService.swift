@@ -7,7 +7,9 @@
 
 import Foundation
 
+// TODO: Inject in presenter
 class DateFormatterService {
+    // TODO: Moet een date zijn return Date
     func dateFormatter(date: String) -> String {
         let regexPattern = try! NSRegularExpression(pattern: Constants.regexPatternAZ)
         let range = NSMakeRange(0, date.count)

@@ -28,4 +28,11 @@ extension UITableView {
             self.backgroundView = message
         }
     }
+    
+    func lastItem() -> IndexPath {
+        let section = max(numberOfSections - 1, 0)
+        let row = max(numberOfRows(inSection: section) - 1, 0)
+        
+        return IndexPath(row: row, section: section)
+    }
 }

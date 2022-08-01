@@ -20,7 +20,7 @@ class SearchViewController: UIViewController {
     private lazy var faButton: UIButton = makeFloatingActionButton()
     private lazy var dropDown: RDropDown = .makeDropDown(cornerRadius: 5)
     
-    private var articles: [Article] = [] {
+    private var articles: [ArticleEntity] = [] {
         didSet {
             searchArticlesTableView.reloadData()
         }
@@ -125,41 +125,41 @@ extension SearchViewController: UITableViewDelegate {
 }
 
 // MARK: UITableViewDataSource
-extension SearchViewController: UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return articles.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let articleCell = tableView.dequeueReusableCell(withIdentifier: Constants.articleCellIndentifier, for: indexPath) as? ArticleCell {
-            if let article = articles[safe: indexPath.row] {
-                articleCell.updateCellView(article: article)
-            }
-            articleCell.backgroundColor = Colors.cellColor
-            articleCell.accessoryType = .disclosureIndicator
-            return articleCell
-        } else {
-            return ArticleCell()
-        }
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let position = scrollView.contentOffset.y
-        let scrollViewHeight = scrollView.frame.size.height
-        let tableViewHeight = searchArticlesTableView.contentSize.height + 100
-        
-        guard !isPaginating else { return }
-        guard !self.articles.isEmpty else { return }
-        
-        if position > (tableViewHeight - scrollViewHeight) {
-            searchArticlesTableView.tableFooterView = .makeFooterSpinner(view: searchArticlesTableView.plainView)
-            pagePagination += 1
-            getArticlesByTopic(topic: searchTopic, sortByIndex: dropDownIndex, page: pagePagination)
-            isPaginating = true
-        }
-    }
-}
+//extension SearchViewController: UITableViewDataSource {
+//    
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return articles.count
+//    }
+//    
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        if let articleCell = tableView.dequeueReusableCell(withIdentifier: Constants.articleCellIndentifier, for: indexPath) as? ArticleCell {
+//            if let article = articles[safe: indexPath.row] {
+//                articleCell.updateCellView(article: article)
+//            }
+//            articleCell.backgroundColor = Colors.cellColor
+//            articleCell.accessoryType = .disclosureIndicator
+//            return articleCell
+//        } else {
+//            return ArticleCell()
+//        }
+//    }
+//    
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        let position = scrollView.contentOffset.y
+//        let scrollViewHeight = scrollView.frame.size.height
+//        let tableViewHeight = searchArticlesTableView.contentSize.height + 100
+//        
+//        guard !isPaginating else { return }
+//        guard !self.articles.isEmpty else { return }
+//        
+//        if position > (tableViewHeight - scrollViewHeight) {
+//            searchArticlesTableView.tableFooterView = .makeFooterSpinner(view: searchArticlesTableView.plainView)
+//            pagePagination += 1
+//            getArticlesByTopic(topic: searchTopic, sortByIndex: dropDownIndex, page: pagePagination)
+//            isPaginating = true
+//        }
+//    }
+//}
 
 // MARK: UISearchBarDelegate
 extension SearchViewController: UISearchBarDelegate {
@@ -196,7 +196,7 @@ private extension SearchViewController {
 private extension SearchViewController {
     func setupLayout() {
         searchArticlesTableView.delegate = self
-        searchArticlesTableView.dataSource = self
+//        searchArticlesTableView.dataSource = self
         searchBar.delegate = self
         
         view.backgroundColor = Colors.backgroundArticlesScreenColor
@@ -256,7 +256,7 @@ private extension SearchViewController {
         getArticlesByTopic(topic: searchTopic, sortByIndex: index)
     }
     
-    func didSelectCell(article: Article) {
+    func didSelectCell(article: ArticleEntity) {
         navigationController?.pushViewController(DetailsViewController(
             titleArticle: article.title,
             descriptionArticle: article.description,

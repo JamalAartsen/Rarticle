@@ -8,7 +8,7 @@
 import Foundation
 
 // Names need to be the same as in the API
-struct Article: Codable {
+struct ArticleEntity: Codable {
     let description: String?
     let title: String?
     let url: String

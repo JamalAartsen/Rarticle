@@ -9,8 +9,13 @@ import UIKit
 import EasyPeasy
 import Resolver
 import DropDown
+
+protocol IHomeViewController {
+    func display(articles: [ArticleCell.ViewModel])
+    func displayError(message: String)
+    func displayPaginationSpinner()
+}
  
-// TODO: Architectuur veranderen in VIP.
 class HomeViewController: UIViewController {
     
     // MARK: Properties
@@ -21,16 +26,10 @@ class HomeViewController: UIViewController {
     private lazy var dropDown: RDropDown = .makeDropDown(cornerRadius: 5)
     private let refreshControl = UIRefreshControl()
     
-    private var articles: [Article] = [] {
-        didSet {
-            articlesTableView.reloadData()
-        }
-    }
-    private var pagePagination = 1
-    private var dropDownIndex = 0
-    private var isPaginating = false
+    private var articles: [ArticleCell.ViewModel] = []
     
     @Injected private var newsRepository: NewsRepository
+    private lazy var homeInteractor: IHomeInteractor = HomeInteractor(homePresenter: HomePresenter(homeViewController: self))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +42,7 @@ class HomeViewController: UIViewController {
         setupConstraints()
         setupPullToRefreshTableview()
         buttonClicks()
-        getArticles()
+        homeInteractor.getLoad(topic: nil, sortIndex: nil, isFiltered: false)
     }
     
     // MARK: Setup constraints
@@ -79,36 +78,6 @@ class HomeViewController: UIViewController {
         }
     }
     
-    // MARK: Get articles
-    private func getArticles(topic: String? = nil, sortByIndex: Int = 0, page: Int = 1) {
-        articlesTableView.showSpinner(showSpinner: true)
-        Task {
-            do {
-                let articlesAPI = try await newsRepository.getAllNewsArticles(topic: topic, sortByIndex: sortByIndex, page: page)
-                
-                if page == 1 {
-                    articles = articlesAPI
-                } else {
-                    articles.append(contentsOf: articlesAPI)
-                    isPaginating = false
-                }
-                
-                articlesTableView.showSpinner(showSpinner: false)
-                articlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
-                articlesTableView.tableFooterView = nil
-                refreshControl.endRefreshing()
-            }
-            
-            catch let error {
-                showAlertDialog(error: error.localizedDescription)
-                articlesTableView.backgroundView = retryButton
-                articlesTableView.backgroundView?.easy.layout(Center())
-                articlesTableView.tableFooterView = nil
-                refreshControl.endRefreshing()
-            }
-        }
-    }
-    
     // MARK: Show alert dialog
     private func showAlertDialog(error: String) {
         let alert: RAlertDialog = .makeAlertDialog(title: LocalizedStrings.alertDialogTitle)
@@ -124,8 +93,10 @@ extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         articlesTableView.deselectRow(at: indexPath, animated: true)
         let article = articles[indexPath.row]
+        
+        print("Article selected: \(article.title)")
     
-        didSelectCell(article: article)
+        //didSelectCell(article: article)
     }
         
     func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
@@ -148,32 +119,20 @@ extension HomeViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if indexPath.row == articlesTableView.lastItem().row {
+            homeInteractor.handleDidScrollToLastCell()
+        }
+        
         if let articleCell = tableView.dequeueReusableCell(withIdentifier: Constants.articleCellIndentifier, for: indexPath) as? ArticleCell {
             if let article = articles[safe: indexPath.row] {
-                articleCell.updateCellView(article: article)
+                articleCell.updateCellView(viewModel: article)
             }
             articleCell.backgroundColor = Colors.cellColor
             articleCell.accessoryType = .disclosureIndicator
             return articleCell
         } else {
             return ArticleCell()
-        }
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let position = scrollView.contentOffset.y
-        let scrollViewHeight = scrollView.frame.size.height
-        let tableViewHeight = articlesTableView.contentSize.height + 100
-        
-        guard !isPaginating else {
-            return
-        }
-        
-        if position > (tableViewHeight - scrollViewHeight) {
-            articlesTableView.tableFooterView = .makeFooterSpinner(view: articlesTableView.plainView)
-            pagePagination += 1
-            getArticles(sortByIndex: dropDownIndex, page: pagePagination)
-            isPaginating = true
         }
     }
 }
@@ -190,6 +149,7 @@ private extension HomeViewController {
         
         articlesTableView.estimatedRowHeight = 75
         articlesTableView.rowHeight = UITableView.automaticDimension
+        articlesTableView.showSpinner(showSpinner: true)
     }
     
     private func setupDropDown() {
@@ -246,24 +206,22 @@ private extension HomeViewController {
     }
     
     @objc private func didTapReload() {
-        getArticles(sortByIndex: dropDownIndex)
+        homeInteractor.getLoad(topic: nil, sortIndex: nil, isFiltered: false)
     }
-    
+
     @objc private func didTapFilter() {
         dropDown.show()
     }
-    
+
     @objc private func didTapRefresh(_ sender: AnyObject) {
-        getArticles()
+        homeInteractor.getLoad(topic: nil, sortIndex: nil, isFiltered: false)
     }
-    
+
     @objc private func didSelectDropDownItem(index: Int) {
-        dropDownIndex = index
-        pagePagination = 1
-        getArticles(sortByIndex: index)
+        homeInteractor.getLoad(topic: nil, sortIndex: index, isFiltered: true)
     }
     
-    private func didSelectCell(article: Article) {
+    private func didSelectCell(article: ArticleEntity) {
         navigationController?.pushViewController(DetailsViewController(
             titleArticle: article.title,
             descriptionArticle: article.description,
@@ -273,5 +231,34 @@ private extension HomeViewController {
             publishedAt: article.publishedAt,
             backButtonTitle: LocalizedStrings.articles
         ), animated: true)
+    }
+}
+
+extension HomeViewController: IHomeViewController {
+    func display(articles: [ArticleCell.ViewModel]) {
+        self.articles = articles
+        DispatchQueue.main.async {
+            self.articlesTableView.showSpinner(showSpinner: false)
+            self.articlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
+            self.articlesTableView.tableFooterView = nil
+            self.refreshControl.endRefreshing()
+            self.articlesTableView.reloadData()
+            print("Spinning end.")
+        }
+    }
+    
+    func displayError(message: String) {
+        DispatchQueue.main.async {
+            self.showAlertDialog(error: message)
+            self.articlesTableView.backgroundView = self.retryButton
+            self.articlesTableView.backgroundView?.easy.layout(Center())
+            self.articlesTableView.tableFooterView = nil
+            self.refreshControl.endRefreshing()
+        }
+    }
+    
+    func displayPaginationSpinner() {
+        articlesTableView.tableFooterView = .makeFooterSpinner(view: articlesTableView.plainView)
+        print("Spinning...")
     }
 }

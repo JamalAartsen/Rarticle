@@ -9,5 +9,5 @@ import Foundation
 
 struct Response: Codable {
     let status: String
-    let articles: [Article]
+    let articles: [ArticleEntity]
 }

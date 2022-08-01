@@ -16,7 +16,8 @@ class NewsApi: INewsAPI {
     private let totalArticles = 20
     @Injected private var sortingService: SortingService
     
-    func FetchData(topic: String?, sortByIndex: Int, page: Int) async throws -> [Article] {
+    // TODO: Return article
+    func FetchData(topic: String?, sortByIndex: Int, page: Int) async throws -> [ArticleEntity] {
         let queryItems = [
             URLQueryItem(name: "q", value: topic ?? baseTopic),
             URLQueryItem(name: "apikey", value: apiKey),
@@ -25,6 +26,7 @@ class NewsApi: INewsAPI {
             URLQueryItem(name: "page", value: "\(page)")
         ]
         let (data, _) = try await session.data(from: URL(string: .createComplicatedUrl(scheme: scheme, host: baseUrl, path: NewsAPIEndpoints.everythingEndpoint, queryItems: queryItems))!)
+        // TODO: Map entities to domain models
         let articles = try JSONDecoder().decode(Response.self, from: data)
         
         return articles.articles

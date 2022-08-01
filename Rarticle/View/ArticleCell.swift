@@ -23,10 +23,11 @@ class ArticleCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func updateCellView(article: Article) {
-        titleLabel.text = article.title ?? LocalizedStrings.noTitle
-        descriptionLabel.text = article.description ?? LocalizedStrings.noDescription
-        articleImage.loadFrom(urlAdress: article.urlToImage, placeholder: Constants.placeHolderImage)
+    func updateCellView(viewModel: ViewModel) {
+        // TODO: Default values afhandelen in presenter
+        titleLabel.text = viewModel.title
+        descriptionLabel.text = viewModel.description 
+        articleImage.loadFrom(urlAdress: viewModel.image, placeholder: Constants.placeHolderImage)
     }
     
     override func prepareForReuse() {
@@ -81,5 +82,14 @@ private extension ArticleCell {
         let articleImage = UIImageView()
         articleImage.image = UIImage(named: Constants.placeHolderImage)
         return articleImage
+    }
+}
+
+extension ArticleCell {
+    struct ViewModel {
+        let title: String
+        let description: String
+        // TODO: Moet in de mappers omgezet worden nar URL
+        let image: String
     }
 }
