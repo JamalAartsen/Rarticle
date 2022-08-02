@@ -8,6 +8,6 @@
 import Foundation
 
 protocol DetailsRouter {
-    func navigateToArticle()
-    func shareArticle()
+    func navigateToArticle(link: URL)
+    func shareArticle(link: URL)
 }

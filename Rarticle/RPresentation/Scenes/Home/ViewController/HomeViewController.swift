@@ -244,7 +244,6 @@ extension HomeViewController: IHomeViewController {
             self.articlesTableView.tableFooterView = nil
             self.refreshControl.endRefreshing()
             self.articlesTableView.reloadData()
-            print("Spinning end.")
         }
     }
     
@@ -260,6 +259,5 @@ extension HomeViewController: IHomeViewController {
     
     func displayPaginationSpinner() {
         articlesTableView.tableFooterView = .makeFooterSpinner(view: articlesTableView.plainView)
-        print("Spinning...")
     }
 }

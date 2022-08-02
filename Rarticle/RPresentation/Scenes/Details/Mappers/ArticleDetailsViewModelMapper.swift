@@ -14,7 +14,7 @@ class ArticleDetailsViewModelMapper {
             description: article.description ?? LocalizedStrings.noDescription,
             image: article.image,
             urlArticle: article.url,
-            author: article.author,
+            author: article.author ?? LocalizedStrings.noAuthor,
             publishedAt: article.publishedDate
         )
     }

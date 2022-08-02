@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SafariServices
 
 class MainCoordinator: Coordinator {
     
@@ -30,11 +31,18 @@ extension MainCoordinator: HomeRouter {
 }
 
 extension MainCoordinator: DetailsRouter {
-    func navigateToArticle() {
-        print("Navigate to Article webview")
+    func navigateToArticle(link: URL) {
+        let safariConfiguration = SFSafariViewController.Configuration()
+        safariConfiguration.entersReaderIfAvailable = true
+        let safariController = SFSafariViewController(url: link, configuration: safariConfiguration)
+        
+        navigationController?.present(safariController, animated: true)
     }
     
-    func shareArticle() {
-        print("Share article")
+    func shareArticle(link: URL) {
+        let text = LocalizedStrings.shareArticleText
+        let activity = UIActivityViewController(activityItems: [link, text], applicationActivities: nil)
+        
+        navigationController?.present(activity, animated: true)
     }
 }

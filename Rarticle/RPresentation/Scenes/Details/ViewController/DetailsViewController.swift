@@ -13,22 +13,11 @@ import SafariServices
 
 protocol IDetailsController {
     func display(article: ArticleDetailsViewModel.ViewModel)
-    func displayArticleWebView()
-    func displayShareView()
 }
 
 class DetailsViewController: UIViewController {
     
     // MARK: Properties
-    // TODO: String die url zijn omzetten naar URL. Dit gaat gebeuren in de mappers.
-//    private let titleArticle: String?
-//    private let descriptionArticle: String?
-//    private let imageArticle: String?
-//    private let linkArticle: String
-//    private let author: String?
-//    private let publishedAt: String
-//    private let backButtonTitle: String
-    
     private lazy var scrollView: UIScrollView = makeScrollView()
     private lazy var contentView: UIView = makeContentViewScrollView()
     private lazy var titleLabel: UILabel = makeTitleLabel()
@@ -39,20 +28,8 @@ class DetailsViewController: UIViewController {
     private lazy var authorPublishedAtLabel: UILabel = makeAuthorPublishedAtLabel()
     
     @Injected private var dateFormatterService: DateFormatterService
-    @Injected private var urlLinkService: URLLinkService
     
     private var detailsInteractor: DetailsInteractor?
-   
-//    internal init(titleArticle: String?, descriptionArticle: String?, imageArticle: String?, linkArticle: String, author: String?, publishedAt: String, backButtonTitle: String) {
-//        self.titleArticle = titleArticle
-//        self.descriptionArticle = descriptionArticle
-//        self.imageArticle = imageArticle
-//        self.linkArticle = linkArticle
-//        self.author = author
-//        self.publishedAt = publishedAt
-//        self.backButtonTitle = backButtonTitle
-//        super.init(nibName: nil, bundle: nil)
-//    }
     
     init(article: Article, router: DetailsRouter) {
         super.init(nibName: nil, bundle: nil)
@@ -69,8 +46,8 @@ class DetailsViewController: UIViewController {
         setupConstraints()
         setUpNavigationController()
         setupLocalization()
-        buttonLink.addTarget(self, action: #selector(self.didTapOnLinkBtn), for: .touchUpInside)
         animations()
+        buttonClicks()
     }
     
     // MARK: Animations
@@ -141,22 +118,9 @@ class DetailsViewController: UIViewController {
         shareIcon.customView?.easy.layout(Size(24))
     }
     
-    // MARK: User actions
-    @objc private func didTapOnLinkBtn() {
-//        if let url = URL(string: linkArticle) {
-//            let safariConfiguration = SFSafariViewController.Configuration()
-//            safariConfiguration.entersReaderIfAvailable = true
-//
-//            let safariController = SFSafariViewController(url: url, configuration: safariConfiguration)
-//            present(safariController, animated: true)
-//        }
-    }
-        
-    @objc private func didTapShare() {
-//        let urlArticle = URL(string: linkArticle)
-//        let text = LocalizedStrings.shareArticleText
-//        let activity = UIActivityViewController(activityItems: [urlArticle!, text], applicationActivities: nil)
-//        present(activity, animated: true)
+    // MARK: Button clicks
+    private func buttonClicks() {
+        buttonLink.addTarget(self, action: #selector(self.didTapOnLinkBtn), for: .touchUpInside)
     }
 }
 
@@ -222,12 +186,6 @@ private extension DetailsViewController {
         scrollView.backgroundColor = Colors.backgroundDetailsScreenColor
         view.addSubview(scrollView)
         
-//        titleLabel.text = titleArticle ?? LocalizedStrings.noTitle
-//        descriptionLabel.text = descriptionArticle ?? LocalizedStrings.noDescription
-//        authorPublishedAtLabel.text = "\(author ?? LocalizedStrings.noAuthor) \(dateFormatterService.dateFormatter(date: publishedAt))"
-        // TODO:
-//        image.loadFrom(urlAdress: imageArticle, placeholder: Constants.placeHolderImage)
-        
         scrollView.addSubview(contentView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(buttonLink)
@@ -257,19 +215,22 @@ private extension DetailsViewController {
     }
 }
 
+// MARK: User actions
+private extension DetailsViewController {
+    @objc private func didTapOnLinkBtn() {
+        detailsInteractor?.handleDidTapLink()
+    }
+        
+    @objc private func didTapShare() {
+        detailsInteractor?.handleDidTapShareButton()
+    }
+}
+
 extension DetailsViewController: IDetailsController {
     func display(article: ArticleDetailsViewModel.ViewModel) {
         titleLabel.text = article.title
         descriptionLabel.text = article.description
-        authorPublishedAtLabel.text = "\(article.author ?? LocalizedStrings.noAuthor) \(dateFormatterService.dateFormatter(date: article.publishedAt))"
+        authorPublishedAtLabel.text = "\(article.author ) \(dateFormatterService.dateFormatter(date: article.publishedAt))"
         image.loadFrom(urlAdress: article.image, placeholder: Constants.placeHolderImage)
-    }
-    
-    func displayArticleWebView() {
-        print("Display webview")
-    }
-    
-    func displayShareView() {
-        print("Share Article")
     }
 }

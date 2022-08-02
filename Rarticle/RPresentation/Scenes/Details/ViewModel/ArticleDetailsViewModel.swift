@@ -13,7 +13,7 @@ class ArticleDetailsViewModel {
         let description: String
         let image: URL?
         let urlArticle: URL
-        let author: String?
+        let author: String
         let publishedAt: String
     }
 }
