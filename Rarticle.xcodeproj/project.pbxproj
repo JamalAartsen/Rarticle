@@ -36,6 +36,12 @@
 		C69296432899283D004636FA /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69296422899283D004636FA /* MainCoordinator.swift */; };
 		C692964528992B19004636FA /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C692964428992B19004636FA /* HomeRouter.swift */; };
 		C692964728995344004636FA /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C692964628995344004636FA /* Coordinator.swift */; };
+		C692964D28998AEA004636FA /* DetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C692964C28998AEA004636FA /* DetailsPresenter.swift */; };
+		C692964F28998B01004636FA /* DetailsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C692964E28998B01004636FA /* DetailsInteractor.swift */; };
+		C692965228998B38004636FA /* DetailsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C692965128998B38004636FA /* DetailsRouter.swift */; };
+		C692965528998EB0004636FA /* ArticleDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C692965428998EB0004636FA /* ArticleDetailsViewModel.swift */; };
+		C692965B28999A94004636FA /* GetArticlesWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C692965A28999A94004636FA /* GetArticlesWorker.swift */; };
+		C69296622899A8FB004636FA /* ArticleDetailsViewModelMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69296612899A8FB004636FA /* ArticleDetailsViewModelMapper.swift */; };
 		C6962732289868390041BE21 /* URLMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6962731289868390041BE21 /* URLMapper.swift */; };
 		C6962734289868FE0041BE21 /* registerMapperServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6962733289868FE0041BE21 /* registerMapperServices.swift */; };
 		C698B87E2892F0EF004C4E40 /* HomeInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C698B87D2892F0EF004C4E40 /* HomeInteractor.swift */; };
@@ -87,6 +93,12 @@
 		C69296422899283D004636FA /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		C692964428992B19004636FA /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
 		C692964628995344004636FA /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		C692964C28998AEA004636FA /* DetailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsPresenter.swift; sourceTree = "<group>"; };
+		C692964E28998B01004636FA /* DetailsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsInteractor.swift; sourceTree = "<group>"; };
+		C692965128998B38004636FA /* DetailsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsRouter.swift; sourceTree = "<group>"; };
+		C692965428998EB0004636FA /* ArticleDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDetailsViewModel.swift; sourceTree = "<group>"; };
+		C692965A28999A94004636FA /* GetArticlesWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetArticlesWorker.swift; sourceTree = "<group>"; };
+		C69296612899A8FB004636FA /* ArticleDetailsViewModelMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDetailsViewModelMapper.swift; sourceTree = "<group>"; };
 		C6962731289868390041BE21 /* URLMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLMapper.swift; sourceTree = "<group>"; };
 		C6962733289868FE0041BE21 /* registerMapperServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = registerMapperServices.swift; sourceTree = "<group>"; };
 		C698B87D2892F0EF004C4E40 /* HomeInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInteractor.swift; sourceTree = "<group>"; };
@@ -138,7 +150,12 @@
 		C62B518B2887EEA900EC812E /* Details */ = {
 			isa = PBXGroup;
 			children = (
-				C6F9E74D287CA5EC006826CD /* DetailsViewController.swift */,
+				C69296602899A8E5004636FA /* Mappers */,
+				C692965328998E97004636FA /* ViewModel */,
+				C692964828998AA1004636FA /* ViewController */,
+				C692964A28998AB2004636FA /* Interactor */,
+				C692964B28998ABA004636FA /* Presenter */,
+				C692964928998AAC004636FA /* Router */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -164,31 +181,18 @@
 		C63148B72872D54700F7B393 /* Rarticle */ = {
 			isa = PBXGroup;
 			children = (
-				C698B88A28940E08004C4E40 /* DomainModels */,
-				C63148CF2872D86B00F7B393 /* DataModels */,
+				C6929656289999A4004636FA /* RPresentation */,
+				C6929657289999E5004636FA /* RDomain */,
+				C6929658289999ED004636FA /* RData */,
+				C6F9E744287C5FEF006826CD /* APIServices+Injection.swift */,
 				C65961DF288ACF4A00215A25 /* Localization */,
 				C65961DE288ACE6700215A25 /* General */,
 				C65961DD288ACE3500215A25 /* Resources */,
 				C6F9E74C287C70C6006826CD /* Extensions */,
-				C691BBE52875C357002FDBA1 /* View */,
-				C691BBE42875C347002FDBA1 /* Scenes */,
-				C63148CC2872D5EE00F7B393 /* Model */,
 				C63148B82872D54700F7B393 /* AppDelegate.swift */,
 				C6F9E742287C5FA3006826CD /* AppDelegate+Injection.swift */,
 			);
 			path = Rarticle;
-			sourceTree = "<group>";
-		};
-		C63148CC2872D5EE00F7B393 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				C6E5873F28901C6500160E34 /* Services */,
-				C65961DA2889B7CB00215A25 /* Protocols */,
-				C65961D82889B7B400215A25 /* NewsApi */,
-				C65961D72889B7A700215A25 /* Repositories */,
-				C6F9E744287C5FEF006826CD /* APIServices+Injection.swift */,
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		C63148CF2872D86B00F7B393 /* DataModels */ = {
@@ -213,10 +217,11 @@
 		C65961D52889504600215A25 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				C692965F2899A8D9004636FA /* Mappers */,
 				C698B8872893D463004C4E40 /* ViewController */,
-				C698B8852893D43A004C4E40 /* Router */,
 				C698B8842893D432004C4E40 /* Interactor */,
 				C698B8832893D424004C4E40 /* Presenter */,
+				C698B8852893D43A004C4E40 /* Router */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -317,6 +322,109 @@
 			path = Coordinators;
 			sourceTree = "<group>";
 		};
+		C692964828998AA1004636FA /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C6F9E74D287CA5EC006826CD /* DetailsViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		C692964928998AAC004636FA /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				C692965128998B38004636FA /* DetailsRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		C692964A28998AB2004636FA /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				C692964E28998B01004636FA /* DetailsInteractor.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		C692964B28998ABA004636FA /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				C692964C28998AEA004636FA /* DetailsPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		C692965328998E97004636FA /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C692965428998EB0004636FA /* ArticleDetailsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C6929656289999A4004636FA /* RPresentation */ = {
+			isa = PBXGroup;
+			children = (
+				C691BBE42875C347002FDBA1 /* Scenes */,
+				C691BBE52875C357002FDBA1 /* View */,
+			);
+			path = RPresentation;
+			sourceTree = "<group>";
+		};
+		C6929657289999E5004636FA /* RDomain */ = {
+			isa = PBXGroup;
+			children = (
+				C692965928999A71004636FA /* Workers */,
+				C698B88A28940E08004C4E40 /* Models */,
+			);
+			path = RDomain;
+			sourceTree = "<group>";
+		};
+		C6929658289999ED004636FA /* RData */ = {
+			isa = PBXGroup;
+			children = (
+				C692965C28999B98004636FA /* Mappers */,
+				C65961D72889B7A700215A25 /* Repositories */,
+				C65961D82889B7B400215A25 /* NewsApi */,
+				C65961DA2889B7CB00215A25 /* Protocols */,
+				C6E5873F28901C6500160E34 /* Services */,
+				C63148CF2872D86B00F7B393 /* DataModels */,
+			);
+			path = RData;
+			sourceTree = "<group>";
+		};
+		C692965928999A71004636FA /* Workers */ = {
+			isa = PBXGroup;
+			children = (
+				C692965A28999A94004636FA /* GetArticlesWorker.swift */,
+			);
+			path = Workers;
+			sourceTree = "<group>";
+		};
+		C692965C28999B98004636FA /* Mappers */ = {
+			isa = PBXGroup;
+			children = (
+				C698B88E28944440004C4E40 /* ArticleMapper.swift */,
+			);
+			path = Mappers;
+			sourceTree = "<group>";
+		};
+		C692965F2899A8D9004636FA /* Mappers */ = {
+			isa = PBXGroup;
+			children = (
+				C698B8902894475F004C4E40 /* ArticleViewModelMapper.swift */,
+			);
+			path = Mappers;
+			sourceTree = "<group>";
+		};
+		C69296602899A8E5004636FA /* Mappers */ = {
+			isa = PBXGroup;
+			children = (
+				C69296612899A8FB004636FA /* ArticleDetailsViewModelMapper.swift */,
+			);
+			path = Mappers;
+			sourceTree = "<group>";
+		};
 		C698B8832893D424004C4E40 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
@@ -349,19 +457,17 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
-		C698B88A28940E08004C4E40 /* DomainModels */ = {
+		C698B88A28940E08004C4E40 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				C698B88B28940E1A004C4E40 /* Article.swift */,
 			);
-			path = DomainModels;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		C698B88D289443F2004C4E40 /* Mappers */ = {
 			isa = PBXGroup;
 			children = (
-				C698B88E28944440004C4E40 /* ArticleMapper.swift */,
-				C698B8902894475F004C4E40 /* ArticleViewModelMapper.swift */,
 				C6962731289868390041BE21 /* URLMapper.swift */,
 				C6962733289868FE0041BE21 /* registerMapperServices.swift */,
 			);
@@ -505,6 +611,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C65961D128893CB200215A25 /* RButton.swift in Sources */,
+				C692965528998EB0004636FA /* ArticleDetailsViewModel.swift in Sources */,
 				C6F9E743287C5FA3006826CD /* AppDelegate+Injection.swift in Sources */,
 				C698B88F28944440004C4E40 /* ArticleMapper.swift in Sources */,
 				C6E5874528906F5500160E34 /* RFooterSpinner.swift in Sources */,
@@ -514,6 +621,7 @@
 				C6E5874328901CC300160E34 /* SortBy.swift in Sources */,
 				C6F9E745287C5FEF006826CD /* APIServices+Injection.swift in Sources */,
 				C62B51932887F69B00EC812E /* URLLinkService.swift in Sources */,
+				C692965B28999A94004636FA /* GetArticlesWorker.swift in Sources */,
 				C69296432899283D004636FA /* MainCoordinator.swift in Sources */,
 				C63148BD2872D54700F7B393 /* HomeViewController.swift in Sources */,
 				C62B519528887B2400EC812E /* SearchViewController.swift in Sources */,
@@ -521,13 +629,16 @@
 				C65961D328894B6100215A25 /* RAlertDialog.swift in Sources */,
 				C65961E1288B179F00215A25 /* RTableView.swift in Sources */,
 				C63148D32872D91100F7B393 /* ArticleEntity.swift in Sources */,
+				C692964D28998AEA004636FA /* DetailsPresenter.swift in Sources */,
 				C6CE583228858B8F0098EEBF /* NewsAPI.swift in Sources */,
 				C6962732289868390041BE21 /* URLMapper.swift in Sources */,
 				C62B518D2887EEC100EC812E /* DateFormatterService.swift in Sources */,
 				C63148B92872D54700F7B393 /* AppDelegate.swift in Sources */,
 				C698B88C28940E1A004C4E40 /* Article.swift in Sources */,
 				C692964728995344004636FA /* Coordinator.swift in Sources */,
+				C692964F28998B01004636FA /* DetailsInteractor.swift in Sources */,
 				C6962734289868FE0041BE21 /* registerMapperServices.swift in Sources */,
+				C69296622899A8FB004636FA /* ArticleDetailsViewModelMapper.swift in Sources */,
 				C6F9E749287C7088006826CD /* UIColor+Extensions.swift in Sources */,
 				C698B8912894475F004C4E40 /* ArticleViewModelMapper.swift in Sources */,
 				C698B87E2892F0EF004C4E40 /* HomeInteractor.swift in Sources */,
@@ -535,6 +646,7 @@
 				C698B8802892F0FC004C4E40 /* HomePresenter.swift in Sources */,
 				C65B021B287D37B20007FB08 /* INewsAPI.swift in Sources */,
 				C692964528992B19004636FA /* HomeRouter.swift in Sources */,
+				C692965228998B38004636FA /* DetailsRouter.swift in Sources */,
 				C65B0222287D4F6E0007FB08 /* LocalizedStrings.swift in Sources */,
 				C64F7747288015C40027C058 /* Colors.swift in Sources */,
 				C65961DC288A7A0A00215A25 /* SortingService.swift in Sources */,

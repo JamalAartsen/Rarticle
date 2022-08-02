@@ -9,7 +9,6 @@ import UIKit
 import SkeletonView
 
 extension UIImageView {
-    // TODO: Code moet misschien anders. Is nu duplicated code voor placeholder
     func loadFrom(urlAdress: URL?, placeholder: String) {
         
         self.isSkeletonable = true
