@@ -211,7 +211,8 @@ private extension DetailsViewController {
         titleLabel.text = titleArticle ?? LocalizedStrings.noTitle
         descriptionLabel.text = descriptionArticle ?? LocalizedStrings.noDescription
         authorPublishedAtLabel.text = "\(author ?? LocalizedStrings.noAuthor) \(dateFormatterService.dateFormatter(date: publishedAt))"
-        image.loadFrom(urlAdress: imageArticle, placeholder: Constants.placeHolderImage)
+        // TODO:
+//        image.loadFrom(urlAdress: imageArticle, placeholder: Constants.placeHolderImage)
         
         scrollView.addSubview(contentView)
         contentView.addSubview(titleLabel)

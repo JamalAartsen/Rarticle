@@ -12,12 +12,13 @@ class ArticleMapper {
     @Injected var urlMapper: URLMapper
     
     // TODO: Url strings omzetten naar URL. Date strings omzetten naar Date.
-    func map(entity: ArticleEntity) -> Article {
+    func map(entity: ArticleEntity) -> Article? {
+        guard let url = urlMapper.mapToUrl(stringUrl: entity.url) else { return nil }
         return Article(
             description: entity.description,
             title: entity.title,
-            url: urlMapper.mapToUrl(stringUrl: entity.url),
-            image:urlMapper.mapToUrl(stringUrl:  entity.urlToImage!),
+            url: url,
+            image: urlMapper.mapToUrl(stringUrl:  entity.urlToImage),
             author: entity.author,
             publishedDate: entity.publishedAt
         )

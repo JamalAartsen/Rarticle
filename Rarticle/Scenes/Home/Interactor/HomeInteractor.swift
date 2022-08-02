@@ -9,11 +9,18 @@ import Foundation
 import Resolver
 
 protocol IHomeInteractor {
-    func getLoad(topic: String?, sortIndex: Int?, isFiltered: Bool)
+    
+    func handleInitialize()
     func handleDidScrollToLastCell()
+    func handleDidTapSearch()
+    func handleDidTapArticle(article: Article)
+    func handleDidTapReload()
+    func handleDidTapRefresh()
+    func handleDidTapDropdownItem(sortIndex: Int)
 }
 
 class HomeInteractor: IHomeInteractor {
+    
     private var homePresenter: IHomePresenter
     @Injected private var newsRepository: NewsRepository
     @Injected private var articleMapper: ArticleMapper
@@ -33,17 +40,19 @@ class HomeInteractor: IHomeInteractor {
     private var isPaginating = false
     private var currentPage: Int = 1
     private var currentSortIndex: Int = 0
+    private var router: HomeRouter
     
     
-    init(homePresenter: IHomePresenter) {
+    init(homePresenter: IHomePresenter, router: HomeRouter) {
         self.homePresenter = homePresenter
         self.isLoadingNextPage = false
+        self.router = router
         sortByIndex = 0
     }
 }
 
 extension HomeInteractor {
-    func getLoad(topic: String?, sortIndex: Int?, isFiltered: Bool) {
+    private func getLoad(topic: String?, sortIndex: Int?, isFiltered: Bool) {
         if isFiltered {
             currentPage = 1
         }
@@ -54,12 +63,28 @@ extension HomeInteractor {
                 let articlesAPI = try await newsRepository.getAllNewsArticles(topic: topic, sortByIndex: sortByIndex, page: currentPage)
                 
                 articles = articlesAPI
-                homePresenter.presentArticles(articles: articles.map({ articleMapper.map(entity: $0) }))
+                homePresenter.presentArticles(articles: articles.compactMap({ articleMapper.map(entity: $0) }))
             }
             catch let error {
                 homePresenter.presentErrorMessage(message: error.localizedDescription)
             }
         }
+    }
+    
+    func handleInitialize() {
+        getLoad(topic: nil, sortIndex: nil, isFiltered: false)
+    }
+    
+    func handleDidTapReload() {
+        getLoad(topic: nil, sortIndex: nil, isFiltered: false)
+    }
+    
+    func handleDidTapRefresh() {
+        getLoad(topic: nil, sortIndex: nil, isFiltered: false)
+    }
+    
+    func handleDidTapDropdownItem(sortIndex: Int) {
+        getLoad(topic: nil, sortIndex: sortIndex, isFiltered: true)
     }
     
     func handleDidScrollToLastCell() {
@@ -71,7 +96,7 @@ extension HomeInteractor {
                 let nextArticles = try await newsRepository.getAllNewsArticles(topic: topic, sortByIndex: self.sortByIndex, page: currentPage)
                 articles.append(contentsOf: nextArticles)
                 
-                homePresenter.presentArticles(articles: articles.map({
+                homePresenter.presentArticles(articles: articles.compactMap({
                     articleMapper.map(entity: $0)
                 }))
                 isLoadingNextPage = false
@@ -81,5 +106,13 @@ extension HomeInteractor {
                 isLoadingNextPage = false
             }
         }
+    }
+    
+    func handleDidTapSearch() {
+        router.navigateToSearchController()
+    }
+    
+    func handleDidTapArticle(article: Article) {
+        router.navigateToDetailsController(article: article)
     }
 }

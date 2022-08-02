@@ -14,6 +14,6 @@ class ArticleViewModelMapper {
     func map(article: Article) -> ArticleCell.ViewModel {
         return ArticleCell.ViewModel(title: article.title ?? LocalizedStrings.noTitle,
                                      description: article.description ?? LocalizedStrings.noDescription,
-                                     image: urlMapper.mapToString(url: article.image!))
+                                     image: urlMapper.mapToString(url: article.image) ?? Constants.placeHolderImage)
     }
 }

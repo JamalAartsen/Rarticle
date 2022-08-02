@@ -33,6 +33,9 @@
 		C65B0222287D4F6E0007FB08 /* LocalizedStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65B0221287D4F6E0007FB08 /* LocalizedStrings.swift */; };
 		C686F20E288C5D350070C6C1 /* RDropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = C686F20D288C5D350070C6C1 /* RDropDown.swift */; };
 		C691BC09287C3E5D002FDBA1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C691BC08287C3E5D002FDBA1 /* Constants.swift */; };
+		C69296432899283D004636FA /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69296422899283D004636FA /* MainCoordinator.swift */; };
+		C692964528992B19004636FA /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C692964428992B19004636FA /* HomeRouter.swift */; };
+		C692964728995344004636FA /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C692964628995344004636FA /* Coordinator.swift */; };
 		C6962732289868390041BE21 /* URLMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6962731289868390041BE21 /* URLMapper.swift */; };
 		C6962734289868FE0041BE21 /* registerMapperServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6962733289868FE0041BE21 /* registerMapperServices.swift */; };
 		C698B87E2892F0EF004C4E40 /* HomeInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C698B87D2892F0EF004C4E40 /* HomeInteractor.swift */; };
@@ -81,6 +84,9 @@
 		C65B0221287D4F6E0007FB08 /* LocalizedStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedStrings.swift; sourceTree = "<group>"; };
 		C686F20D288C5D350070C6C1 /* RDropDown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RDropDown.swift; sourceTree = "<group>"; };
 		C691BC08287C3E5D002FDBA1 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = /Users/jamalaartsen/Desktop/IOSApplications/Rarticle/Rarticle/Constants.swift; sourceTree = "<absolute>"; };
+		C69296422899283D004636FA /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
+		C692964428992B19004636FA /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
+		C692964628995344004636FA /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		C6962731289868390041BE21 /* URLMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLMapper.swift; sourceTree = "<group>"; };
 		C6962733289868FE0041BE21 /* registerMapperServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = registerMapperServices.swift; sourceTree = "<group>"; };
 		C698B87D2892F0EF004C4E40 /* HomeInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInteractor.swift; sourceTree = "<group>"; };
@@ -207,7 +213,6 @@
 		C65961D52889504600215A25 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				C698B88D289443F2004C4E40 /* Mappers */,
 				C698B8872893D463004C4E40 /* ViewController */,
 				C698B8852893D43A004C4E40 /* Router */,
 				C698B8842893D432004C4E40 /* Interactor */,
@@ -279,6 +284,8 @@
 		C691BBE42875C347002FDBA1 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				C69296412899273A004636FA /* Coordinators */,
+				C698B88D289443F2004C4E40 /* Mappers */,
 				C65961D62889505300215A25 /* Search */,
 				C65961D52889504600215A25 /* Home */,
 				C65961D42889503400215A25 /* Services */,
@@ -301,6 +308,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		C69296412899273A004636FA /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				C69296422899283D004636FA /* MainCoordinator.swift */,
+				C692964628995344004636FA /* Coordinator.swift */,
+			);
+			path = Coordinators;
+			sourceTree = "<group>";
+		};
 		C698B8832893D424004C4E40 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
@@ -320,6 +336,7 @@
 		C698B8852893D43A004C4E40 /* Router */ = {
 			isa = PBXGroup;
 			children = (
+				C692964428992B19004636FA /* HomeRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -497,6 +514,7 @@
 				C6E5874328901CC300160E34 /* SortBy.swift in Sources */,
 				C6F9E745287C5FEF006826CD /* APIServices+Injection.swift in Sources */,
 				C62B51932887F69B00EC812E /* URLLinkService.swift in Sources */,
+				C69296432899283D004636FA /* MainCoordinator.swift in Sources */,
 				C63148BD2872D54700F7B393 /* HomeViewController.swift in Sources */,
 				C62B519528887B2400EC812E /* SearchViewController.swift in Sources */,
 				C62B51882886E62400EC812E /* UITableView+Extensions.swift in Sources */,
@@ -508,6 +526,7 @@
 				C62B518D2887EEC100EC812E /* DateFormatterService.swift in Sources */,
 				C63148B92872D54700F7B393 /* AppDelegate.swift in Sources */,
 				C698B88C28940E1A004C4E40 /* Article.swift in Sources */,
+				C692964728995344004636FA /* Coordinator.swift in Sources */,
 				C6962734289868FE0041BE21 /* registerMapperServices.swift in Sources */,
 				C6F9E749287C7088006826CD /* UIColor+Extensions.swift in Sources */,
 				C698B8912894475F004C4E40 /* ArticleViewModelMapper.swift in Sources */,
@@ -515,6 +534,7 @@
 				C63148FE287455F900F7B393 /* ArticleCell.swift in Sources */,
 				C698B8802892F0FC004C4E40 /* HomePresenter.swift in Sources */,
 				C65B021B287D37B20007FB08 /* INewsAPI.swift in Sources */,
+				C692964528992B19004636FA /* HomeRouter.swift in Sources */,
 				C65B0222287D4F6E0007FB08 /* LocalizedStrings.swift in Sources */,
 				C64F7747288015C40027C058 /* Colors.swift in Sources */,
 				C65961DC288A7A0A00215A25 /* SortingService.swift in Sources */,

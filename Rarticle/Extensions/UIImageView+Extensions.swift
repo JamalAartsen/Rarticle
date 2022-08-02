@@ -10,16 +10,13 @@ import SkeletonView
 
 extension UIImageView {
     // TODO: Code moet misschien anders. Is nu duplicated code voor placeholder
-    func loadFrom(urlAdress: String?, placeholder: String) {
-        guard let url = URL(string: urlAdress!) else {
-            return
-        }
+    func loadFrom(urlAdress: URL?, placeholder: String) {
         
         self.isSkeletonable = true
         self.showAnimatedGradientSkeleton()
         
         DispatchQueue.init(label: Constants.loadImageFromUrl, qos: .userInitiated).async { [weak self] in
-            if let imageData = try? Data(contentsOf: url) {
+            if let urlAdress = urlAdress, let imageData = try? Data(contentsOf: urlAdress) {
                 if let loadedImage = UIImage(data: imageData) {
                     DispatchQueue.main.async { [weak self] in
                         self?.image = loadedImage

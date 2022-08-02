@@ -26,8 +26,9 @@ class ArticleCell: UITableViewCell {
     func updateCellView(viewModel: ViewModel) {
         // TODO: Default values afhandelen in presenter
         titleLabel.text = viewModel.title
-        descriptionLabel.text = viewModel.description 
-        articleImage.loadFrom(urlAdress: viewModel.image, placeholder: Constants.placeHolderImage)
+        descriptionLabel.text = viewModel.description
+        // TODO: Image moet url zijn in viewmodel
+        //articleImage.loadFrom(urlAdress: viewModel.image, placeholder: Constants.placeHolderImage)
     }
     
     override func prepareForReuse() {

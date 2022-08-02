@@ -29,7 +29,16 @@ class HomeViewController: UIViewController {
     private var articles: [ArticleCell.ViewModel] = []
     
     @Injected private var newsRepository: NewsRepository
-    private lazy var homeInteractor: IHomeInteractor = HomeInteractor(homePresenter: HomePresenter(homeViewController: self))
+    private var homeInteractor: IHomeInteractor?
+    
+    init(router: HomeRouter) {
+        super.init(nibName: nil, bundle: nil)
+        self.homeInteractor = HomeInteractor(homePresenter: HomePresenter(homeViewController: self), router: router)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +51,7 @@ class HomeViewController: UIViewController {
         setupConstraints()
         setupPullToRefreshTableview()
         buttonClicks()
-        homeInteractor.getLoad(topic: nil, sortIndex: nil, isFiltered: false)
+        homeInteractor?.handleInitialize()
     }
     
     // MARK: Setup constraints
@@ -121,7 +130,7 @@ extension HomeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.row == articlesTableView.lastItem().row {
-            homeInteractor.handleDidScrollToLastCell()
+            homeInteractor?.handleDidScrollToLastCell()
         }
         
         if let articleCell = tableView.dequeueReusableCell(withIdentifier: Constants.articleCellIndentifier, for: indexPath) as? ArticleCell {
@@ -202,11 +211,11 @@ private extension HomeViewController {
 // MARK: User actions
 private extension HomeViewController {
     @objc private func didTapSearch() {
-        navigationController?.pushViewController(SearchViewController(), animated: true)
+        homeInteractor?.handleDidTapSearch()
     }
     
     @objc private func didTapReload() {
-        homeInteractor.getLoad(topic: nil, sortIndex: nil, isFiltered: false)
+        homeInteractor?.handleDidTapReload()
     }
 
     @objc private func didTapFilter() {
@@ -214,11 +223,11 @@ private extension HomeViewController {
     }
 
     @objc private func didTapRefresh(_ sender: AnyObject) {
-        homeInteractor.getLoad(topic: nil, sortIndex: nil, isFiltered: false)
+        homeInteractor?.handleDidTapRefresh()
     }
 
     @objc private func didSelectDropDownItem(index: Int) {
-        homeInteractor.getLoad(topic: nil, sortIndex: index, isFiltered: true)
+        homeInteractor?.handleDidTapDropdownItem(sortIndex: index)
     }
     
     private func didSelectCell(article: ArticleEntity) {
@@ -237,6 +246,9 @@ private extension HomeViewController {
 extension HomeViewController: IHomeViewController {
     func display(articles: [ArticleCell.ViewModel]) {
         self.articles = articles
+        for article in articles {
+            print("Title: \(article.title); Image URL: \(article.image)")
+        }
         DispatchQueue.main.async {
             self.articlesTableView.showSpinner(showSpinner: false)
             self.articlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
