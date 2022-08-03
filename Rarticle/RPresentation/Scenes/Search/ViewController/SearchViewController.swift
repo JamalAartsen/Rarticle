@@ -11,6 +11,12 @@ import EasyPeasy
 import Resolver
 import DropDown
 
+protocol ISearchViewController {
+    func display(articles: [ArticleCell.ViewModel])
+    func displayError(message: String)
+    func displayPaginationSpinner()
+}
+
 class SearchViewController: UIViewController {
     
     // MARK: Properties
@@ -20,17 +26,17 @@ class SearchViewController: UIViewController {
     private lazy var faButton: UIButton = makeFloatingActionButton()
     private lazy var dropDown: RDropDown = .makeDropDown(cornerRadius: 5)
     
-    private var articles: [ArticleEntity] = [] {
-        didSet {
-            searchArticlesTableView.reloadData()
-        }
-    }
-    private var searchTopic: String? = nil
-    private var pagePagination = 1
-    private var dropDownIndex = 0
-    private var isPaginating = false
+    private var articles: [ArticleCell.ViewModel] = []
+    private var searchInteractor: SearchInteractor?
     
-    @Injected private var newsRepository: NewsRepository
+    init(router: SearchRouter) {
+        super.init(nibName: nil, bundle: nil)
+        self.searchInteractor = SearchInteractor(searchPresenter: SearchPresenter(searchViewController: self), router: router)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         setupLayout()
@@ -59,33 +65,6 @@ class SearchViewController: UIViewController {
         )
     }
     
-    // MARK: Get Articles
-    private func getArticlesByTopic(topic: String?, sortByIndex: Int = 0, page: Int = 1) {
-        searchArticlesTableView.showSpinner(showSpinner: true)
-//        Task {
-//            do {
-//                let articlesAPI = try await newsRepository.getAllNewsArticles(topic: topic, sortByIndex: sortByIndex, page: page)
-//                
-//                if page == 1 {
-//                    articles = articlesAPI
-//                } else {
-//                    articles.append(contentsOf: articlesAPI)
-//                    isPaginating = false
-//                }
-//                
-//                searchArticlesTableView.showSpinner(showSpinner: false)
-//                searchArticlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
-//                searchArticlesTableView.tableFooterView = nil
-//            }
-//            catch let error {
-//                searchArticlesTableView.backgroundView = retryButton
-//                searchArticlesTableView.backgroundView?.easy.layout(Center())
-//                showAlertDialog(error: error.localizedDescription)
-//                searchArticlesTableView.tableFooterView = nil
-//            }
-//        }
-    }
-    
     // MARK: Button clicks
     private func buttonClicks() {
         retryButton.addTarget(self, action: #selector(self.didTapReload), for: .touchUpInside)
@@ -107,8 +86,8 @@ extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         searchArticlesTableView.deselectRow(at: indexPath, animated: true)
         let article = articles[indexPath.row]
-    
-        didSelectCell(article: article)
+        
+        didSelectCell(articleID: article.id)
     }
     
     func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
@@ -125,47 +104,36 @@ extension SearchViewController: UITableViewDelegate {
 }
 
 // MARK: UITableViewDataSource
-//extension SearchViewController: UITableViewDataSource {
-//    
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return articles.count
-//    }
-//    
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        if let articleCell = tableView.dequeueReusableCell(withIdentifier: Constants.articleCellIndentifier, for: indexPath) as? ArticleCell {
-//            if let article = articles[safe: indexPath.row] {
-//                articleCell.updateCellView(article: article)
-//            }
-//            articleCell.backgroundColor = Colors.cellColor
-//            articleCell.accessoryType = .disclosureIndicator
-//            return articleCell
-//        } else {
-//            return ArticleCell()
-//        }
-//    }
-//    
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        let position = scrollView.contentOffset.y
-//        let scrollViewHeight = scrollView.frame.size.height
-//        let tableViewHeight = searchArticlesTableView.contentSize.height + 100
-//        
-//        guard !isPaginating else { return }
-//        guard !self.articles.isEmpty else { return }
-//        
-//        if position > (tableViewHeight - scrollViewHeight) {
-//            searchArticlesTableView.tableFooterView = .makeFooterSpinner(view: searchArticlesTableView.plainView)
-//            pagePagination += 1
-//            getArticlesByTopic(topic: searchTopic, sortByIndex: dropDownIndex, page: pagePagination)
-//            isPaginating = true
-//        }
-//    }
-//}
+extension SearchViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return articles.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if indexPath.row == searchArticlesTableView.lastItem().row {
+            searchInteractor?.handleDidScrollToLastCell()
+        }
+        
+        if let articleCell = tableView.dequeueReusableCell(withIdentifier: Constants.articleCellIndentifier, for: indexPath) as? ArticleCell {
+            if let article = articles[safe: indexPath.row] {
+                articleCell.updateCellView(viewModel: article)
+            }
+            articleCell.backgroundColor = Colors.cellColor
+            articleCell.accessoryType = .disclosureIndicator
+            return articleCell
+        } else {
+            return ArticleCell()
+        }
+    }
+}
 
 // MARK: UISearchBarDelegate
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchTopic = searchBar.text
-        getArticlesByTopic(topic: searchBar.text)
+        searchInteractor?.handleInitialize(topic: searchBar.text)
+        self.searchArticlesTableView.showSpinner(showSpinner: true)
     }
 }
 
@@ -196,7 +164,7 @@ private extension SearchViewController {
 private extension SearchViewController {
     func setupLayout() {
         searchArticlesTableView.delegate = self
-//        searchArticlesTableView.dataSource = self
+        searchArticlesTableView.dataSource = self
         searchBar.delegate = self
         
         view.backgroundColor = Colors.backgroundArticlesScreenColor
@@ -228,7 +196,6 @@ private extension SearchViewController {
     func setupDropDown() {
         dropDown.anchorView = faButton
         dropDown.selectionAction = { [weak self] (index: Int, item: String) in
-            guard !(self?.articles.isEmpty)! else { return }
             self?.didSelectDropDownItem(index: index)
         }
     }
@@ -243,7 +210,7 @@ private extension SearchViewController {
 // MARK: User actions
 private extension SearchViewController {
     @objc func didTapReload() {
-        getArticlesByTopic(topic: searchTopic)
+        searchInteractor?.handleDidTapReload()
     }
     
     @objc func didTapFilter() {
@@ -251,20 +218,36 @@ private extension SearchViewController {
     }
     
     @objc func didSelectDropDownItem(index: Int) {
-        dropDownIndex = index
-        pagePagination = 1
-        getArticlesByTopic(topic: searchTopic, sortByIndex: index)
+        searchInteractor?.handleDidTapDropdownItem(sortIndex: index)
     }
     
-    func didSelectCell(article: ArticleEntity) {
-//        navigationController?.pushViewController(DetailsViewController(
-//            titleArticle: article.title,
-//            descriptionArticle: article.description,
-//            imageArticle: article.urlToImage,
-//            linkArticle: article.url,
-//            author: article.author,
-//            publishedAt: article.publishedAt,
-//            backButtonTitle: LocalizedStrings.searchResults
-//        ), animated: true)
+    func didSelectCell(articleID: String) {
+        searchInteractor?.handleTapArticle(articleID: articleID)
+    }
+}
+
+extension SearchViewController: ISearchViewController {
+    func display(articles: [ArticleCell.ViewModel]) {
+        self.articles = articles
+        
+        DispatchQueue.main.async {
+            self.searchArticlesTableView.showSpinner(showSpinner: false)
+            self.searchArticlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
+            self.searchArticlesTableView.tableFooterView = nil
+            self.searchArticlesTableView.reloadData()
+        }
+    }
+    
+    func displayError(message: String) {
+        DispatchQueue.main.async {
+            self.showAlertDialog(error: message)
+            self.searchArticlesTableView.backgroundView = self.retryButton
+            self.searchArticlesTableView.backgroundView?.easy.layout(Center())
+            self.searchArticlesTableView.tableFooterView = nil
+        }
+    }
+    
+    func displayPaginationSpinner() {
+        searchArticlesTableView.tableFooterView = .makeFooterSpinner(view: searchArticlesTableView.plainView)
     }
 }

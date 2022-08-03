@@ -42,6 +42,9 @@
 		C692965528998EB0004636FA /* ArticleDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C692965428998EB0004636FA /* ArticleDetailsViewModel.swift */; };
 		C692965B28999A94004636FA /* GetArticlesWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C692965A28999A94004636FA /* GetArticlesWorker.swift */; };
 		C69296622899A8FB004636FA /* ArticleDetailsViewModelMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69296612899A8FB004636FA /* ArticleDetailsViewModelMapper.swift */; };
+		C692966A2899CFFF004636FA /* SearchRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69296692899CFFF004636FA /* SearchRouter.swift */; };
+		C692966C2899D01E004636FA /* SearchPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C692966B2899D01E004636FA /* SearchPresenter.swift */; };
+		C692966E2899D034004636FA /* SearchInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C692966D2899D034004636FA /* SearchInteractor.swift */; };
 		C6962732289868390041BE21 /* URLMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6962731289868390041BE21 /* URLMapper.swift */; };
 		C6962734289868FE0041BE21 /* registerMapperServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6962733289868FE0041BE21 /* registerMapperServices.swift */; };
 		C698B87E2892F0EF004C4E40 /* HomeInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C698B87D2892F0EF004C4E40 /* HomeInteractor.swift */; };
@@ -99,6 +102,9 @@
 		C692965428998EB0004636FA /* ArticleDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDetailsViewModel.swift; sourceTree = "<group>"; };
 		C692965A28999A94004636FA /* GetArticlesWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetArticlesWorker.swift; sourceTree = "<group>"; };
 		C69296612899A8FB004636FA /* ArticleDetailsViewModelMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDetailsViewModelMapper.swift; sourceTree = "<group>"; };
+		C69296692899CFFF004636FA /* SearchRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRouter.swift; sourceTree = "<group>"; };
+		C692966B2899D01E004636FA /* SearchPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPresenter.swift; sourceTree = "<group>"; };
+		C692966D2899D034004636FA /* SearchInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInteractor.swift; sourceTree = "<group>"; };
 		C6962731289868390041BE21 /* URLMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLMapper.swift; sourceTree = "<group>"; };
 		C6962733289868FE0041BE21 /* registerMapperServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = registerMapperServices.swift; sourceTree = "<group>"; };
 		C698B87D2892F0EF004C4E40 /* HomeInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInteractor.swift; sourceTree = "<group>"; };
@@ -229,7 +235,11 @@
 		C65961D62889505300215A25 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				C62B519428887B2400EC812E /* SearchViewController.swift */,
+				C69296632899CF6E004636FA /* Mappers */,
+				C69296652899CF7B004636FA /* ViewController */,
+				C69296662899CF8B004636FA /* Interactor */,
+				C69296672899CF9B004636FA /* Presenter */,
+				C69296682899CFA9004636FA /* Router */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -293,8 +303,8 @@
 				C698B88D289443F2004C4E40 /* Mappers */,
 				C65961D62889505300215A25 /* Search */,
 				C65961D52889504600215A25 /* Home */,
-				C65961D42889503400215A25 /* Services */,
 				C62B518B2887EEA900EC812E /* Details */,
+				C65961D42889503400215A25 /* Services */,
 				C62B51902887F2EE00EC812E /* ControllerServices+Injection.swift */,
 			);
 			path = Scenes;
@@ -423,6 +433,45 @@
 				C69296612899A8FB004636FA /* ArticleDetailsViewModelMapper.swift */,
 			);
 			path = Mappers;
+			sourceTree = "<group>";
+		};
+		C69296632899CF6E004636FA /* Mappers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Mappers;
+			sourceTree = "<group>";
+		};
+		C69296652899CF7B004636FA /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C62B519428887B2400EC812E /* SearchViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		C69296662899CF8B004636FA /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				C692966D2899D034004636FA /* SearchInteractor.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		C69296672899CF9B004636FA /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				C692966B2899D01E004636FA /* SearchPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		C69296682899CFA9004636FA /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				C69296692899CFFF004636FA /* SearchRouter.swift */,
+			);
+			path = Router;
 			sourceTree = "<group>";
 		};
 		C698B8832893D424004C4E40 /* Presenter */ = {
@@ -644,12 +693,15 @@
 				C698B87E2892F0EF004C4E40 /* HomeInteractor.swift in Sources */,
 				C63148FE287455F900F7B393 /* ArticleCell.swift in Sources */,
 				C698B8802892F0FC004C4E40 /* HomePresenter.swift in Sources */,
+				C692966E2899D034004636FA /* SearchInteractor.swift in Sources */,
 				C65B021B287D37B20007FB08 /* INewsAPI.swift in Sources */,
 				C692964528992B19004636FA /* HomeRouter.swift in Sources */,
+				C692966A2899CFFF004636FA /* SearchRouter.swift in Sources */,
 				C692965228998B38004636FA /* DetailsRouter.swift in Sources */,
 				C65B0222287D4F6E0007FB08 /* LocalizedStrings.swift in Sources */,
 				C64F7747288015C40027C058 /* Colors.swift in Sources */,
 				C65961DC288A7A0A00215A25 /* SortingService.swift in Sources */,
+				C692966C2899D01E004636FA /* SearchPresenter.swift in Sources */,
 				C63148D12872D88400F7B393 /* Response.swift in Sources */,
 				C6F9E74E287CA5EC006826CD /* DetailsViewController.swift in Sources */,
 				C6F9E74B287C70B2006826CD /* CGColor+Extensions.swift in Sources */,

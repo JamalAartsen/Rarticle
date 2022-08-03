@@ -26,7 +26,7 @@ extension MainCoordinator: HomeRouter {
     }
     
     func navigateToSearchController() {
-        navigationController?.pushViewController(SearchViewController(), animated: true)
+        navigationController?.pushViewController(SearchViewController(router: self), animated: true)
     }
 }
 
@@ -44,5 +44,11 @@ extension MainCoordinator: DetailsRouter {
         let activity = UIActivityViewController(activityItems: [link, text], applicationActivities: nil)
         
         navigationController?.present(activity, animated: true)
+    }
+}
+
+extension MainCoordinator: SearchRouter {
+    func navigateToDetailsControllerFromSearch(article: Article) {
+        navigationController?.pushViewController(DetailsViewController(article: article, router: self), animated: true)
     }
 }

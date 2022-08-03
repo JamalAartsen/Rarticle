@@ -27,8 +27,6 @@ class HomeViewController: UIViewController {
     private let refreshControl = UIRefreshControl()
     
     private var articles: [ArticleCell.ViewModel] = []
-    
-    @Injected private var newsRepository: NewsRepository
     private var homeInteractor: IHomeInteractor?
     
     init(router: HomeRouter) {
@@ -102,9 +100,7 @@ extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         articlesTableView.deselectRow(at: indexPath, animated: true)
         let article = articles[indexPath.row]
-        
-        print("ID: \(article.id) Title: \(article.title)")
-    
+            
         didSelectCell(articleID: article.id)
     }
         
