@@ -26,7 +26,6 @@ class NewsApi: INewsAPI {
             URLQueryItem(name: "page", value: "\(page)")
         ]
         let (data, _) = try await session.data(from: URL(string: .createComplicatedUrl(scheme: scheme, host: baseUrl, path: NewsAPIEndpoints.everythingEndpoint, queryItems: queryItems))!)
-        // TODO: Map entities to domain models (Alleen bij clean)
         let articles = try JSONDecoder().decode(Response.self, from: data)
         
         return articles.articles.compactMap({ articleMapper.map(entity: $0) })

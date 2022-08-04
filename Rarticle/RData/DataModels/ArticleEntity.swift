@@ -15,6 +15,4 @@ struct ArticleEntity: Codable {
     let urlToImage: String?
     let author: String?
     let publishedAt: String
-    
-    // TODO: Weghalen + Mapper toevoegen Article voor model (private maken) en eentje voor controller
 }

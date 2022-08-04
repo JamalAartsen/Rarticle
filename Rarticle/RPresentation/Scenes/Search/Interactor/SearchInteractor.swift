@@ -108,6 +108,7 @@ extension SearchInteractor {
     
     func handleDidTapDropdownItem(sortIndex: Int) {
         guard !(articles.isEmpty) else { return }
+        // TODO: Index mag hier niet bewaard worden. soort van zelfde check als handleTapArticle
         getArticles(topic: topic, sortIndex: sortIndex, isFiltered: true)
     }
 }

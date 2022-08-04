@@ -12,7 +12,6 @@ class ArticleDetailsViewModel {
         let title: String
         let description: String
         let image: URL?
-        let urlArticle: URL
         let author: String
         let publishedAt: String
     }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Resolver
 
 class ArticleDetailsViewModelMapper {
     func map(article: Article) -> ArticleDetailsViewModel.ViewModel {
@@ -13,7 +14,6 @@ class ArticleDetailsViewModelMapper {
             title: article.title ?? LocalizedStrings.noTitle,
             description: article.description ?? LocalizedStrings.noDescription,
             image: article.image,
-            urlArticle: article.url,
             author: article.author ?? LocalizedStrings.noAuthor,
             publishedAt: article.publishedDate
         )

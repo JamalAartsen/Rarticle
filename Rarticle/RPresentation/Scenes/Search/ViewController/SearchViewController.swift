@@ -218,6 +218,7 @@ private extension SearchViewController {
     }
     
     @objc func didSelectDropDownItem(index: Int) {
+        // TODO: Dit mag
         searchInteractor?.handleDidTapDropdownItem(sortIndex: index)
     }
     
@@ -232,6 +233,7 @@ extension SearchViewController: ISearchViewController {
         
         DispatchQueue.main.async {
             self.searchArticlesTableView.showSpinner(showSpinner: false)
+            // TODO: Localizations moeten in interactor. Je wilt het doorgeven via je de interactor
             self.searchArticlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
             self.searchArticlesTableView.tableFooterView = nil
             self.searchArticlesTableView.reloadData()

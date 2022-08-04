@@ -10,6 +10,7 @@ import Resolver
 
 class ArticleMapper {
     @Injected var urlMapper: URLMapper
+    @Injected private var dateFormatterService: DateMapper
     
     // TODO: Date strings omzetten naar Date.
     func map(entity: ArticleEntity) -> Article? {
@@ -21,7 +22,7 @@ class ArticleMapper {
             url: url,
             image: urlMapper.mapToUrl(stringUrl:  entity.urlToImage),
             author: entity.author,
-            publishedDate: entity.publishedAt
+            publishedDate: dateFormatterService.map(date: entity.publishedAt)
         )
     }
 }

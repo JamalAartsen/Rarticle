@@ -9,8 +9,7 @@ import Resolver
 
 extension Resolver {
     public static func registerControllerServices() {
-        register { DateFormatterService() }
-        register { URLLinkService() }
+        register { DateMapper() }
         register { UIApplication.shared }
     }
 }

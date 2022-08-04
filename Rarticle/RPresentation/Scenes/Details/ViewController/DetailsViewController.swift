@@ -27,8 +27,6 @@ class DetailsViewController: UIViewController {
     private lazy var shareIcon: UIBarButtonItem = makeShareIcon(iconID: Constants.shareIconID)
     private lazy var authorPublishedAtLabel: UILabel = makeAuthorPublishedAtLabel()
     
-    @Injected private var dateFormatterService: DateFormatterService
-    
     private var detailsInteractor: DetailsInteractor?
     
     init(article: Article, router: DetailsRouter) {
@@ -203,9 +201,7 @@ private extension DetailsViewController {
         
         navigationBar?.backIndicatorImage = backButtonImage
         navigationBar?.backIndicatorTransitionMaskImage = backButtonImage
-        
-        // TODO:
-        //backItem.title = backButtonTitle
+       
         navigationBar?.topItem?.backBarButtonItem = backItem
     }
     
@@ -230,7 +226,7 @@ extension DetailsViewController: IDetailsController {
     func display(article: ArticleDetailsViewModel.ViewModel) {
         titleLabel.text = article.title
         descriptionLabel.text = article.description
-        authorPublishedAtLabel.text = "\(article.author ) \(dateFormatterService.dateFormatter(date: article.publishedAt))"
+        authorPublishedAtLabel.text = "\(article.author ) \(article.publishedAt)"
         image.loadFrom(urlAdress: article.image, placeholder: Constants.placeHolderImage)
     }
 }

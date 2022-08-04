@@ -10,9 +10,8 @@
 		2B1E13160A50920AE9CF7B33 /* Pods_Rarticle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC733AF04E176734A0784948 /* Pods_Rarticle.framework */; };
 		C62B518628869D7000EC812E /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62B518528869D7000EC812E /* String+Extensions.swift */; };
 		C62B51882886E62400EC812E /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62B51872886E62400EC812E /* UITableView+Extensions.swift */; };
-		C62B518D2887EEC100EC812E /* DateFormatterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62B518C2887EEC100EC812E /* DateFormatterService.swift */; };
+		C62B518D2887EEC100EC812E /* DateMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62B518C2887EEC100EC812E /* DateMapper.swift */; };
 		C62B51912887F2EE00EC812E /* ControllerServices+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62B51902887F2EE00EC812E /* ControllerServices+Injection.swift */; };
-		C62B51932887F69B00EC812E /* URLLinkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62B51922887F69B00EC812E /* URLLinkService.swift */; };
 		C62B519528887B2400EC812E /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62B519428887B2400EC812E /* SearchViewController.swift */; };
 		C63148B92872D54700F7B393 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63148B82872D54700F7B393 /* AppDelegate.swift */; };
 		C63148BD2872D54700F7B393 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63148BC2872D54700F7B393 /* HomeViewController.swift */; };
@@ -68,9 +67,8 @@
 		AC733AF04E176734A0784948 /* Pods_Rarticle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Rarticle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C62B518528869D7000EC812E /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		C62B51872886E62400EC812E /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
-		C62B518C2887EEC100EC812E /* DateFormatterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterService.swift; sourceTree = "<group>"; };
+		C62B518C2887EEC100EC812E /* DateMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateMapper.swift; sourceTree = "<group>"; };
 		C62B51902887F2EE00EC812E /* ControllerServices+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ControllerServices+Injection.swift"; sourceTree = "<group>"; };
-		C62B51922887F69B00EC812E /* URLLinkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLLinkService.swift; sourceTree = "<group>"; };
 		C62B519428887B2400EC812E /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		C63148B52872D54700F7B393 /* Rarticle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rarticle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C63148B82872D54700F7B393 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -190,7 +188,6 @@
 				C6929656289999A4004636FA /* RPresentation */,
 				C6929657289999E5004636FA /* RDomain */,
 				C6929658289999ED004636FA /* RData */,
-				C6F9E744287C5FEF006826CD /* APIServices+Injection.swift */,
 				C65961DF288ACF4A00215A25 /* Localization */,
 				C65961DE288ACE6700215A25 /* General */,
 				C65961DD288ACE3500215A25 /* Resources */,
@@ -214,8 +211,7 @@
 		C65961D42889503400215A25 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				C62B518C2887EEC100EC812E /* DateFormatterService.swift */,
-				C62B51922887F69B00EC812E /* URLLinkService.swift */,
+				C62B518C2887EEC100EC812E /* DateMapper.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -235,7 +231,6 @@
 		C65961D62889505300215A25 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				C69296632899CF6E004636FA /* Mappers */,
 				C69296652899CF7B004636FA /* ViewController */,
 				C69296662899CF8B004636FA /* Interactor */,
 				C69296672899CF9B004636FA /* Presenter */,
@@ -393,6 +388,7 @@
 		C6929658289999ED004636FA /* RData */ = {
 			isa = PBXGroup;
 			children = (
+				C6F9E744287C5FEF006826CD /* APIServices+Injection.swift */,
 				C692965C28999B98004636FA /* Mappers */,
 				C65961D72889B7A700215A25 /* Repositories */,
 				C65961D82889B7B400215A25 /* NewsApi */,
@@ -431,13 +427,6 @@
 			isa = PBXGroup;
 			children = (
 				C69296612899A8FB004636FA /* ArticleDetailsViewModelMapper.swift */,
-			);
-			path = Mappers;
-			sourceTree = "<group>";
-		};
-		C69296632899CF6E004636FA /* Mappers */ = {
-			isa = PBXGroup;
-			children = (
 			);
 			path = Mappers;
 			sourceTree = "<group>";
@@ -669,7 +658,6 @@
 				C6F9E747287C702F006826CD /* UIImageView+Extensions.swift in Sources */,
 				C6E5874328901CC300160E34 /* SortBy.swift in Sources */,
 				C6F9E745287C5FEF006826CD /* APIServices+Injection.swift in Sources */,
-				C62B51932887F69B00EC812E /* URLLinkService.swift in Sources */,
 				C692965B28999A94004636FA /* GetArticlesWorker.swift in Sources */,
 				C69296432899283D004636FA /* MainCoordinator.swift in Sources */,
 				C63148BD2872D54700F7B393 /* HomeViewController.swift in Sources */,
@@ -681,7 +669,7 @@
 				C692964D28998AEA004636FA /* DetailsPresenter.swift in Sources */,
 				C6CE583228858B8F0098EEBF /* NewsAPI.swift in Sources */,
 				C6962732289868390041BE21 /* URLMapper.swift in Sources */,
-				C62B518D2887EEC100EC812E /* DateFormatterService.swift in Sources */,
+				C62B518D2887EEC100EC812E /* DateMapper.swift in Sources */,
 				C63148B92872D54700F7B393 /* AppDelegate.swift in Sources */,
 				C698B88C28940E1A004C4E40 /* Article.swift in Sources */,
 				C692964728995344004636FA /* Coordinator.swift in Sources */,

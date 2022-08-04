@@ -32,11 +32,12 @@ extension DetailsInteractor {
     }
     
     func handleDidTapLink() {
-        // TODO: ! moet weg
-        router.navigateToArticle(link: article!.url)
+        guard let url = article?.url else { return }
+        router.navigateToArticle(link: url)
     }
     
     func handleDidTapShareButton() {
-        router.shareArticle(link: article!.url)
+        guard let url = article?.url else { return }
+        router.shareArticle(link: url)
     }
 }

@@ -7,9 +7,9 @@
 
 import Foundation
 
-class DateFormatterService {
+class DateMapper {
     // TODO: Moet een date zijn return Date
-    func dateFormatter(date: String) -> String {
+    func map(date: String) -> String {
         let regexPattern = try! NSRegularExpression(pattern: Constants.regexPatternAZ)
         let range = NSMakeRange(0, date.count)
         let newDate = regexPattern.stringByReplacingMatches(in: date, range: range, withTemplate: " ")

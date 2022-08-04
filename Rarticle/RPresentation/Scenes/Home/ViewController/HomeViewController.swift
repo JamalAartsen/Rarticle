@@ -173,6 +173,7 @@ private extension HomeViewController {
     
     private func setupLocalization() {
         retryButton.setTitle(LocalizedStrings.retry, for: .normal)
+        // TODO: Door interactorw
         dropDown.dataSource = [LocalizedStrings.sortByNewest, LocalizedStrings.sortByPopularity, LocalizedStrings.sortByRelevancy]
         titlePage.text = LocalizedStrings.appTitle
     }

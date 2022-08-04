@@ -11,7 +11,6 @@ protocol INewsAPI {
     func FetchData(topic: String?, sortByIndex: Int, page: Int) async throws -> [Article]
 }
 
-// TODO: 
 enum NewsApiError: Error {
     case general(message: String)
 }

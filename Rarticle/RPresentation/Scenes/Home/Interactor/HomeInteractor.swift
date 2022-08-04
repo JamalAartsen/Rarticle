@@ -63,6 +63,10 @@ extension HomeInteractor {
 
                 articles = articlesFromWorker
                 homePresenter.presentArticles(articles: articles)
+                
+                for article in articles {
+                    print("Date: \(article.publishedDate)")
+                }
             }
             catch let error {
                 homePresenter.presentErrorMessage(message: error.localizedDescription)
