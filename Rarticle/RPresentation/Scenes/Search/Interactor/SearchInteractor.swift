@@ -30,37 +30,40 @@ class SearchInteractor: ISearchInteractor {
         }
     }
     private var topic: String? = nil
-    private var sortByIndex: Int {
-        didSet {
-            currentSortIndex = sortByIndex
-        }
-    }
     private var isPaginating = false
     private var currentPage: Int = 1
-    private var currentSortIndex: Int = 0
     private var router: SearchRouter
     private var sortingTypes = SortingType.allCases
+    
+    private var sortingType: SortingType {
+        didSet {
+            currentSortingType = sortingType
+        }
+    }
+    private var currentSortingType: SortingType = SortingType.publishedAt
     
     init(searchPresenter: SearchPresenter, router: SearchRouter) {
         self.searchPresenter = searchPresenter
         self.isLoadingNextPage = false
         self.router = router
-        sortByIndex = 0
+        self.sortingType = SortingType.publishedAt
     }
     
 }
 
 extension SearchInteractor {
-    private func getArticles(topic: String?, sortIndex: Int?, isFiltered: Bool) {
+    private func getArticles(topic: String?, sortingType: SortingType?, isFiltered: Bool) {
         if isFiltered {
             currentPage = 1
         }
-        sortByIndex = sortIndex ?? currentSortIndex
+        //sortByIndex = sortIndex ?? currentSortIndex
         self.topic = topic
+        
+        self.sortingType = sortingType ?? currentSortingType
 
         Task {
             do {
-                let articlesFromWorker = try await getArticlesWorker.getArticles(topic: topic, sortingType: sortingTypes[sortByIndex], page: currentPage)
+                let articlesFromWorker = try await getArticlesWorker.getArticles(topic: topic, sortingType: self.sortingType, page: currentPage)
 
                 articles = articlesFromWorker
                 searchPresenter.presentArticles(articles: articles)
@@ -72,7 +75,7 @@ extension SearchInteractor {
     }
     
     func handleInitialize(topic: String?) {
-        getArticles(topic: topic, sortIndex: nil, isFiltered: false)
+        getArticles(topic: topic, sortingType: nil, isFiltered: false)
     }
     
     func handleDidScrollToLastCell() {
@@ -81,7 +84,7 @@ extension SearchInteractor {
         currentPage += 1
         Task {
             do {
-                let nextArticles = try await getArticlesWorker.getArticles(topic: topic, sortingType: sortingTypes[sortByIndex], page: currentPage)
+                let nextArticles = try await getArticlesWorker.getArticles(topic: topic, sortingType: sortingType, page: currentPage)
                 articles.append(contentsOf: nextArticles)
 
                 searchPresenter.presentArticles(articles: articles)
@@ -100,15 +103,16 @@ extension SearchInteractor {
     }
     
     func handleDidTapReload() {
-        getArticles(topic: topic, sortIndex: sortByIndex, isFiltered: false)
+        getArticles(topic: topic, sortingType: sortingType, isFiltered: false)
     }
     
     func handleDidTapRefresh() {
-        getArticles(topic: topic, sortIndex: sortByIndex, isFiltered: false)
+        getArticles(topic: topic, sortingType: sortingType, isFiltered: false)
     }
     
     func handleDidTapDropdownItem(sortIndex: Int) {
         guard !(articles.isEmpty) else { return }
-        getArticles(topic: topic, sortIndex: sortIndex, isFiltered: true)
+        sortingType = sortingTypes[sortIndex]
+        getArticles(topic: topic, sortingType: sortingType, isFiltered: true)
     }
 }
