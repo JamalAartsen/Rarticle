@@ -9,6 +9,7 @@ import Foundation
 
 protocol IDetailsInteractor {
     func handleInitialize(article: Article)
+    func handleLocalization()
     func handleDidTapLink()
     func handleDidTapShareButton()
 }
@@ -39,5 +40,12 @@ extension DetailsInteractor {
     func handleDidTapShareButton() {
         guard let url = article?.url else { return }
         router.shareArticle(link: url)
+    }
+    
+    func handleLocalization() {
+        detailsPresenter.presentLocalization(
+            articleButtonTitle: LocalizedStrings.openArticle,
+            navigationItemTitle: LocalizedStrings.detailsViewControllerNavigationTitle
+        )
     }
 }

@@ -10,6 +10,7 @@ import Resolver
 
 protocol IHomeInteractor {
     func handleInitialize()
+    func handleLocalization()
     func handleDidScrollToLastCell()
     func handleDidTapSearch()
     func handleDidTapArticle(articleID: String)
@@ -41,6 +42,7 @@ class HomeInteractor: IHomeInteractor {
     private var currentSortIndex: Int = 0
     private var router: HomeRouter
     private var sortingTypes = SortingType.allCases
+    private let noResultsText = LocalizedStrings.noResults
     
     
     init(homePresenter: IHomePresenter, router: HomeRouter) {
@@ -63,7 +65,7 @@ extension HomeInteractor {
                 let articlesFromWorker = try await getArticlesWorker.getArticles(topic: topic, sortingType: sortingTypes[sortByIndex], page: currentPage)
 
                 articles = articlesFromWorker
-                homePresenter.presentArticles(articles: articles)
+                homePresenter.presentArticles(articles: articles, noResults: noResultsText)
             }
             catch let error {
                 homePresenter.presentErrorMessage(message: error.localizedDescription)
@@ -73,7 +75,6 @@ extension HomeInteractor {
     
     func handleInitialize() {
         getArticles(topic: nil, sortIndex: nil, isFiltered: false)
-        homePresenter.presentInitialize(sortingTypes: SortingType.allCases)
     }
     
     func handleDidTapReload() {
@@ -97,7 +98,7 @@ extension HomeInteractor {
                 let nextArticles = try await getArticlesWorker.getArticles(topic: topic, sortingType: sortingTypes[sortByIndex], page: currentPage)
                 articles.append(contentsOf: nextArticles)
 
-                homePresenter.presentArticles(articles: articles)
+                homePresenter.presentArticles(articles: articles, noResults: noResultsText)
                 isLoadingNextPage = false
             }
             catch let error {
@@ -114,5 +115,14 @@ extension HomeInteractor {
     func handleDidTapArticle(articleID: String) {
         guard let article = articles.first(where: { $0.id == articleID }) else { return }
         router.navigateToDetailsController(article: article)
+    }
+    
+    func handleLocalization() {
+        homePresenter.presentLocalization(
+            sortingTypes: SortingType.allCases,
+            retryButtonTitle: LocalizedStrings.retry,
+            appTitle: LocalizedStrings.appTitle,
+            loadingArticles: LocalizedStrings.loadingArticles
+        )
     }
 }

@@ -10,6 +10,7 @@ import Resolver
 
 protocol IDetailsPresenter {
     func presentArticle(article: Article)
+    func presentLocalization(articleButtonTitle: String, navigationItemTitle: String)
 }
 
 class DetailsPresenter: IDetailsPresenter {
@@ -25,5 +26,12 @@ class DetailsPresenter: IDetailsPresenter {
 extension DetailsPresenter {
     func presentArticle(article: Article) {
         detailsViewController.display(article: articleDetailsViewModelMapper.map(article: article))
+    }
+    
+    func presentLocalization(articleButtonTitle: String, navigationItemTitle: String) {
+        detailsViewController.displayLocalization(
+            articleButtonTitle: articleButtonTitle,
+            navigationItemTitle: navigationItemTitle
+        )
     }
 }

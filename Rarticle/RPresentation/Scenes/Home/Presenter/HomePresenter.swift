@@ -9,10 +9,10 @@ import Foundation
 import Resolver
 
 protocol IHomePresenter {
-    func presentArticles(articles: [Article])
+    func presentArticles(articles: [Article], noResults: String)
     func presentErrorMessage(message: String)
     func presentPaginationSpinner(show: Bool)
-    func presentInitialize(sortingTypes: [SortingType])
+    func presentLocalization(sortingTypes: [SortingType], retryButtonTitle: String, appTitle: String, loadingArticles: String)
 }
 
 class HomePresenter: IHomePresenter {
@@ -26,8 +26,8 @@ class HomePresenter: IHomePresenter {
 }
 
 extension HomePresenter {
-    func presentArticles(articles: [Article]) {
-        homeViewController.display(articles: articles.map({ articleViewModelMapper.map(article: $0) }))
+    func presentArticles(articles: [Article], noResults: String) {
+        homeViewController.display(articles: articles.map({ articleViewModelMapper.map(article: $0) }), noResults: noResults)
     }
     
     func presentErrorMessage(message: String) {
@@ -40,7 +40,7 @@ extension HomePresenter {
         }
     }
     
-    func presentInitialize(sortingTypes: [SortingType]) {
+    func presentLocalization(sortingTypes: [SortingType], retryButtonTitle: String, appTitle: String, loadingArticles: String) {
         let sorting = sortingTypes.map({ sortingType -> String in
             switch sortingType {
             case .publishedAt:
@@ -52,6 +52,6 @@ extension HomePresenter {
             }
         })
         
-        homeViewController.displayInitialize(sortingTypes: sorting)
+        homeViewController.displayLocalization(sortingTypes: sorting, retryButtonTitle: retryButtonTitle, appTitle: appTitle, loadingArticles: loadingArticles)
     }
 }

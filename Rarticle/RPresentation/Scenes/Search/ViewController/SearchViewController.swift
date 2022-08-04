@@ -12,9 +12,10 @@ import Resolver
 import DropDown
 
 protocol ISearchViewController {
-    func display(articles: [ArticleCell.ViewModel])
+    func display(articles: [ArticleCell.ViewModel], noResults: String)
     func displayError(message: String)
     func displayPaginationSpinner()
+    func displayLocalization(sortingTypes: [String], retryButtonTitle: String, searchPlaceHolderText: String)
 }
 
 class SearchViewController: UIViewController {
@@ -43,8 +44,8 @@ class SearchViewController: UIViewController {
         setupConstraints()
         setUpNavigationController()
         setupDropDown()
-        setupLocalization()
         buttonClicks()
+        searchInteractor?.handleLocalization()
     }
     
     // MARK: Setup constraints
@@ -189,7 +190,6 @@ private extension SearchViewController {
         navigationBar?.backIndicatorImage = backButtonImage
         navigationBar?.backIndicatorTransitionMaskImage = backButtonImage
         
-        backItem.title = LocalizedStrings.articles
         navigationBar?.topItem?.backBarButtonItem = backItem
     }
     
@@ -198,12 +198,6 @@ private extension SearchViewController {
         dropDown.selectionAction = { [weak self] (index: Int, item: String) in
             self?.didSelectDropDownItem(index: index)
         }
-    }
-    
-    func setupLocalization() {
-        retryButton.setTitle(LocalizedStrings.retry, for: .normal)
-        searchBar.placeholder = LocalizedStrings.placeholderSearch
-        dropDown.dataSource = [LocalizedStrings.sortByNewest, LocalizedStrings.sortByPopularity, LocalizedStrings.sortByRelevancy]
     }
 }
 
@@ -218,7 +212,6 @@ private extension SearchViewController {
     }
     
     @objc func didSelectDropDownItem(index: Int) {
-        // TODO: Dit mag
         searchInteractor?.handleDidTapDropdownItem(sortIndex: index)
     }
     
@@ -228,13 +221,12 @@ private extension SearchViewController {
 }
 
 extension SearchViewController: ISearchViewController {
-    func display(articles: [ArticleCell.ViewModel]) {
+    func display(articles: [ArticleCell.ViewModel], noResults: String) {
         self.articles = articles
         
         DispatchQueue.main.async {
             self.searchArticlesTableView.showSpinner(showSpinner: false)
-            // TODO: Localizations moeten in interactor. Je wilt het doorgeven via je de interactor
-            self.searchArticlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
+            self.searchArticlesTableView.showMessage(show: articles.isEmpty, messageResult: noResults)
             self.searchArticlesTableView.tableFooterView = nil
             self.searchArticlesTableView.reloadData()
         }
@@ -251,5 +243,11 @@ extension SearchViewController: ISearchViewController {
     
     func displayPaginationSpinner() {
         searchArticlesTableView.tableFooterView = .makeFooterSpinner(view: searchArticlesTableView.plainView)
+    }
+    
+    func displayLocalization(sortingTypes: [String], retryButtonTitle: String, searchPlaceHolderText: String) {
+        dropDown.dataSource = sortingTypes
+        retryButton.setTitle(retryButtonTitle, for: .normal)
+        searchBar.placeholder = searchPlaceHolderText
     }
 }

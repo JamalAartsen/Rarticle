@@ -13,6 +13,7 @@ import SafariServices
 
 protocol IDetailsController {
     func display(article: ArticleDetailsViewModel.ViewModel)
+    func displayLocalization(articleButtonTitle: String, navigationItemTitle: String)
 }
 
 class DetailsViewController: UIViewController {
@@ -43,9 +44,9 @@ class DetailsViewController: UIViewController {
         setupLayout()
         setupConstraints()
         setUpNavigationController()
-        setupLocalization()
         animations()
         buttonClicks()
+        detailsInteractor?.handleLocalization()
     }
     
     // MARK: Animations
@@ -127,13 +128,11 @@ private extension DetailsViewController {
     
     func makeScrollView() -> UIScrollView {
         let scrollView = UIScrollView()
-        
         return scrollView
     }
     
     func makeContentViewScrollView() -> UIView {
         let view = UIView()
-        
         return view
     }
     
@@ -155,7 +154,6 @@ private extension DetailsViewController {
     
     func makeImage() -> UIImageView {
         let imageArticle = UIImageView()
-        
         return imageArticle
     }
     
@@ -201,13 +199,7 @@ private extension DetailsViewController {
         
         navigationBar?.backIndicatorImage = backButtonImage
         navigationBar?.backIndicatorTransitionMaskImage = backButtonImage
-       
         navigationBar?.topItem?.backBarButtonItem = backItem
-    }
-    
-    private func setupLocalization() {
-        buttonLink.setTitle(LocalizedStrings.openArticle, for: .normal)
-        navigationItem.title = LocalizedStrings.detailsViewControllerNavigationTitle
     }
 }
 
@@ -228,5 +220,10 @@ extension DetailsViewController: IDetailsController {
         descriptionLabel.text = article.description
         authorPublishedAtLabel.text = "\(article.author ) \(article.publishedAt)"
         image.loadFrom(urlAdress: article.image, placeholder: Constants.placeHolderImage)
+    }
+    
+    func displayLocalization(articleButtonTitle: String, navigationItemTitle: String) {
+        buttonLink.setTitle(articleButtonTitle, for: .normal)
+        navigationItem.title = navigationItemTitle
     }
 }

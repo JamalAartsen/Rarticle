@@ -10,6 +10,7 @@ import Resolver
 
 protocol ISearchInteractor {
     func handleInitialize(topic: String?)
+    func handleLocalization()
     func handleDidScrollToLastCell()
     func handleTapArticle(articleID: String)
     func handleDidTapReload()
@@ -41,6 +42,7 @@ class SearchInteractor: ISearchInteractor {
         }
     }
     private var currentSortingType: SortingType = SortingType.publishedAt
+    private let noResultsText = LocalizedStrings.noResults
     
     init(searchPresenter: SearchPresenter, router: SearchRouter) {
         self.searchPresenter = searchPresenter
@@ -66,7 +68,7 @@ extension SearchInteractor {
                 let articlesFromWorker = try await getArticlesWorker.getArticles(topic: topic, sortingType: self.sortingType, page: currentPage)
 
                 articles = articlesFromWorker
-                searchPresenter.presentArticles(articles: articles)
+                searchPresenter.presentArticles(articles: articles, noResults: noResultsText)
             }
             catch let error {
                 searchPresenter.presentErrorMessage(message: error.localizedDescription)
@@ -87,7 +89,7 @@ extension SearchInteractor {
                 let nextArticles = try await getArticlesWorker.getArticles(topic: topic, sortingType: sortingType, page: currentPage)
                 articles.append(contentsOf: nextArticles)
 
-                searchPresenter.presentArticles(articles: articles)
+                searchPresenter.presentArticles(articles: articles, noResults: noResultsText)
                 isLoadingNextPage = false
             }
             catch let error {
@@ -114,5 +116,9 @@ extension SearchInteractor {
         guard !(articles.isEmpty) else { return }
         sortingType = sortingTypes[sortIndex]
         getArticles(topic: topic, sortingType: sortingType, isFiltered: true)
+    }
+    
+    func handleLocalization() {
+        searchPresenter.presentLocalization(sortingTypes: SortingType.allCases, retryButtonTitle: LocalizedStrings.retry, searchPlaceHolderText: LocalizedStrings.placeholderSearch)
     }
 }

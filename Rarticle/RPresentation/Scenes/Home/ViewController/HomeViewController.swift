@@ -11,10 +11,10 @@ import Resolver
 import DropDown
 
 protocol IHomeViewController {
-    func display(articles: [ArticleCell.ViewModel])
+    func display(articles: [ArticleCell.ViewModel], noResults: String)
     func displayError(message: String)
     func displayPaginationSpinner()
-    func displayInitialize(sortingTypes: [String])
+    func displayLocalization(sortingTypes: [String], retryButtonTitle: String, appTitle: String, loadingArticles: String)
 }
  
 class HomeViewController: UIViewController {
@@ -45,12 +45,12 @@ class HomeViewController: UIViewController {
         animations()
         setupLayout()
         setupDropDown()
-        setupLocalization()
         setupNavigationController()
         setupConstraints()
         setupPullToRefreshTableview()
         buttonClicks()
         homeInteractor?.handleInitialize()
+        homeInteractor?.handleLocalization()
     }
     
     // MARK: Setup constraints
@@ -172,14 +172,7 @@ private extension HomeViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(didTapSearch))
     }
     
-    private func setupLocalization() {
-        retryButton.setTitle(LocalizedStrings.retry, for: .normal)
-        titlePage.text = LocalizedStrings.appTitle
-    }
-    
-    
     private func setupPullToRefreshTableview() {
-        refreshControl.attributedTitle = NSAttributedString(string: LocalizedStrings.loadingArticles)
         refreshControl.addTarget(self, action: #selector(didTapRefresh(_:)), for: .valueChanged)
         articlesTableView.addSubview(refreshControl)
     }
@@ -231,12 +224,12 @@ private extension HomeViewController {
 }
 
 extension HomeViewController: IHomeViewController {
-    func display(articles: [ArticleCell.ViewModel]) {
+    func display(articles: [ArticleCell.ViewModel], noResults: String) {
         self.articles = articles
         
         DispatchQueue.main.async {
             self.articlesTableView.showSpinner(showSpinner: false)
-            self.articlesTableView.showMessage(show: articles.isEmpty, messageResult: LocalizedStrings.noResults)
+            self.articlesTableView.showMessage(show: articles.isEmpty, messageResult: noResults)
             self.articlesTableView.tableFooterView = nil
             self.refreshControl.endRefreshing()
             self.articlesTableView.reloadData()
@@ -257,7 +250,10 @@ extension HomeViewController: IHomeViewController {
         articlesTableView.tableFooterView = .makeFooterSpinner(view: articlesTableView.plainView)
     }
     
-    func displayInitialize(sortingTypes: [String]) {
+    func displayLocalization(sortingTypes: [String], retryButtonTitle: String, appTitle: String, loadingArticles: String) {
         dropDown.dataSource = sortingTypes
+        retryButton.setTitle(retryButtonTitle, for: .normal)
+        titlePage.text = appTitle
+        refreshControl.attributedTitle = NSAttributedString(string: loadingArticles)
     }
 }
