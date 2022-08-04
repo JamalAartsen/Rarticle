@@ -39,6 +39,7 @@ class SearchInteractor: ISearchInteractor {
     private var currentPage: Int = 1
     private var currentSortIndex: Int = 0
     private var router: SearchRouter
+    private var sortingTypes = SortingType.allCases
     
     init(searchPresenter: SearchPresenter, router: SearchRouter) {
         self.searchPresenter = searchPresenter
@@ -56,11 +57,11 @@ extension SearchInteractor {
         }
         sortByIndex = sortIndex ?? currentSortIndex
         self.topic = topic
-        
+
         Task {
             do {
-                let articlesFromWorker = try await getArticlesWorker.getArticles(topic: topic, sortByIndex: sortByIndex, page: currentPage)
-                
+                let articlesFromWorker = try await getArticlesWorker.getArticles(topic: topic, sortingType: sortingTypes[sortByIndex], page: currentPage)
+
                 articles = articlesFromWorker
                 searchPresenter.presentArticles(articles: articles)
             }
@@ -80,9 +81,9 @@ extension SearchInteractor {
         currentPage += 1
         Task {
             do {
-                let nextArticles = try await getArticlesWorker.getArticles(topic: topic, sortByIndex: self.sortByIndex, page: currentPage)
+                let nextArticles = try await getArticlesWorker.getArticles(topic: topic, sortingType: sortingTypes[sortByIndex], page: currentPage)
                 articles.append(contentsOf: nextArticles)
-                
+
                 searchPresenter.presentArticles(articles: articles)
                 isLoadingNextPage = false
             }
@@ -108,7 +109,6 @@ extension SearchInteractor {
     
     func handleDidTapDropdownItem(sortIndex: Int) {
         guard !(articles.isEmpty) else { return }
-        // TODO: Index mag hier niet bewaard worden. soort van zelfde check als handleTapArticle
         getArticles(topic: topic, sortIndex: sortIndex, isFiltered: true)
     }
 }

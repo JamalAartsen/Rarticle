@@ -17,12 +17,12 @@ class NewsApi: INewsAPI {
     @Injected private var sortingService: SortingService
     @Injected private var articleMapper: ArticleMapper
     
-    func FetchData(topic: String?, sortByIndex: Int, page: Int) async throws -> [Article] {
+    func FetchData(topic: String?, sortingType: SortingType, page: Int) async throws -> [Article] {
         let queryItems = [
             URLQueryItem(name: "q", value: topic ?? baseTopic),
             URLQueryItem(name: "apikey", value: apiKey),
             URLQueryItem(name: "pageSize", value: "\(totalArticles)"),
-            URLQueryItem(name: "sortBy", value: sortingService.sortBy(index: sortByIndex).rawValue),
+            URLQueryItem(name: "sortBy", value: sortingService.sortBy(sortingType: sortingType).rawValue),
             URLQueryItem(name: "page", value: "\(page)")
         ]
         let (data, _) = try await session.data(from: URL(string: .createComplicatedUrl(scheme: scheme, host: baseUrl, path: NewsAPIEndpoints.everythingEndpoint, queryItems: queryItems))!)

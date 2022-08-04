@@ -8,16 +8,14 @@
 import Foundation
 
 class SortingService {
-    func sortBy(index: Int? = 0) -> SortBy {
-        switch index {
-        case 0:
+    func sortBy(sortingType: SortingType) -> SortBy {
+        switch sortingType {
+        case .publishedAt:
             return SortBy.publishedAt
-        case 1:
+        case .popularity:
             return SortBy.popularity
-        case 2:
+        case .relevancy:
             return SortBy.relevancy
-        default:
-            return SortBy.publishedAt
         }
     }
 }

@@ -14,6 +14,7 @@ protocol IHomeViewController {
     func display(articles: [ArticleCell.ViewModel])
     func displayError(message: String)
     func displayPaginationSpinner()
+    func displayInitialize(sortingTypes: [String])
 }
  
 class HomeViewController: UIViewController {
@@ -173,8 +174,6 @@ private extension HomeViewController {
     
     private func setupLocalization() {
         retryButton.setTitle(LocalizedStrings.retry, for: .normal)
-        // TODO: Door interactorw
-        dropDown.dataSource = [LocalizedStrings.sortByNewest, LocalizedStrings.sortByPopularity, LocalizedStrings.sortByRelevancy]
         titlePage.text = LocalizedStrings.appTitle
     }
     
@@ -256,5 +255,9 @@ extension HomeViewController: IHomeViewController {
     
     func displayPaginationSpinner() {
         articlesTableView.tableFooterView = .makeFooterSpinner(view: articlesTableView.plainView)
+    }
+    
+    func displayInitialize(sortingTypes: [String]) {
+        dropDown.dataSource = sortingTypes
     }
 }

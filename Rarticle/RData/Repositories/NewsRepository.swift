@@ -12,7 +12,7 @@ class NewsRepository: GetArticlesWorker {
     @Injected private var iNewsAPI: INewsAPI
     @Injected private var articleMapper: ArticleMapper
     
-    func getArticles(topic: String?, sortByIndex: Int, page: Int) async throws -> [Article] {
-        return try await iNewsAPI.FetchData(topic: topic, sortByIndex: sortByIndex, page: page)
+    func getArticles(topic: String?, sortingType: SortingType, page: Int) async throws -> [Article] {
+        return try await iNewsAPI.FetchData(topic: topic, sortingType: sortingType, page: page)
     }
 }

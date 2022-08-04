@@ -12,6 +12,7 @@ protocol IHomePresenter {
     func presentArticles(articles: [Article])
     func presentErrorMessage(message: String)
     func presentPaginationSpinner(show: Bool)
+    func presentInitialize(sortingTypes: [SortingType])
 }
 
 class HomePresenter: IHomePresenter {
@@ -37,5 +38,20 @@ extension HomePresenter {
         if show {
             homeViewController.displayPaginationSpinner()
         }
+    }
+    
+    func presentInitialize(sortingTypes: [SortingType]) {
+        let sorting = sortingTypes.map({ sortingType -> String in
+            switch sortingType {
+            case .publishedAt:
+                return LocalizedStrings.sortByNewest
+            case .popularity:
+                return LocalizedStrings.sortByPopularity
+            case .relevancy:
+                return LocalizedStrings.sortByRelevancy
+            }
+        })
+        
+        homeViewController.displayInitialize(sortingTypes: sorting)
     }
 }

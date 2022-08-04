@@ -8,5 +8,5 @@
 import Foundation
 
 public protocol GetArticlesWorker {
-    func getArticles(topic: String?, sortByIndex: Int, page: Int) async throws -> [Article]
+    func getArticles(topic: String?, sortingType: SortingType, page: Int) async throws -> [Article]
 }

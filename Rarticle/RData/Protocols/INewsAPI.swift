@@ -8,7 +8,7 @@
 import Foundation
 
 protocol INewsAPI {
-    func FetchData(topic: String?, sortByIndex: Int, page: Int) async throws -> [Article]
+    func FetchData(topic: String?, sortingType: SortingType, page: Int) async throws -> [Article]
 }
 
 enum NewsApiError: Error {

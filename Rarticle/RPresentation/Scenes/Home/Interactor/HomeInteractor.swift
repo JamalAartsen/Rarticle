@@ -40,6 +40,7 @@ class HomeInteractor: IHomeInteractor {
     private var currentPage: Int = 1
     private var currentSortIndex: Int = 0
     private var router: HomeRouter
+    private var sortingTypes = SortingType.allCases
     
     
     init(homePresenter: IHomePresenter, router: HomeRouter) {
@@ -59,14 +60,10 @@ extension HomeInteractor {
         
         Task {
             do {
-                let articlesFromWorker = try await getArticlesWorker.getArticles(topic: topic, sortByIndex: sortByIndex, page: currentPage)
+                let articlesFromWorker = try await getArticlesWorker.getArticles(topic: topic, sortingType: sortingTypes[sortByIndex], page: currentPage)
 
                 articles = articlesFromWorker
                 homePresenter.presentArticles(articles: articles)
-                
-                for article in articles {
-                    print("Date: \(article.publishedDate)")
-                }
             }
             catch let error {
                 homePresenter.presentErrorMessage(message: error.localizedDescription)
@@ -76,6 +73,7 @@ extension HomeInteractor {
     
     func handleInitialize() {
         getArticles(topic: nil, sortIndex: nil, isFiltered: false)
+        homePresenter.presentInitialize(sortingTypes: SortingType.allCases)
     }
     
     func handleDidTapReload() {
@@ -96,7 +94,7 @@ extension HomeInteractor {
         currentPage += 1
         Task {
             do {
-                let nextArticles = try await getArticlesWorker.getArticles(topic: topic, sortByIndex: self.sortByIndex, page: currentPage)
+                let nextArticles = try await getArticlesWorker.getArticles(topic: topic, sortingType: sortingTypes[sortByIndex], page: currentPage)
                 articles.append(contentsOf: nextArticles)
 
                 homePresenter.presentArticles(articles: articles)

@@ -54,6 +54,8 @@
 		C6CE583228858B8F0098EEBF /* NewsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CE583128858B8F0098EEBF /* NewsAPI.swift */; };
 		C6E5874328901CC300160E34 /* SortBy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E5874228901CC300160E34 /* SortBy.swift */; };
 		C6E5874528906F5500160E34 /* RFooterSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E5874428906F5500160E34 /* RFooterSpinner.swift */; };
+		C6F201C3289BC5B8006951E8 /* sortingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F201C2289BC5B8006951E8 /* sortingType.swift */; };
+		C6F201C6289BCB6A006951E8 /* InitializeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F201C5289BCB6A006951E8 /* InitializeViewModel.swift */; };
 		C6F9E743287C5FA3006826CD /* AppDelegate+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F9E742287C5FA3006826CD /* AppDelegate+Injection.swift */; };
 		C6F9E745287C5FEF006826CD /* APIServices+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F9E744287C5FEF006826CD /* APIServices+Injection.swift */; };
 		C6F9E747287C702F006826CD /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F9E746287C702F006826CD /* UIImageView+Extensions.swift */; };
@@ -113,6 +115,8 @@
 		C6CE583128858B8F0098EEBF /* NewsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsAPI.swift; sourceTree = "<group>"; };
 		C6E5874228901CC300160E34 /* SortBy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortBy.swift; sourceTree = "<group>"; };
 		C6E5874428906F5500160E34 /* RFooterSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RFooterSpinner.swift; sourceTree = "<group>"; };
+		C6F201C2289BC5B8006951E8 /* sortingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sortingType.swift; sourceTree = "<group>"; };
+		C6F201C5289BCB6A006951E8 /* InitializeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitializeViewModel.swift; sourceTree = "<group>"; };
 		C6F9E742287C5FA3006826CD /* AppDelegate+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Injection.swift"; sourceTree = "<group>"; };
 		C6F9E744287C5FEF006826CD /* APIServices+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIServices+Injection.swift"; sourceTree = "<group>"; };
 		C6F9E746287C702F006826CD /* UIImageView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extensions.swift"; sourceTree = "<group>"; };
@@ -219,6 +223,7 @@
 		C65961D52889504600215A25 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				C6F201C4289BCB54006951E8 /* ViewModels */,
 				C692965F2899A8D9004636FA /* Mappers */,
 				C698B8872893D463004C4E40 /* ViewController */,
 				C698B8842893D432004C4E40 /* Interactor */,
@@ -499,6 +504,7 @@
 			isa = PBXGroup;
 			children = (
 				C698B88B28940E1A004C4E40 /* Article.swift */,
+				C6F201C2289BC5B8006951E8 /* sortingType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -518,6 +524,14 @@
 				C65961DB288A7A0A00215A25 /* SortingService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		C6F201C4289BCB54006951E8 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				C6F201C5289BCB6A006951E8 /* InitializeViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		C6F9E74C287C70C6006826CD /* Extensions */ = {
@@ -687,7 +701,9 @@
 				C692966A2899CFFF004636FA /* SearchRouter.swift in Sources */,
 				C692965228998B38004636FA /* DetailsRouter.swift in Sources */,
 				C65B0222287D4F6E0007FB08 /* LocalizedStrings.swift in Sources */,
+				C6F201C6289BCB6A006951E8 /* InitializeViewModel.swift in Sources */,
 				C64F7747288015C40027C058 /* Colors.swift in Sources */,
+				C6F201C3289BC5B8006951E8 /* sortingType.swift in Sources */,
 				C65961DC288A7A0A00215A25 /* SortingService.swift in Sources */,
 				C692966C2899D01E004636FA /* SearchPresenter.swift in Sources */,
 				C63148D12872D88400F7B393 /* Response.swift in Sources */,
