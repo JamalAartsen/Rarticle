@@ -1,4 +1,4 @@
-//
+    //
 //  SearchInteractor.swift
 //  Rarticle
 //
@@ -35,37 +35,27 @@ class SearchInteractor: ISearchInteractor {
     private var currentPage: Int = 1
     private var router: SearchRouter
     private var sortingTypes = SortingType.allCases
-    
-    private var sortingType: SortingType {
-        didSet {
-            currentSortingType = sortingType
-        }
-    }
-    private var currentSortingType: SortingType = SortingType.publishedAt
+    private var sortingType: SortingType = SortingType.publishedAt
     private let noResultsText = LocalizedStrings.noResults
     
     init(searchPresenter: SearchPresenter, router: SearchRouter) {
         self.searchPresenter = searchPresenter
         self.isLoadingNextPage = false
         self.router = router
-        self.sortingType = SortingType.publishedAt
     }
-    
 }
 
 extension SearchInteractor {
-    private func getArticles(topic: String?, sortingType: SortingType?, isFiltered: Bool) {
+    private func isFiltered(isFiltered: Bool) {
         if isFiltered {
             currentPage = 1
         }
-        //sortByIndex = sortIndex ?? currentSortIndex
-        self.topic = topic
-        
-        self.sortingType = sortingType ?? currentSortingType
-
+    }
+    
+    private func getArticles() {
         Task {
             do {
-                let articlesFromWorker = try await getArticlesWorker.getArticles(topic: topic, sortingType: self.sortingType, page: currentPage)
+                let articlesFromWorker = try await getArticlesWorker.getArticles(topic: topic, sortingType: sortingType, page: currentPage)
 
                 articles = articlesFromWorker
                 searchPresenter.presentArticles(articles: articles, noResults: noResultsText)
@@ -77,7 +67,8 @@ extension SearchInteractor {
     }
     
     func handleInitialize(topic: String?) {
-        getArticles(topic: topic, sortingType: nil, isFiltered: false)
+        self.topic = topic
+        getArticles()
     }
     
     func handleDidScrollToLastCell() {
@@ -105,17 +96,18 @@ extension SearchInteractor {
     }
     
     func handleDidTapReload() {
-        getArticles(topic: topic, sortingType: sortingType, isFiltered: false)
+        getArticles()
     }
     
     func handleDidTapRefresh() {
-        getArticles(topic: topic, sortingType: sortingType, isFiltered: false)
+        getArticles()
     }
     
     func handleDidTapDropdownItem(sortIndex: Int) {
         guard !(articles.isEmpty) else { return }
         sortingType = sortingTypes[sortIndex]
-        getArticles(topic: topic, sortingType: sortingType, isFiltered: true)
+        isFiltered(isFiltered: true)
+        getArticles()
     }
     
     func handleLocalization() {

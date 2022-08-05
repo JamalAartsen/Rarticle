@@ -43,6 +43,7 @@ class HomeInteractor: IHomeInteractor {
     private var router: HomeRouter
     private var sortingTypes = SortingType.allCases
     private let noResultsText = LocalizedStrings.noResults
+    private var sortingType: SortingType = SortingType.publishedAt
     
     
     init(homePresenter: IHomePresenter, router: HomeRouter) {
@@ -54,15 +55,16 @@ class HomeInteractor: IHomeInteractor {
 }
 
 extension HomeInteractor {
-    private func getArticles(topic: String?, sortIndex: Int?, isFiltered: Bool) {
+    private func isFiltered(isFiltered: Bool) {
         if isFiltered {
             currentPage = 1
         }
-        sortByIndex = sortIndex ?? currentSortIndex
-        
+    }
+    
+    private func getArticles() {
         Task {
             do {
-                let articlesFromWorker = try await getArticlesWorker.getArticles(topic: topic, sortingType: sortingTypes[sortByIndex], page: currentPage)
+                let articlesFromWorker = try await getArticlesWorker.getArticles(topic: topic, sortingType: self.sortingType, page: currentPage)
 
                 articles = articlesFromWorker
                 homePresenter.presentArticles(articles: articles, noResults: noResultsText)
@@ -74,25 +76,28 @@ extension HomeInteractor {
     }
     
     func handleInitialize() {
-        getArticles(topic: nil, sortIndex: nil, isFiltered: false)
+        getArticles()
     }
     
     func handleDidTapReload() {
-        getArticles(topic: nil, sortIndex: sortByIndex, isFiltered: false)
+        getArticles()
     }
     
     func handleDidTapRefresh() {
-        getArticles(topic: nil, sortIndex: sortByIndex, isFiltered: false)
+        getArticles()
     }
     
     func handleDidTapDropdownItem(sortIndex: Int) {
-        getArticles(topic: nil, sortIndex: sortIndex, isFiltered: true)
+        sortingType = sortingTypes[sortIndex]
+        isFiltered(isFiltered: true)
+        getArticles()
     }
     
     func handleDidScrollToLastCell() {
         guard isLoadingNextPage == false else { return }
         isLoadingNextPage = true
         currentPage += 1
+        
         Task {
             do {
                 let nextArticles = try await getArticlesWorker.getArticles(topic: topic, sortingType: sortingTypes[sortByIndex], page: currentPage)
